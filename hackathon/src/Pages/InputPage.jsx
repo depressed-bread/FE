@@ -21,6 +21,7 @@ const AppWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
+    overflow: hidden;
 `;
 
 const Header = styled.div`
@@ -69,6 +70,10 @@ const Label = styled.div`
     font-size: 18px;
     margin-bottom: 5px;
     font-weight: bold;
+`;
+
+const Heading = styled.h2`
+    color: #00D065;
 `;
 
 const Input = styled.input`
@@ -226,7 +231,7 @@ const InputPage = () => {
                 </Header>
 
                 <ContentWrapper>
-                    <h2 style={{ color: '#00D065' }}>소비 내역을 작성해주세요.</h2>
+                    <Heading>소비 내역을 작성해주세요.</Heading>
                     <InputSection>
                         <Label>키워드</Label>
                         <Input width="60%" placeholder="ex) 떡볶이" />
@@ -267,7 +272,7 @@ const InputPage = () => {
 
                     <Button onClick={handleCompletionClick}>작성 완료</Button>
                 </ContentWrapper>
-
+                
                 <Menu>
                     <MenuItem active>
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
