@@ -7,6 +7,8 @@ import SendTempPassword from './Pages/SendTempPassword';
 import Signup from './Pages/Signup';
 import Home from './Pages/Home';
 import InputPage from './Pages/InputPage';
+import LoadingPage from './Pages/LoadingPage';
+import ViewPage from './Pages/ViewPage';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/inputpage" element={<InputPage />} />
+        <Route path="/loadingpage" element={<LoadingPage />} />
+        <Route path="/viewpage" element={<ViewPage />} />
       </Routes>
     </Router>
   );
