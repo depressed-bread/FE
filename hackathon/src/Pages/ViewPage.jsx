@@ -51,7 +51,12 @@ const Dropdown = styled.select`
     margin: 20px 0;
     padding: 10px;
     font-size: 16px;
-    width: 80%;
+    width: 60%;
+    border: 2px solid #00D065;
+    border-radius: 5px;
+    background-color: white;
+    appearance: none;
+    box-sizing: border-box;
 `;
 
 const ButtonGroup = styled.div`
@@ -320,11 +325,11 @@ const ViewPage = () => {
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                         내용입력
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/home')} active>
+                    <MenuItem onClick={() => navigate('/home')}>
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/loadingpage')}>
+                    <MenuItem onClick={() => navigate('/loadingpage')} active>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
                     </MenuItem>
