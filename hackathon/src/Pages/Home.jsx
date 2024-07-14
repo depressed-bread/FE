@@ -222,7 +222,7 @@ const Home = () => {
         21: '/stress.png',
         23: '/angry.png',
         25: '/angry.png',
-        29: '/embarrased.png'
+        29: '/angry.png'
     };
 
     const renderCalendar = () => {
