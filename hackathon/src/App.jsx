@@ -6,6 +6,7 @@ import FindId from './Pages/FindId';
 import SendTempPassword from './Pages/SendTempPassword';
 import Signup from './Pages/Signup';
 import Home from './Pages/Home';
+import InputPage from './Pages/InputPage';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/send-temp-password" element={<SendTempPassword />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/inputpage" element={<InputPage />} />
       </Routes>
     </Router>
   );

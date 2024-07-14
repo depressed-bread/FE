@@ -216,7 +216,7 @@ const Home = () => {
         8: '/angry.png',
         11: '/gloomy.png',
         13: '/sad.png',
-        14: '/exited.png',
+        14: '/excited.png',
         17: 'happy.png',
         20: '/stress.png',
         21: '/stress.png',
@@ -300,7 +300,7 @@ const Home = () => {
                     <MoreLink onClick={() => navigate('/조회')}>소비내역 더보기</MoreLink>
                 </ContentWrapper>
                 <Menu>
-                    <MenuItem onClick={() => navigate('/내용입력')}>
+                    <MenuItem onClick={() => navigate('/inputpage')}>
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                         내용입력
                     </MenuItem>
