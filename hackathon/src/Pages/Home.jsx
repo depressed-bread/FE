@@ -297,7 +297,7 @@ const Home = () => {
                             <Price>6000</Price>원
                         </ExpenseSummary>
                     </ExpenseItem>
-                    <MoreLink onClick={() => navigate('/조회')}>소비내역 더보기</MoreLink>
+                    <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
                 </ContentWrapper>
                 <Menu>
                     <MenuItem onClick={() => navigate('/inputpage')}>
