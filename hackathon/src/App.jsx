@@ -9,6 +9,9 @@ import Home from './Pages/Home';
 import InputPage from './Pages/InputPage';
 import LoadingPage from './Pages/LoadingPage';
 import ViewPage from './Pages/ViewPage';
+import Setting from './Pages/Setting';
+import EditInfo from './Pages/EditInfo';
+import ResetPassword from './Pages/ResetPassword';
 
 const App = () => {
   return (
@@ -23,6 +26,9 @@ const App = () => {
         <Route path="/inputpage" element={<InputPage />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
         <Route path="/viewpage" element={<ViewPage />} />
+        <Route path="/setting" element={<Setting />} />
+        <Route path="/edit-info" element={<EditInfo />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   );
