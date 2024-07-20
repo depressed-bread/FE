@@ -218,8 +218,8 @@ const Home = () => {
         13: '/sad.png',
         14: '/excited.png',
         17: 'happy.png',
-        20: '/stress.png',
-        21: '/stress.png',
+        20: '/anxiety.png',
+        21: '/proud.png',
         23: '/angry.png',
         25: '/angry.png',
         29: '/embarrased.png'

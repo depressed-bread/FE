@@ -220,8 +220,8 @@ const ViewPage = () => {
                     '화남': [
                         { item: '커피', price: '4000원', emoji: './angry.png' }
                     ],
-                    '스트레스': [
-                        { item: '불닭볶음면', price: '1700원', emoji: './stress.png' }
+                    '당황': [
+                        { item: '불닭볶음면', price: '1700원', emoji: './embarrased.png' }
                     ]
                 },
                 '7월 12일': {
@@ -233,8 +233,8 @@ const ViewPage = () => {
                     '화남': [
                         { item: '커피', price: '4000원', emoji: './angry.png' }
                     ],
-                    '당황': [
-                        { item: '휴지', price: '1000원', emoji: './embarrased.png' }
+                    '불안': [
+                        { item: '휴지', price: '1000원', emoji: './anxiety.png' }
                     ],
                     '설렘': [
                         { item: '인형', price: '10000원', emoji: './excited.png' }
@@ -308,7 +308,7 @@ const ViewPage = () => {
                 </Header>
                 <ContentWrapper>
                     <Dropdown value={emotion} onChange={handleEmotionChange}>
-                        {['전체', '화남', '기쁨', '무표정', '우울', '슬픔', '스트레스', '당황', '설렘'].map(emotion => (
+                        {['전체', '화남', '기쁨', '우울', '슬픔', '당황', '불안', '뿌듯', '설렘'].map(emotion => (
                             <option key={emotion} value={emotion}>{emotion}</option>
                         ))}
                     </Dropdown>

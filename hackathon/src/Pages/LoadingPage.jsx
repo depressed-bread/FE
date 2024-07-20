@@ -7,11 +7,11 @@ import { useNavigate } from 'react-router-dom';
 const emojis = {
     '화남': '/angry.png',
     '기쁨': '/happy.png',
-    '무표정': '/emotionless.png',
     '우울': '/gloomy.png',
     '슬픔': '/sad.png',
-    '스트레스': '/stress.png',
     '당황': '/embarrased.png',
+    '불안': '/anxiety.png',
+    '뿌듯': '/proud.png',
     '설렘': '/excited.png'
 };
 

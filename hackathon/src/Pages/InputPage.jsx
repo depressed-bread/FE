@@ -201,11 +201,11 @@ const InputPage = () => {
     const emotionImages = {
         '화남': '/angry.png',
         '기쁨': '/happy.png',
-        '무표정': '/emotionless.png',
         '우울': '/gloomy.png',
         '슬픔': '/sad.png',
-        '스트레스': '/stress.png',
         '당황': '/embarrased.png',
+        '불안': '/anxiety.png',
+        '뿌듯': '/proud.png',
         '설렘': '/excited.png'
     };
 
@@ -260,11 +260,11 @@ const InputPage = () => {
                         <Select width="30%" value={emotion} onChange={(e) => setEmotion(e.target.value)}>
                             <option value="화남">화남</option>
                             <option value="기쁨">기쁨</option>
-                            <option value="무표정">무표정</option>
                             <option value="우울">우울</option>
                             <option value="슬픔">슬픔</option>
-                            <option value="스트레스">스트레스</option>
                             <option value="당황">당황</option>
+                            <option value="불안">불안</option>
+                            <option value="뿌듯">뿌듯</option>
                             <option value="설렘">설렘</option>
                         </Select>
                         <SelectedEmoji src={emotionImages[emotion]} alt={emotion} />
