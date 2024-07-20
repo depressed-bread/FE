@@ -55,7 +55,7 @@ const ContentWrapper = styled.div`
     width: 100%;
     overflow-y: auto;
     padding-top: 5vh;
-    padding-bottom: 10vh;
+    padding-bottom: 12vh;
 `;
 
 const InputSection = styled.div`

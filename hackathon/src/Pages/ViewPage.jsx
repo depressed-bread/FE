@@ -92,8 +92,8 @@ const ContentWrapper = styled.div`
     flex: 1;
     width: 100%;
     overflow-y: auto;
-    padding-top: 80px;
-    padding-bottom: 60px;
+    padding-top: 60px;
+    padding-bottom: auto;
 `;
 
 const ExpenseItem = styled.div`
@@ -192,7 +192,7 @@ const ViewPage = () => {
                 '7월 13일': {
                     '전체': [
                         { item: '커피', price: '4000원', emoji: './angry.png' },
-                        { item: '불닭볶음면', price: '1700원', emoji: './stress.png' }
+                        { item: '불닭볶음면', price: '1700원', emoji: './embarrased.png' }
                     ],
                     '화남': [
                         { item: '커피', price: '4000원', emoji: './angry.png' }
@@ -204,7 +204,7 @@ const ViewPage = () => {
                 '7월 12일': {
                     '전체': [
                         { item: '커피', price: '4000원', emoji: './angry.png' },
-                        { item: '휴지', price: '1000원', emoji: './embarrased.png' },
+                        { item: '휴지', price: '1000원', emoji: './anxiety.png' },
                         { item: '인형', price: '10000원', emoji: './excited.png' }
                     ],
                     '화남': [
@@ -254,7 +254,7 @@ const ViewPage = () => {
                         </ExpenseItem>
                     ))
                 ) : (
-                    <ExpenseItem>소비 내역 없음</ExpenseItem>
+                    <div>소비 내역이 없습니다.</div>
                 )}
             </div>
         ));
@@ -290,7 +290,7 @@ const ViewPage = () => {
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/loadingpage')} active>
+                    <MenuItem active>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
                     </MenuItem>
