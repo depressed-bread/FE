@@ -83,7 +83,7 @@ const RotatingEmoji = styled.img`
     height: 50px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(${props => props.angle}deg) translateY(-120px);
+    transform: translate(-50%, -50%) rotate(${props => props.$angle}deg) translateY(-120px);
 `;
 
 const ContentWrapper = styled.div`
@@ -109,7 +109,7 @@ const Menu = styled.div`
 const MenuItem = styled.div`
     cursor: pointer;
     font-size: 16px;
-    color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
+    color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -137,7 +137,7 @@ const LoadingPage = () => {
                     <EmojiWrapper>
                         {Object.keys(emojis).map((emotion, index) => {
                             const angle = (index / 8) * 360;
-                            return <RotatingEmoji key={emotion} src={emojis[emotion]} angle={angle} alt={emotion} />;
+                            return <RotatingEmoji key={emotion} src={emojis[emotion]} $angle={angle} alt={emotion} />;
                         })}
                     </EmojiWrapper>
                 </ContentWrapper>
@@ -150,7 +150,7 @@ const LoadingPage = () => {
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem active>
+                    <MenuItem $active>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
                     </MenuItem>

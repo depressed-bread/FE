@@ -218,7 +218,7 @@ const InputPage = () => {
     };
 
     const handleViewClick = () => {
-        navigate('/조회');
+        navigate('/loadingpage');
         closeModal();
     };
 
@@ -282,7 +282,7 @@ const InputPage = () => {
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/조회')}>
+                    <MenuItem onClick={() => navigate('/loadingpage')}>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
                     </MenuItem>

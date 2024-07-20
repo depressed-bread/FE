@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faHouse, faClipboardList, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
     display: flex;
@@ -131,29 +131,6 @@ const MoreButton = styled.button`
     text-align: left;
 `;
 
-const ActionButton = styled.button`
-    background-color: #FFD8E1;
-    border: 1px solid #B0B0B0;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    margin: 5px;
-
-    svg {
-        color: black;
-    }
-
-    &:hover svg {
-        color: #FF86FF;
-    }
-`;
-
-const DeleteButton = styled(ActionButton)``;
-
 const ExpenseSummary = styled.div`
     font-size: 20px;
     display: flex;
@@ -255,14 +232,6 @@ const ViewPage = () => {
         setPeriod(period);
     };
 
-    const handleDelete = (day, index) => {
-        setConsumptions(prevState => {
-            const newState = JSON.parse(JSON.stringify(prevState));
-            newState[day][emotion].splice(index, 1);
-            return newState;
-        });
-    };
-
     const renderConsumptions = () => {
         const today = '7월 14일';
         const days = [today, '7월 13일', '7월 12일', '7월 11일', '7월 10일', '7월 9일', '7월 8일'];
@@ -277,14 +246,6 @@ const ViewPage = () => {
                             <ItemDetails>
                                 <div>{consumption.item}</div>
                                 <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
-                                <div style={{ display: 'flex' }}>
-                                    <ActionButton onClick={() => navigate('/inputpage')}>
-                                        <FontAwesomeIcon icon={faPen} />
-                                    </ActionButton>
-                                    <DeleteButton onClick={() => handleDelete(day, index)}>
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </DeleteButton>
-                                </div>
                             </ItemDetails>
                             <ExpenseSummary>
                                 <Price>{consumption.price.replace(/[^\d]/g, '')}</Price>
