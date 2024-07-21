@@ -74,6 +74,8 @@ const ModalContent = styled.div`
     text-align: center;
     width: 80%;
     max-width: 300px; /* 모달의 최대 너비 설정 */
+    border: 1px solid #00D065;
+    border-radius: 5px;
 `;
 
 const ModalText = styled.p`
@@ -81,38 +83,38 @@ const ModalText = styled.p`
     margin-bottom: 10px;
 `;
 
-const ModalButton = styled.button`
-    background-color: #FFD8E1;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 25px;
-    margin-top: 20px;
-    &:hover {
-        color: #FF86FF;
-    }
-`;
-
 
 
 const EditInfo = () => {
+
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     
-        const handleEditClick = () => {
+    const handleEditClick = async () => {
+        try {
+            // api 호출
+            // 예시 콘솔
+            console.log('수정완료');
+            
+            // API 호출 성공시, 모달 열기
             setModalOpen(true);
-        };
+
+            // 3초 후 홈으로 이동
+            setTimeout(() => {
+                navigate('/home');
+                closeModal();
+            }, 3000);
+
+        } catch (error) {
+            // API 호출 실패
+            console.error('수정에러', error);
+        }
+    };
     
         const closeModal = () => {
             setModalOpen(false);
         };
 
-        const handleHomeClick = () => {
-            navigate('/home');
-            closeModal();
-        }
 
 
     return (
@@ -128,7 +130,6 @@ const EditInfo = () => {
                 <ModalBackdrop>
                     <ModalContent>
                         <ModalText>회원 정보 수정이 완료되었습니다!</ModalText>
-                        <ModalButton onClick={handleHomeClick}>홈으로 가기</ModalButton>
                     </ModalContent>
                 </ModalBackdrop>
             )}

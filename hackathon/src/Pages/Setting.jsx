@@ -22,6 +22,32 @@ const AppWrapper = styled.div`
     align-items: center;
     position: relative;
     overflow: hidden;
+    z-index: 1;
+`;
+
+const Overlay = styled.div`
+    width: 375px;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    overflow: hidden;
+    z-index: 2;
+    opacity: 0.5;
+`;
+
+const ContentWrapper = styled.div`
+    margin-top: -20%;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    overflow: hidden;
+    z-index: 3;
 `;
 
 const Header = styled.div`
@@ -32,8 +58,7 @@ const Header = styled.div`
     position: absolute;
     top: 20px;
     padding: 0 20px;
-    z-index: 1;
-    background-color: #FEF69B;
+    z-index: 3;
 `;
 
 const Logo = styled.div`
@@ -41,6 +66,7 @@ const Logo = styled.div`
     font-weight: bold;
     margin-top: 10px;
     margin-left: 10px;
+    color: black;
 `;
 
 const Emoji = styled.img`
@@ -48,11 +74,7 @@ const Emoji = styled.img`
     height: 24px;
     margin-top: 10px;
     margin-right: 10px;
-`;
-
-const ContentWrapper = styled.div`
-    margin-top: 50%;
-    width: 80%;
+    cursor: pointer;
 `;
 
 const EditInfo = styled.button`
@@ -99,6 +121,7 @@ const Menu = styled.div`
     background-color: #FEF69B;
     z-index: 1;
     margin-bottom: 3%;
+
 `;
 
 const MenuItem = styled.div`
@@ -115,43 +138,42 @@ const Setting = () => {
 
     const navigate = useNavigate();
 
-
-
-    return(
+    
+    return (
         <Container>
+
+            <ContentWrapper>
+                <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
+                <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
+                <Logout onClick={() => navigate('/login')}>로그아웃</Logout>
+            </ContentWrapper>
+
+
+            <Overlay>
+                    <Header>
+                        <Logo>Logo</Logo>
+                        <Emoji src='./angry.png' alt="Emotion" onClick = {()=> navigate(-1) } />
+                    </Header>
+            </Overlay>
+
+
             <AppWrapper>
-                <Header>
-                    <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" />
-                </Header>
-                <ContentWrapper>
-                    <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
-                    <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
-                    <Logout onClick={() => navigate('/login')}>로그아웃</Logout>
-                </ContentWrapper>
-
-
-
-
-                <Menu>
-                    <MenuItem onClick={() => navigate('/inputpage')}>
-                        <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
-                        내용입력
-                    </MenuItem>
-                    <MenuItem active>
-                        <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
-                        홈
-                    </MenuItem>
-                    <MenuItem onClick={() => navigate('/loadingpage')}>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
-                        조회
-                    </MenuItem>
-                </Menu>
-
-
-
-
+                    <Menu>
+                        <MenuItem onClick={() => navigate('/inputpage')}>
+                            <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
+                            내용입력
+                        </MenuItem>
+                        <MenuItem active>
+                            <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
+                            홈
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate('/loadingpage')}>
+                            <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
+                            조회
+                        </MenuItem>
+                    </Menu>
             </AppWrapper>
+            
         </Container>
     )
 };

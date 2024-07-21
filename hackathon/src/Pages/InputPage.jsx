@@ -48,6 +48,7 @@ const Emoji = styled.img`
     height: 24px;
     margin-top: 10px;
     margin-right: 10px;
+    cursor: pointer;
 `;
 
 const ContentWrapper = styled.div`
@@ -227,7 +228,7 @@ const InputPage = () => {
             <AppWrapper>
                 <Header>
                     <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" />
+                    <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')}/>
                 </Header>
 
                 <ContentWrapper>
