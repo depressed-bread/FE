@@ -12,6 +12,9 @@ import ViewPage from './Pages/ViewPage';
 import Setting from './Pages/Setting';
 import EditInfo from './Pages/EditInfo';
 import ResetPassword from './Pages/ResetPassword';
+import DetailPage from './Pages/DetailPage';
+import EditDetail from './Pages/EditDetail';
+
 
 const App = () => {
   return (
@@ -29,6 +32,9 @@ const App = () => {
         <Route path="/setting" element={<Setting />} />
         <Route path="/edit-info" element={<EditInfo />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/detail" element={<DetailPage />} />
+        <Route path="/editdetail" element={<EditDetail />} />
+
       </Routes>
     </Router>
   );
