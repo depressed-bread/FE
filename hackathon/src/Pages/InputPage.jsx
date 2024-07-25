@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const Container = styled.div`
     display: flex;
@@ -198,6 +199,10 @@ const InputPage = () => {
     const navigate = useNavigate();
     const [emotion, setEmotion] = useState('화남');
     const [modalOpen, setModalOpen] = useState(false);
+    const [keyword, setKeyword] = useState('');
+    const [price, setPrice] = useState('');
+    const [date, setDate] = useState('');
+    const [content, setContent] = useState('');
 
     const emotionImages = {
         '화남': '/angry.png',
@@ -210,8 +215,26 @@ const InputPage = () => {
         '설렘': '/excited.png'
     };
 
-    const handleCompletionClick = () => {
-        setModalOpen(true);
+    const handleCompletionClick = async () => {
+        const expenseData = {
+            keyword,
+            price: parseInt(price),
+            date,
+            content,
+            emotionType: emotion.toUpperCase() // 감정을 상응하는 대문자로 변환
+        };
+
+        try {
+            const response = await axios.post('/api/expenses', expenseData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(response.data);
+            setModalOpen(true);
+        } catch (error) {
+            console.error('There was an error posting the data:', error);
+        }
     };
 
     const closeModal = () => {
@@ -235,25 +258,25 @@ const InputPage = () => {
                     <Heading>소비 내역을 작성해주세요.</Heading>
                     <InputSection>
                         <Label>키워드</Label>
-                        <Input width="60%" placeholder="ex) 떡볶이" />
+                        <Input width="60%" placeholder="ex) 떡볶이" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
                     </InputSection>
 
                     <InputSection>
                         <Label>가격</Label>
                         <PriceWrapper>
-                            <Input width="50%" placeholder="ex) 21200" />
+                            <Input width="50%" placeholder="ex) 21200" value={price} onChange={(e) => setPrice(e.target.value)} />
                             <span style={{ marginLeft: '10px', fontSize: '16px', fontWeight: 'bold' }}>원</span>
                         </PriceWrapper>
                     </InputSection>
 
                     <InputSection>
                         <Label>날짜</Label>
-                        <Input width="50%" type="date" placeholder="날짜 선택" />
+                        <Input width="50%" type="date" placeholder="날짜 선택" value={date} onChange={(e) => setDate(e.target.value)} />
                     </InputSection>
 
                     <InputSection>
                         <Label>상세 내용</Label>
-                        <TextArea rows="4" placeholder="ex) 레포트 작성하는데 저장 버튼 아직 안눌렀는데&#13;&#10;갑자기 정전이 나서 꺼진거야...&#13;&#10;화나서 떡볶이 시켜먹었어" />
+                        <TextArea rows="4" placeholder="ex) 레포트 작성하는데 저장 버튼 아직 안눌렀는데&#13;&#10;갑자기 정전이 나서 꺼진거야...&#13;&#10;화나서 떡볶이 시켜먹었어" value={content} onChange={(e) => setContent(e.target.value)} />
                     </InputSection>
 
                     <InputSection>

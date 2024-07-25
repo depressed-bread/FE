@@ -302,7 +302,7 @@ const DetailPage = () => {
                 </ContentWrapper>
                 
                 <Menu>
-                    <MenuItem active>
+                    <MenuItem onClick={() => navigate('/inputpage')}>
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                         내용입력
                     </MenuItem>
@@ -310,7 +310,7 @@ const DetailPage = () => {
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/viewpage')}>
+                    <MenuItem active>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
                     </MenuItem>

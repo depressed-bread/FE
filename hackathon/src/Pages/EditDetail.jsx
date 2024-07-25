@@ -212,6 +212,8 @@ const EditDetail = () => {
     const [emotion, setEmotion] = useState('화남');
     const [modalOpen, setModalOpen] = useState(false);
 
+
+
     const emotionImages = {
         '화남': '/angry.png',
         '기쁨': '/happy.png',
@@ -289,7 +291,7 @@ const EditDetail = () => {
                 </ContentWrapper>
                 
                 <Menu>
-                    <MenuItem active>
+                    <MenuItem onClick={() => navigate('/inputpage')}>
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                         내용입력
                     </MenuItem>
@@ -297,7 +299,7 @@ const EditDetail = () => {
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/조회')}>
+                    <MenuItem active>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
                     </MenuItem>
