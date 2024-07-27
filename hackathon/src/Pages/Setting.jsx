@@ -162,7 +162,7 @@ const Setting = () => {
             const user = JSON.parse(sessionStorage.getItem('user'));
             await api.post('/logout');
             sessionStorage.removeItem('user');
-            console.log(`로그아웃 성공`);
+            console.log(`${user.email} has logged out.`);
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
