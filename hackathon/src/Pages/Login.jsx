@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
@@ -123,10 +123,17 @@ const SignupLink = styled.a`
     }
 `;
 
+const ErrorMessage = styled.p`
+    color: red;
+    font-size: 14px;
+    font-family: 'Ownglyph_meetme-Rg';
+`;
+
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleLoginClick = async () => {
         try {
@@ -148,6 +155,7 @@ const Login = () => {
             navigate('/home'); // 로그인 성공 시 홈 페이지로 이동
         } catch (error) {
             console.error('로그인 실패:', error.response.data); // 서버에서 반환된 에러 메시지 출력
+            setErrorMessage(error.response.data.message || '로그인에 실패했습니다. 다시 시도해주세요.'); // 에러 메시지 설정
         }
     };
 
@@ -182,6 +190,7 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <LoginButton onClick={handleLoginClick}>로그인하기</LoginButton>
+                    {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
                     <LinkContainer>
                         <Link onClick={handleFindIdClick}>아이디찾기</Link>
                         <span>|</span>

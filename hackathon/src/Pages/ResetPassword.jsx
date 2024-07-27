@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -100,22 +101,31 @@ const ModalText = styled.p`
 const ResetPassword = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const email = "olivia1103@naver.com"; // 이메일은 고정 값으로 설정
 
     const handleEditClick = async () => {
         try {
-            // api 호출
-            // 예시 콘솔
-            console.log('수정완료');
+            const response = await api.post('/api/user/reset-password', {
+                email,
+                currentPassword,
+                newPassword
+            });
 
-            // API 호출 성공시, 모달 열기
-            setModalOpen(true);
+            if (response.data.message === "비밀번호가 성공적으로 변경되었습니다.") {
+                // API 호출 성공시, 모달 열기
+                setModalOpen(true);
 
-            // 3초 후 홈으로 이동
-            setTimeout(() => {
-                navigate('/home');
-                closeModal();
-            }, 3000);
-
+                // 3초 후 홈으로 이동
+                setTimeout(() => {
+                    navigate('/home');
+                    closeModal();
+                }, 3000);
+            } else {
+                // 실패 메시지 처리
+                console.error('비밀번호 변경 실패:', response.data.message);
+            }
         } catch (error) {
             // API 호출 실패
             console.error('수정에러', error);
@@ -132,8 +142,18 @@ const ResetPassword = () => {
             <Container>
                 <AppWrapper>
                     <Logo>Logo</Logo>
-                    <Input type="password" placeholder="비밀번호" />
-                    <Input type="password" placeholder="비밀번호 재입력" />
+                    <Input
+                        type="password"
+                        placeholder="현재 비밀번호"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                    <Input
+                        type="password"
+                        placeholder="새 비밀번호"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                    />
                     <EditButton onClick={handleEditClick}>비밀번호 재설정</EditButton>
                 </AppWrapper>
 
