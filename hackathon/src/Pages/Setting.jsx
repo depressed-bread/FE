@@ -7,7 +7,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -146,7 +146,7 @@ const Menu = styled.div`
 const MenuItem = styled.div`
     cursor: pointer;
     font-size: 16px;
-    color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
+    color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -179,7 +179,7 @@ const Setting = () => {
                             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                             내용입력
                         </MenuItem>
-                        <MenuItem active>
+                        <MenuItem $active>
                             <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                             홈
                         </MenuItem>
