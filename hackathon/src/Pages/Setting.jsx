@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -51,8 +51,8 @@ const Overlay = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-    margin-top: -20%;
-    width: 15%;
+    margin-top: -40%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -156,6 +156,20 @@ const MenuItem = styled.div`
 
 const Setting = () => {
     const navigate = useNavigate();
+    const [topEmotion, setTopEmotion] = useState('');
+
+    useEffect(() => {
+        const fetchTopEmotion = async () => {
+            try {
+                const response = await api.get('/api/user/emotion');
+                setTopEmotion(response.data.emotion);
+            } catch (error) {
+                console.error('Error fetching top emotion:', error);
+            }
+        };
+
+        fetchTopEmotion();
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -171,6 +185,17 @@ const Setting = () => {
         }
     };
 
+    const emotionImages = {
+        '화남': '/angry.png',
+        '기쁨': '/happy.png',
+        '우울': '/gloomy.png',
+        '슬픔': '/sad.png',
+        '당황': '/embarrased.png',
+        '불안': '/anxiety.png',
+        '뿌듯': '/proud.png',
+        '설렘': '/excited.png'
+    };
+
     return (
         <>
             <GlobalStyle />
@@ -184,7 +209,7 @@ const Setting = () => {
                 <Overlay>
                     <Header>
                         <Logo>Logo</Logo>
-                        <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate(-1)} />
+                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate(-1)} />}
                     </Header>
                 </Overlay>
 

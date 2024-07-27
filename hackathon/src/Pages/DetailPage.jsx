@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -238,6 +239,7 @@ const DetailPage = () => {
     const navigate = useNavigate();
     const [emotion] = useState('화남');
     const [modalOpen, setModalOpen] = useState(false);
+    const [topEmotion, setTopEmotion] = useState('');
 
     const emotionImages = {
         '화남': '/angry.png',
@@ -249,6 +251,19 @@ const DetailPage = () => {
         '당황': '/embarrased.png',
         '설렘': '/excited.png'
     };
+
+    useEffect(() => {
+        const fetchTopEmotion = async () => {
+            try {
+                const response = await api.get('/api/user/emotion');
+                setTopEmotion(response.data.emotion);
+            } catch (error) {
+                console.error('Error fetching top emotion:', error);
+            }
+        };
+
+        fetchTopEmotion();
+    }, []);
 
     const handleCompletionClick = () => {
         setModalOpen(true);
@@ -270,7 +285,7 @@ const DetailPage = () => {
                 <AppWrapper>
                     <Header>
                         <Logo>Logo</Logo>
-                        <Emoji src='./angry.png' alt="Emotion" />
+                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" />}
                     </Header>
                     <ContentWrapper>
                         <br></br>

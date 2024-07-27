@@ -3,6 +3,18 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import api from './Api'; // Import the api instance
+
+const emojis = {
+    '화남': '/angry.png',
+    '기쁨': '/happy.png',
+    '우울': '/gloomy.png',
+    '슬픔': '/sad.png',
+    '당황': '/embarrased.png',
+    '불안': '/anxiety.png',
+    '뿌듯': '/proud.png',
+    '설렘': '/excited.png'
+};
 
 const Container = styled.div`
     display: flex;
@@ -174,6 +186,7 @@ const ViewPage = () => {
     const [emotion, setEmotion] = useState('전체');
     const [period, setPeriod] = useState('오늘');
     const [consumptions, setConsumptions] = useState([]);
+    const [topEmotion, setTopEmotion] = useState('');
 
     useEffect(() => {
         const fetchData = () => {
@@ -223,7 +236,17 @@ const ViewPage = () => {
             setConsumptions(data);
         };
 
+        const fetchTopEmotion = async () => {
+            try {
+                const response = await api.get('/api/user/emotion');
+                setTopEmotion(response.data.emotion);
+            } catch (error) {
+                console.error('Error fetching top emotion:', error);
+            }
+        };
+
         fetchData();
+        fetchTopEmotion();
     }, [emotion, period]);
 
     const handleEmotionChange = (e) => {
@@ -267,7 +290,7 @@ const ViewPage = () => {
             <AppWrapper>
                 <Header>
                     <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" />
+                    {topEmotion && <Emoji src={emojis[topEmotion]} alt="Emotion" />}
                 </Header>
                 <ContentWrapper>
                     <Dropdown value={emotion} onChange={handleEmotionChange}>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -221,6 +222,7 @@ const InputPage = () => {
     const [price, setPrice] = useState('');
     const [date, setDate] = useState('');
     const [content, setContent] = useState('');
+    const [topEmotion, setTopEmotion] = useState('');
 
     const emotionImages = {
         '화남': '/angry.png',
@@ -232,6 +234,20 @@ const InputPage = () => {
         '뿌듯': '/proud.png',
         '설렘': '/excited.png'
     };
+
+    useEffect(() => {
+        const fetchTopEmotion = async () => {
+            try {
+                const response = await api.get('/api/user/emotion');
+                setTopEmotion(response.data.emotion);
+            } catch (error) {
+                console.error('Error fetching top emotion:', error);
+                setTopEmotion('화남'); // 기본 감정 설정
+            }
+        };
+
+        fetchTopEmotion();
+    }, []);
 
     const handleCompletionClick = async () => {
         const expenseData = {
@@ -271,7 +287,7 @@ const InputPage = () => {
                 <AppWrapper>
                     <Header>
                         <Logo>Logo</Logo>
-                        <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')}/>
+                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                     </Header>
 
                     <ContentWrapper>

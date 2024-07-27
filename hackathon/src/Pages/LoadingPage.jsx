@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import api from './Api'; // Import the api instance
 
 const emojis = {
     '화남': '/angry.png',
@@ -117,8 +118,20 @@ const MenuItem = styled.div`
 
 const LoadingPage = () => {
     const navigate = useNavigate();
-    
+    const [topEmotion, setTopEmotion] = useState('');
+
     useEffect(() => {
+        const fetchTopEmotion = async () => {
+            try {
+                const response = await api.get('/api/user/emotion');
+                setTopEmotion(response.data.emotion);
+            } catch (error) {
+                console.error('Error fetching top emotion:', error);
+            }
+        };
+
+        fetchTopEmotion();
+
         const timer = setTimeout(() => {
             navigate('/viewpage');
         }, 5000); // 5초 후에 viewpage로 이동
@@ -131,7 +144,7 @@ const LoadingPage = () => {
             <AppWrapper>
                 <Header>
                     <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" />
+                    {topEmotion && <Emoji src={emojis[topEmotion]} alt="Emotion" />}
                 </Header>
                 <ContentWrapper>
                     <EmojiWrapper>
