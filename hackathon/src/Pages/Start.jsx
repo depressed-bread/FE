@@ -84,11 +84,13 @@ const DotsContainer = styled.div`
     justify-content: center;
 `;
 
-const DotStyles = styled.div`
+const DotStyles = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== '$isActive',
+})`
     margin: 0 10px;
     cursor: pointer;
     font-size: 30px;
-    color: ${({ isActive }) => (isActive ? '#00D065' : 'white')};
+    color: ${({ $isActive }) => ($isActive ? '#00D065' : 'white')};
 `;
 
 const StartButton = styled.button`
@@ -117,20 +119,20 @@ const Start = ({ Slides }) => {
         navigate('/home');
     };
 
-    const Titles = ["감정 기반 지출 관리 서비스", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"]
+    const Titles = ["감정 기반 지출 관리 서비스", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"];
     const [currentIndex, setCurrentIndex] = useState(0);
     const goToPrevious = () => {
-        const isFirstSlide = currentIndex === 0
-        const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1
+        const isFirstSlide = currentIndex === 0;
+        const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
     }
     const goToNext = () => {
-        const isLastSlide = currentIndex === slides.length - 1
-        const newIndex = isLastSlide ? 0 : currentIndex + 1
+        const isLastSlide = currentIndex === slides.length - 1;
+        const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
     }
     const goToSlide = (slideIndex) => {
-        setCurrentIndex(slideIndex)
+        setCurrentIndex(slideIndex);
     }
 
     return (
@@ -152,7 +154,7 @@ const Start = ({ Slides }) => {
                         <Arrow onClick={goToPrevious}>&lt;</Arrow>
                         <DotsContainer>
                             {slides.map((slide, slideIndex) => (
-                                <DotStyles key={slideIndex} isActive={slideIndex === currentIndex} onClick={() => goToSlide(slideIndex)}>&#9679;</DotStyles>
+                                <DotStyles key={slideIndex} $isActive={slideIndex === currentIndex} onClick={() => goToSlide(slideIndex)}>&#9679;</DotStyles>
                             ))}
                         </DotsContainer>
                         <Arrow onClick={goToNext}>&gt;</Arrow>

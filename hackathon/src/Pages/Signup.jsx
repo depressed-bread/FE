@@ -150,6 +150,12 @@ const ModalButton = styled.button`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  font-family: 'Ownglyph_meetme-Rg';
+`;
+
 const Signup = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -158,8 +164,26 @@ const Signup = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [passwordChk, setPasswordChk] = useState('');
+  const [error, setError] = useState('');
 
   const handleSignupClick = async () => {
+    setError('');
+    if (!name || !email || !phone || !password || !passwordChk) {
+      setError('모든 정보를 입력해주세요.');
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{8,20}$/;
+    if (!passwordRegex.test(password)) {
+      setError('비밀번호는 영어 소문자와 숫자를 포함하여 8자 이상 20자 이하로 입력해주세요.');
+      return;
+    }
+
+    if (password !== passwordChk) {
+      setError('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
     try {
       const response = await api.post('/api/user/register', {
         name,
@@ -172,7 +196,12 @@ const Signup = () => {
       console.log(response.data.message); // 회원가입 완료 메시지 출력
       setModalOpen(true); // 회원가입 성공 시 모달 열기
     } catch (error) {
-      console.error('회원가입 에러:', error);
+      if (error.response && error.response.status === 409) {
+        setError('이미 존재하는 이메일입니다.');
+      } else {
+        console.error('회원가입 에러:', error);
+        setError('회원가입 중 오류가 발생했습니다.');
+      }
     }
   };
 
@@ -197,6 +226,7 @@ const Signup = () => {
           <Input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
           <Input type="password" placeholder="비밀번호 재입력" value={passwordChk} onChange={(e) => setPasswordChk(e.target.value)} />
           <SignupButton onClick={handleSignupClick}>가입하기</SignupButton>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
           <Footer>
             <QuestionMark>?</QuestionMark>
             <span>이미 계정이 있으신가요?</span>
