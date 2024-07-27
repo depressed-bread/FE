@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -116,28 +117,27 @@ const SendTempPassword = () => {
 
     const handleSendTempPasswordClick = async () => {
         try {
-            // 실제로는 API 호출
-            // 현재는 예시로 console에 출력하는 것으로 대체
-            console.log(`Sending temporary password to ${email}...`);
-            
-            // API 호출이 성공했다고 가정하고, 모달 열기 및 상태 업데이트
-            setTempPasswordSent(true);
+            const response = await api.post('/api/user/send-temp-password', { email });
+            if (response.status === 200) {
+                setTempPasswordSent(true);
+            } else {
+                setTempPasswordSent(false);
+            }
             setModalOpen(true);
         } catch (error) {
-            // API 호출 실패 처리
             console.error('Failed to send temporary password:', error);
+            setTempPasswordSent(false);
+            setModalOpen(true);
         }
     };
 
     const closeModal = () => {
         setModalOpen(false);
-        // 모달 닫기 시 상태 초기화
         setTempPasswordSent(false);
         setEmail('');
     };
 
     const handleLoginButtonClick = () => {
-        // 로그인 페이지로 이동
         navigate('/login');
         closeModal();
     };
