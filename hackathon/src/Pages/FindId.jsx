@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -108,27 +109,39 @@ const ModalButton = styled.button`
     }
 `;
 
+const ErrorMessage = styled.p`
+    color: red;
+    font-size: 14px;
+    font-family: 'Ownglyph_meetme-Rg';
+`;
+
 const FindId = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [userName, setUserName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [foundId, setFoundId] = useState('');
+    const [error, setError] = useState('');
 
     const handleFindIdClick = async () => {
+        setError('');
         try {
-            // api 호출 예시
-            const response = await fetch(`https://api.example.com/find-id?name=${userName}&phone=${phoneNumber}`);
-            const data = await response.json();
-            if (data.success) {
-                setFoundId(data.id); // API에서 가져온 아이디 설정
+            const response = await api.post('/api/user/find-id', {
+                name: userName,
+                phone: phoneNumber
+            });
+
+            if (response.data.email) {
+                setFoundId(response.data.email); // API에서 가져온 이메일 설정
                 setModalOpen(true); // 모달 열기
             } else {
-                // 에러 처리
-                console.error('아이디를 찾을 수 없습니다.');
+                setError('사용자가 존재하지 않습니다.');
+                setModalOpen(true);
             }
         } catch (error) {
             console.error('API 호출 중 오류가 발생했습니다.', error);
+            setError('사용자가 존재하지 않습니다.');
+            setModalOpen(true);
         }
     };
 
@@ -136,9 +149,12 @@ const FindId = () => {
         setModalOpen(false);
     };
 
-    const handleLoginButtonClick = () => {
-        // 로그인 페이지로 이동
-        navigate('/login');
+    const handleActionButtonClick = () => {
+        if (foundId) {
+            navigate('/login');
+        } else {
+            navigate('/signup');
+        }
         closeModal();
     };
 
@@ -165,9 +181,18 @@ const FindId = () => {
                     {modalOpen && (
                         <ModalBackdrop>
                             <ModalContent>
-                                <ModalText>{userName}님의 아이디는</ModalText>
-                                <ModalText>{foundId}</ModalText>
-                                <ModalButton onClick={handleLoginButtonClick}>로그인하기</ModalButton>
+                                {foundId ? (
+                                    <>
+                                        <ModalText>{userName}님의 이메일은</ModalText>
+                                        <ModalText>{foundId}</ModalText>
+                                        <ModalButton onClick={handleActionButtonClick}>로그인하기</ModalButton>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ModalText>이메일이 존재하지 않습니다.</ModalText>
+                                        <ModalButton onClick={handleActionButtonClick}>회원가입하기</ModalButton>
+                                    </>
+                                )}
                             </ModalContent>
                         </ModalBackdrop>
                     )}
