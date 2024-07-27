@@ -157,10 +157,12 @@ const Menu = styled.div`
     margin-bottom: 3%;
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== '$active',
+})`
     cursor: pointer;
     font-size: 16px;
-    color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
+    color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -316,7 +318,7 @@ const InputPage = () => {
                     </ContentWrapper>
                     
                     <Menu>
-                        <MenuItem active>
+                        <MenuItem $active>
                             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                             내용입력
                         </MenuItem>
