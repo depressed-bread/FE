@@ -15,7 +15,6 @@ import ResetPassword from './Pages/ResetPassword';
 import DetailPage from './Pages/DetailPage';
 import EditDetail from './Pages/EditDetail';
 
-
 const App = () => {
   return (
     <Router>
@@ -34,7 +33,6 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/detail" element={<DetailPage />} />
         <Route path="/editdetail" element={<EditDetail />} />
-
       </Routes>
     </Router>
   );

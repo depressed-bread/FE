@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -46,7 +46,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
-    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
+    font-family: 'Ownglyph_meetme-Rg'
 `;
 
 const LoginButton = styled.button`
@@ -59,7 +59,7 @@ const LoginButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
-    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
+    font-family: 'Ownglyph_meetme-Rg'
 
     &:hover {
         color: #FF86FF;
@@ -77,7 +77,7 @@ const Link = styled.a`
     cursor: pointer;
     text-decoration: none;
     color: black;
-    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
+    font-family: 'Ownglyph_meetme-Rg'
 
     &:hover {
         text-decoration: underline;
@@ -91,12 +91,12 @@ const Footer = styled.div`
     display: flex;
     align-items: center;
     font-size: 14px;
-    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
+    font-family: 'Ownglyph_meetme-Rg'
 `;
 
 const FooterText = styled.span`
     margin-left: 5px;
-    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
+    font-family: 'Ownglyph_meetme-Rg'
 `;
 
 const QuestionMark = styled.div`
@@ -125,25 +125,29 @@ const SignupLink = styled.a`
 
 const Login = () => {
     const navigate = useNavigate();
-    const [userId, setUserId] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLoginClick = async () => {
         try {
-            // api 호출 예시
-            const response = await axios.post('https://api.example.com/login', {
-                userId,
-                password,
-            });
-            const data = response.data;
-            // 로그인 성공 시 처리
-            console.log('로그인 성공:', data);
+            const params = new URLSearchParams();
+            params.append('email', email);
+            params.append('password', password);
 
-            // 홈페이지로 이동
-            navigate('/home');
+            const response = await api.post('/login', params, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            // 세션에 사용자 정보 저장
+            sessionStorage.setItem('user', JSON.stringify(response.data.user));
+
+            console.log('로그인 성공:', response.data.message); // 로그인 성공 메시지 출력
+            console.log('로그인 성공한 이메일:', response.data.user); // 로그인 성공한 이메일 출력
+            navigate('/home'); // 로그인 성공 시 홈 페이지로 이동
         } catch (error) {
-            // 에러 처리
-            console.error('로그인 실패:', error);
+            console.error('로그인 실패:', error.response.data); // 서버에서 반환된 에러 메시지 출력
         }
     };
 
@@ -166,10 +170,10 @@ const Login = () => {
                 <AppWrapper>
                     <Logo>Logo</Logo>
                     <Input
-                        type="text"
-                        placeholder="아이디"
-                        value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
+                        type="email"
+                        placeholder="이메일"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                     <Input
                         type="password"
