@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { createGlobalStyle } from 'styled-components';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -156,6 +157,20 @@ const MenuItem = styled.div`
 const Setting = () => {
     const navigate = useNavigate();
 
+    const handleLogout = async () => {
+        try {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            await api.post('/logout');
+            sessionStorage.removeItem('user');
+            console.log(`로그아웃 성공`);
+            setTimeout(() => {
+                navigate('/login');
+            }, 3000);
+        } catch (error) {
+            console.error('로그아웃 에러:', error);
+        }
+    };
+
     return (
         <>
             <GlobalStyle />
@@ -163,7 +178,7 @@ const Setting = () => {
                 <ContentWrapper>
                     <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
                     <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
-                    <Logout onClick={() => navigate('/login')}>로그아웃</Logout>
+                    <Logout onClick={handleLogout}>로그아웃</Logout>
                 </ContentWrapper>
 
                 <Overlay>
