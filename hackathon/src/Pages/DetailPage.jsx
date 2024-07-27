@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -37,7 +47,6 @@ const Header = styled.div`
     background-color: #FEF69B;
 `;
 
-
 const ContentWrapper = styled.div`
     flex: 1;
     width: 100%;
@@ -58,10 +67,11 @@ const Label = styled.div`
     font-size: 17px;
     margin-bottom: 5px;
     font-weight: bold;
-    color:#00D065;
+    color: #00D065;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
-const LabelWrapper=styled.div`
+const LabelWrapper = styled.div`
     background-color: white;
     border-radius: 10px;
     border: 2px solid #00D065;
@@ -69,15 +79,15 @@ const LabelWrapper=styled.div`
     margin: 2px 0;
     width: 25%;
     display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
 `;
-const LabelWrapper2=styled.div`
+
+const LabelWrapper2 = styled.div`
     width: 100%;
     overflow-y: auto;
     padding-top: 5px;
     padding-bottom: 5px;
-
 `;
 
 const Button = styled.button`
@@ -90,6 +100,7 @@ const Button = styled.button`
     color: black;
     cursor: pointer;
     margin-top: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -100,15 +111,13 @@ const SelectedEmoji = styled.img`
     width: 90px;
     height: 90px;
     margin: 20px 0;
-
 `;
 
-const EmojiWrapper=styled.div`
-
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+const EmojiWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const Menu = styled.div`
@@ -152,11 +161,13 @@ const ModalContent = styled.div`
     text-align: center;
     width: 80%;
     max-width: 300px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalText = styled.p`
     font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalButton = styled.button`
@@ -168,6 +179,7 @@ const ModalButton = styled.button`
     cursor: pointer;
     font-size: 20px;
     margin-top: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -179,7 +191,7 @@ const BackButton = styled.button`
     cursor: pointer;
     font-size: 15px;
     background-color: #FEF69B;
-
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ExpenseItem = styled.div`
@@ -191,6 +203,7 @@ const ExpenseItem = styled.div`
     width: 85%;
     display: flex;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ItemDetails = styled.div`
@@ -199,6 +212,7 @@ const ItemDetails = styled.div`
     margin-left: 10px;
     flex-grow: 1;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Logo = styled.div`
@@ -209,17 +223,16 @@ const Logo = styled.div`
 const Emoji = styled.img`
     width: 24px;
     height: 24px;
-
 `;
-  const arrowStyle = {
+
+const arrowStyle = {
     width: 0,
     height: 0,
     borderTop: '10px solid transparent',
     borderBottom: '10px solid transparent',
     borderRight: '10px solid black',
     margin: '10px'
-  };
-
+};
 
 const DetailPage = () => {
     const navigate = useNavigate();
@@ -251,81 +264,70 @@ const DetailPage = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Header>
-                    <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" />
-
-                </Header>
-                <ContentWrapper>
-                    <br></br>
-                    <BackButton onClick={()=> navigate(-1)}><div style={arrowStyle}></div></BackButton>
-
-                    <EmojiWrapper><SelectedEmoji src={emotionImages[emotion]} alt={emotion} /></EmojiWrapper>          
-
-                    <InputSection>
-
-                        <ExpenseItem>
-                            <LabelWrapper2>
-                            <div><LabelWrapper><Label>키워드</Label></LabelWrapper></div>
-                            
-                            <br></br> 
-                            <div><LabelWrapper><Label>가격</Label></LabelWrapper></div>
-                            <br></br>
-                            <LabelWrapper><Label>날짜</Label></LabelWrapper>                                                      
-                            <ItemDetails>
-                                <div>
-                   
-                                </div>
-                            </ItemDetails>
-                            </LabelWrapper2>
-                        </ExpenseItem>
-                    </InputSection>
-                    <InputSection>
-
-                        <ExpenseItem>
-                            <LabelWrapper><Label>상세 내용</Label></LabelWrapper>
-                            
-                            <ItemDetails>
-                                <div>
-                   
-                                </div>
-                            </ItemDetails>
-                        </ExpenseItem>                
-
-                    </InputSection>
-
-
-                    <Button onClick={()=>navigate("/editdetail")}>수정하기</Button>
-                    <Button onClick={handleCompletionClick}>삭제하기</Button>
-                </ContentWrapper>
-                
-                <Menu>
-                    <MenuItem onClick={() => navigate('/inputpage')}>
-                        <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
-                        내용입력
-                    </MenuItem>
-                    <MenuItem onClick={() => navigate('/home')}>
-                        <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
-                        홈
-                    </MenuItem>
-                    <MenuItem active>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
-                        조회
-                    </MenuItem>
-                </Menu>
-            </AppWrapper>
-
-            {modalOpen && (
-                <ModalBackdrop>
-                    <ModalContent>
-                        <ModalText>내역이 삭제되었습니다!</ModalText>
-                        <ModalButton onClick={handleViewClick}>조회 화면으로 돌아가기</ModalButton>
-                    </ModalContent>
-                </ModalBackdrop>
-            )}
-        </Container>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Header>
+                        <Logo>Logo</Logo>
+                        <Emoji src='./angry.png' alt="Emotion" />
+                    </Header>
+                    <ContentWrapper>
+                        <br></br>
+                        <BackButton onClick={() => navigate(-1)}><div style={arrowStyle}></div></BackButton>
+                        <EmojiWrapper><SelectedEmoji src={emotionImages[emotion]} alt={emotion} /></EmojiWrapper>
+                        <InputSection>
+                            <ExpenseItem>
+                                <LabelWrapper2>
+                                    <div><LabelWrapper><Label>키워드</Label></LabelWrapper></div>
+                                    <br></br>
+                                    <div><LabelWrapper><Label>가격</Label></LabelWrapper></div>
+                                    <br></br>
+                                    <LabelWrapper><Label>날짜</Label></LabelWrapper>
+                                    <ItemDetails>
+                                        <div>
+                                        </div>
+                                    </ItemDetails>
+                                </LabelWrapper2>
+                            </ExpenseItem>
+                        </InputSection>
+                        <InputSection>
+                            <ExpenseItem>
+                                <LabelWrapper><Label>상세 내용</Label></LabelWrapper>
+                                <ItemDetails>
+                                    <div>
+                                    </div>
+                                </ItemDetails>
+                            </ExpenseItem>
+                        </InputSection>
+                        <Button onClick={() => navigate("/editdetail")}>수정하기</Button>
+                        <Button onClick={handleCompletionClick}>삭제하기</Button>
+                    </ContentWrapper>
+                    <Menu>
+                        <MenuItem onClick={() => navigate('/inputpage')}>
+                            <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
+                            내용입력
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate('/home')}>
+                            <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
+                            홈
+                        </MenuItem>
+                        <MenuItem active>
+                            <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
+                            조회
+                        </MenuItem>
+                    </Menu>
+                </AppWrapper>
+                {modalOpen && (
+                    <ModalBackdrop>
+                        <ModalContent>
+                            <ModalText>내역이 삭제되었습니다!</ModalText>
+                            <ModalButton onClick={handleViewClick}>조회 화면으로 돌아가기</ModalButton>
+                        </ModalContent>
+                    </ModalBackdrop>
+                )}
+            </Container>
+        </>
     );
 };
 

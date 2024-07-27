@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -95,6 +105,7 @@ const Day = styled.div`
     position: relative;
     padding: 10px;
     color: ${props => props.isSunday ? '#FF3B30' : props.isSaturday ? '#007AFF' : 'black'};
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const DateTitleWrapper = styled.div`
@@ -109,12 +120,14 @@ const DateTitle = styled.div`
     margin-top: 3%;
     font-size: 25px;
     color: #00D065;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ExpenseSummary = styled.div`
     font-size: 20px;
     display: flex;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Price = styled.span`
@@ -131,6 +144,7 @@ const ExpenseItem = styled.div`
     width: 90%;
     display: flex;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ItemDetails = styled.div`
@@ -154,6 +168,7 @@ const MoreButton = styled.button`
     text-decoration: underline;
     margin-top: 5px;
     text-align: left;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const MoreLink = styled.button`
@@ -165,6 +180,7 @@ const MoreLink = styled.button`
     margin-top: 5px;
     text-align: center;
     width: 100%;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Menu = styled.div`
@@ -252,70 +268,73 @@ const Home = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Header>
-                    <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')}/>
-                </Header>
-                <ContentWrapper>
-                    <MonthNavigation>
-                        <Arrow onClick={handlePrevMonth}>&lt;</Arrow>
-                        <div>{year}.{month < 10 ? `0${month}` : month}</div>
-                        <Arrow onClick={handleNextMonth}>&gt;</Arrow>
-                    </MonthNavigation>
-                    <CalendarWrapper>
-                        <CalendarGrid>
-                            {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
-                                <Day key={index} isSunday={index === 0} isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
-                            ))}
-                            {renderCalendar()}
-                        </CalendarGrid>
-                    </CalendarWrapper>
-                    <DateTitleWrapper>
-                        <DateTitle>7월 13일 소비내역</DateTitle>
-                        <ExpenseSummary>
-                            <Price>41200</Price>원
-                        </ExpenseSummary>
-                    </DateTitleWrapper>
-                    <ExpenseItem>
-                        <EmojiIcon src='./angry.png' alt="Emotion" />
-                        <ItemDetails>
-                            <div>떡볶이</div>
-                            <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
-                        </ItemDetails>
-                        <ExpenseSummary>
-                            <Price>21200</Price>원
-                        </ExpenseSummary>
-                    </ExpenseItem>
-                    <ExpenseItem>
-                        <EmojiIcon src='./sad.png' alt="Emotion" />
-                        <ItemDetails>
-                            <div>노래방</div>
-                            <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
-                        </ItemDetails>
-                        <ExpenseSummary>
-                            <Price>6000</Price>원
-                        </ExpenseSummary>
-                    </ExpenseItem>
-                    <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
-                </ContentWrapper>
-                <Menu>
-                    <MenuItem onClick={() => navigate('/inputpage')}>
-                        <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
-                        내용입력
-                    </MenuItem>
-                    <MenuItem active>
-                        <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
-                        홈
-                    </MenuItem>
-                    <MenuItem onClick={() => navigate('/loadingpage')}>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
-                        조회
-                    </MenuItem>
-                </Menu>
-            </AppWrapper>
-        </Container>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Header>
+                        <Logo>Logo</Logo>
+                        <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')}/>
+                    </Header>
+                    <ContentWrapper>
+                        <MonthNavigation>
+                            <Arrow onClick={handlePrevMonth}>&lt;</Arrow>
+                            <div>{year}.{month < 10 ? `0${month}` : month}</div>
+                            <Arrow onClick={handleNextMonth}>&gt;</Arrow>
+                        </MonthNavigation>
+                        <CalendarWrapper>
+                            <CalendarGrid>
+                                {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
+                                    <Day key={index} isSunday={index === 0} isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
+                                ))}
+                                {renderCalendar()}
+                            </CalendarGrid>
+                        </CalendarWrapper>
+                        <DateTitleWrapper>
+                            <DateTitle>7월 13일 소비내역</DateTitle>
+                            <ExpenseSummary>
+                                <Price>41200</Price>원
+                            </ExpenseSummary>
+                        </DateTitleWrapper>
+                        <ExpenseItem>
+                            <EmojiIcon src='./angry.png' alt="Emotion" />
+                            <ItemDetails>
+                                <div>떡볶이</div>
+                                <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
+                            </ItemDetails>
+                            <ExpenseSummary>
+                                <Price>21200</Price>원
+                            </ExpenseSummary>
+                        </ExpenseItem>
+                        <ExpenseItem>
+                            <EmojiIcon src='./sad.png' alt="Emotion" />
+                            <ItemDetails>
+                                <div>노래방</div>
+                                <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
+                            </ItemDetails>
+                            <ExpenseSummary>
+                                <Price>6000</Price>원
+                            </ExpenseSummary>
+                        </ExpenseItem>
+                        <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
+                    </ContentWrapper>
+                    <Menu>
+                        <MenuItem onClick={() => navigate('/inputpage')}>
+                            <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
+                            내용입력
+                        </MenuItem>
+                        <MenuItem active>
+                            <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
+                            홈
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate('/loadingpage')}>
+                            <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
+                            조회
+                        </MenuItem>
+                    </Menu>
+                </AppWrapper>
+            </Container>
+        </>
     );
 };
 

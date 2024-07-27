@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -35,6 +45,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const SignupButton = styled.button`
@@ -47,6 +58,7 @@ const SignupButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -60,10 +72,12 @@ const Footer = styled.div`
     display: flex;
     align-items: center;
     font-size: 14px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const FooterText = styled.span`
     margin-left: 5px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const QuestionMark = styled.div`
@@ -76,12 +90,14 @@ const QuestionMark = styled.div`
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const LoginLink = styled.a`
     cursor: pointer;
     text-decoration: underline;
     color: #00D065;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         text-decoration: underline;
@@ -107,12 +123,14 @@ const ModalContent = styled.div`
     border-radius: 5px;
     text-align: center;
     width: 80%;
-    max-width: 300px; /* 모달의 최대 너비 설정 */
+    max-width: 300px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalText = styled.p`
     font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalButton = styled.button`
@@ -124,6 +142,8 @@ const ModalButton = styled.button`
     cursor: pointer;
     font-size: 25px;
     margin-top: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
+
     &:hover {
         color: #FF86FF;
     }
@@ -152,32 +172,35 @@ const Signup = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Logo>Logo</Logo>
-                <Input type="text" placeholder="이름" />
-                <Input type="email" placeholder="이메일" />
-                <Input type="tel" placeholder="전화번호" />
-                <Input type="password" placeholder="비밀번호" />
-                <Input type="password" placeholder="비밀번호 재입력" />
-                <SignupButton onClick={handleSignupClick}>가입하기</SignupButton>
-                <Footer>
-                    <QuestionMark>?</QuestionMark>
-                    <span>이미 계정이 있으신가요?</span>
-                    <FooterText></FooterText>
-                    <LoginLink onClick={() => navigate('/login')}>로그인</LoginLink>
-                </Footer>
-            </AppWrapper>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Logo>Logo</Logo>
+                    <Input type="text" placeholder="이름" />
+                    <Input type="email" placeholder="이메일" />
+                    <Input type="tel" placeholder="전화번호" />
+                    <Input type="password" placeholder="비밀번호" />
+                    <Input type="password" placeholder="비밀번호 재입력" />
+                    <SignupButton onClick={handleSignupClick}>가입하기</SignupButton>
+                    <Footer>
+                        <QuestionMark>?</QuestionMark>
+                        <span>이미 계정이 있으신가요?</span>
+                        <FooterText></FooterText>
+                        <LoginLink onClick={() => navigate('/login')}>로그인</LoginLink>
+                    </Footer>
+                </AppWrapper>
 
-            {modalOpen && (
-                <ModalBackdrop>
-                    <ModalContent>
-                        <ModalText>회원가입에 성공했습니다!</ModalText>
-                        <ModalButton onClick={handleLoginClick}>로그인하기</ModalButton>
-                    </ModalContent>
-                </ModalBackdrop>
-            )}
-        </Container>
+                {modalOpen && (
+                    <ModalBackdrop>
+                        <ModalContent>
+                            <ModalText>회원가입에 성공했습니다!</ModalText>
+                            <ModalButton onClick={handleLoginClick}>로그인하기</ModalButton>
+                        </ModalContent>
+                    </ModalBackdrop>
+                )}
+            </Container>
+        </>
     );
 };
 

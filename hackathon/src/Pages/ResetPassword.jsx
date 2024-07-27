@@ -1,7 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -27,6 +36,7 @@ const Logo = styled.div`
     font-weight: bold;
     margin-top: 50%;
     margin-bottom: 20%;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Input = styled.input`
@@ -36,6 +46,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const EditButton = styled.button`
@@ -48,6 +59,7 @@ const EditButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -76,24 +88,25 @@ const ModalContent = styled.div`
     max-width: 300px; /* 모달의 최대 너비 설정 */
     border: 1px solid #00D065;
     border-radius: 5px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalText = styled.p`
     font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
-
 
 const ResetPassword = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
-    
+
     const handleEditClick = async () => {
         try {
             // api 호출
             // 예시 콘솔
             console.log('수정완료');
-            
+
             // API 호출 성공시, 모달 열기
             setModalOpen(true);
 
@@ -108,31 +121,32 @@ const ResetPassword = () => {
             console.error('수정에러', error);
         }
     };
-    
 
-        const closeModal = () => {
-            setModalOpen(false);
-        };
-
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Logo>Logo</Logo>
-                <Input type="password" placeholder="비밀번호" />
-                <Input type="password" placeholder="비밀번호 재입력" />
-                <EditButton onClick={handleEditClick}>비밀번호 재설정</EditButton>
-            </AppWrapper>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Logo>Logo</Logo>
+                    <Input type="password" placeholder="비밀번호" />
+                    <Input type="password" placeholder="비밀번호 재입력" />
+                    <EditButton onClick={handleEditClick}>비밀번호 재설정</EditButton>
+                </AppWrapper>
 
-            {modalOpen && (
-                <ModalBackdrop>
-                    <ModalContent>
-                        <ModalText>비밀번호 재설정이 완료되었습니다!</ModalText>
-                    </ModalContent>
-                </ModalBackdrop>
-            )}
-        </Container>
-    )}
-
+                {modalOpen && (
+                    <ModalBackdrop>
+                        <ModalContent>
+                            <ModalText>비밀번호 재설정이 완료되었습니다!</ModalText>
+                        </ModalContent>
+                    </ModalBackdrop>
+                )}
+            </Container>
+        </>
+    );
+};
 
 export default ResetPassword;

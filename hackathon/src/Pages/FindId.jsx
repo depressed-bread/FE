@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -35,6 +45,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const FindIdButton = styled.button`
@@ -47,6 +58,7 @@ const FindIdButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
     &:hover {
         color: #FF86FF;
     }
@@ -72,11 +84,13 @@ const ModalContent = styled.div`
     text-align: center;
     width: 80%;
     max-width: 300px; /* 모달의 최대 너비 설정 */
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalText = styled.p`
     font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalButton = styled.button`
@@ -88,6 +102,7 @@ const ModalButton = styled.button`
     cursor: pointer;
     font-size: 25px;
     margin-top: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
     &:hover {
         color: #FF86FF;
     }
@@ -128,34 +143,37 @@ const FindId = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Logo>Logo</Logo>
-                <Input
-                    type="text"
-                    placeholder="이름"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                />
-                <Input
-                    type="text"
-                    placeholder="전화번호"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-                <FindIdButton onClick={handleFindIdClick}>아이디 찾기</FindIdButton>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Logo>Logo</Logo>
+                    <Input
+                        type="text"
+                        placeholder="이름"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
+                    />
+                    <Input
+                        type="text"
+                        placeholder="전화번호"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                    <FindIdButton onClick={handleFindIdClick}>아이디 찾기</FindIdButton>
 
-                {modalOpen && (
-                    <ModalBackdrop>
-                        <ModalContent>
-                            <ModalText>{userName}님의 아이디는</ModalText>
-                            <ModalText>{foundId}</ModalText>
-                            <ModalButton onClick={handleLoginButtonClick}>로그인하기</ModalButton>
-                        </ModalContent>
-                    </ModalBackdrop>
-                )}
-            </AppWrapper>
-        </Container>
+                    {modalOpen && (
+                        <ModalBackdrop>
+                            <ModalContent>
+                                <ModalText>{userName}님의 아이디는</ModalText>
+                                <ModalText>{foundId}</ModalText>
+                                <ModalButton onClick={handleLoginButtonClick}>로그인하기</ModalButton>
+                            </ModalContent>
+                        </ModalBackdrop>
+                    )}
+                </AppWrapper>
+            </Container>
+        </>
     );
 };
 

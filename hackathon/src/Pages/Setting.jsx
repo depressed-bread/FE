@@ -2,7 +2,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -67,6 +77,7 @@ const Logo = styled.div`
     margin-top: 10px;
     margin-left: 10px;
     color: black;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Emoji = styled.img`
@@ -86,7 +97,10 @@ const EditInfo = styled.button`
     font-size: 20px;
     cursor: pointer;
     background-color: white;
-    &:hover {font-weight: bold;}
+    font-family: 'Ownglyph_meetme-Rg';
+    &:hover {
+        font-weight: bold;
+    }
 `;
 
 const ResetPassword = styled.button`
@@ -96,7 +110,10 @@ const ResetPassword = styled.button`
     font-size: 20px;
     cursor: pointer;
     background-color: white;
-    &:hover {font-weight: bold;}
+    font-family: 'Ownglyph_meetme-Rg';
+    &:hover {
+        font-weight: bold;
+    }
 `;
 
 const Logout = styled.button`
@@ -108,7 +125,10 @@ const Logout = styled.button`
     font-size: 20px;
     cursor: pointer;
     background-color: white;
-    &:hover {font-weight: bold;}
+    font-family: 'Ownglyph_meetme-Rg';
+    &:hover {
+        font-weight: bold;
+    }
 `;
 
 const Menu = styled.div`
@@ -121,7 +141,6 @@ const Menu = styled.div`
     background-color: #FEF69B;
     z-index: 1;
     margin-bottom: 3%;
-
 `;
 
 const MenuItem = styled.div`
@@ -131,33 +150,30 @@ const MenuItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
-
 const Setting = () => {
-
     const navigate = useNavigate();
 
-    
     return (
-        <Container>
+        <>
+            <GlobalStyle />
+            <Container>
+                <ContentWrapper>
+                    <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
+                    <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
+                    <Logout onClick={() => navigate('/login')}>로그아웃</Logout>
+                </ContentWrapper>
 
-            <ContentWrapper>
-                <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
-                <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
-                <Logout onClick={() => navigate('/login')}>로그아웃</Logout>
-            </ContentWrapper>
-
-
-            <Overlay>
+                <Overlay>
                     <Header>
                         <Logo>Logo</Logo>
-                        <Emoji src='./angry.png' alt="Emotion" onClick = {()=> navigate(-1) } />
+                        <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate(-1)} />
                     </Header>
-            </Overlay>
+                </Overlay>
 
-
-            <AppWrapper>
+                <AppWrapper>
                     <Menu>
                         <MenuItem onClick={() => navigate('/inputpage')}>
                             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
@@ -172,10 +188,10 @@ const Setting = () => {
                             조회
                         </MenuItem>
                     </Menu>
-            </AppWrapper>
-            
-        </Container>
-    )
+                </AppWrapper>
+            </Container>
+        </>
+    );
 };
 
 export default Setting;

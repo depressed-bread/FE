@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -35,6 +45,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const SendTempPasswordButton = styled.button`
@@ -47,6 +58,7 @@ const SendTempPasswordButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
     &:hover {
         color: #FF86FF;
     }
@@ -72,11 +84,13 @@ const ModalContent = styled.div`
     text-align: center;
     width: 80%;
     max-width: 300px; /* 모달의 최대 너비 설정 */
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalText = styled.p`
     font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalButton = styled.button`
@@ -88,6 +102,7 @@ const ModalButton = styled.button`
     cursor: pointer;
     font-size: 25px;
     margin-top: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
     &:hover {
         color: #FF86FF;
     }
@@ -128,33 +143,36 @@ const SendTempPassword = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Logo>Logo</Logo>
-                <Input
-                    type="email"
-                    placeholder="이메일"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <SendTempPasswordButton onClick={handleSendTempPasswordClick}>임시 비밀번호 전송</SendTempPasswordButton>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Logo>Logo</Logo>
+                    <Input
+                        type="email"
+                        placeholder="이메일"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <SendTempPasswordButton onClick={handleSendTempPasswordClick}>임시 비밀번호 전송</SendTempPasswordButton>
 
-                {modalOpen && (
-                    <ModalBackdrop>
-                        <ModalContent>
-                            {tempPasswordSent ? (
-                                <>
-                                    <ModalText>임시 비밀번호가 전송되었습니다.</ModalText>
-                                    <ModalButton onClick={handleLoginButtonClick}>로그인하기</ModalButton>
-                                </>
-                            ) : (
-                                <ModalText>임시 비밀번호 전송에 실패했습니다.</ModalText>
-                            )}
-                        </ModalContent>
-                    </ModalBackdrop>
-                )}
-            </AppWrapper>
-        </Container>
+                    {modalOpen && (
+                        <ModalBackdrop>
+                            <ModalContent>
+                                {tempPasswordSent ? (
+                                    <>
+                                        <ModalText>임시 비밀번호가 전송되었습니다.</ModalText>
+                                        <ModalButton onClick={handleLoginButtonClick}>로그인하기</ModalButton>
+                                    </>
+                                ) : (
+                                    <ModalText>임시 비밀번호 전송에 실패했습니다.</ModalText>
+                                )}
+                            </ModalContent>
+                        </ModalBackdrop>
+                    )}
+                </AppWrapper>
+            </Container>
+        </>
     );
 };
 

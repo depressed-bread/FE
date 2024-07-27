@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -57,6 +67,7 @@ const Dropdown = styled.select`
     background-color: white;
     appearance: none;
     box-sizing: border-box;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ButtonGroup = styled.div`
@@ -73,6 +84,7 @@ const Button = styled.button`
     border: none;
     border-radius: 50px;
     cursor: pointer;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -82,6 +94,7 @@ const Button = styled.button`
 const Title = styled.h2`
     margin-top: 20px;
     font-size: 24px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     span {
         color: #00D065;
@@ -94,6 +107,7 @@ const ContentWrapper = styled.div`
     overflow-y: auto;
     padding-top: 60px;
     padding-bottom: auto;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ExpenseItem = styled.div`
@@ -106,6 +120,7 @@ const ExpenseItem = styled.div`
     display: flex;
     align-items: center;
     position: relative;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const EmojiIcon = styled.img`
@@ -119,6 +134,7 @@ const ItemDetails = styled.div`
     margin-left: 10px;
     flex-grow: 1;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const MoreButton = styled.button`
@@ -129,12 +145,14 @@ const MoreButton = styled.button`
     text-decoration: underline;
     margin-top: 5px;
     text-align: left;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ExpenseSummary = styled.div`
     font-size: 20px;
     display: flex;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Price = styled.span`
@@ -165,6 +183,7 @@ const MenuItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ViewPage = () => {
@@ -261,42 +280,45 @@ const ViewPage = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Header>
-                    <Logo>Logo</Logo>
-                    <Emoji src='./angry.png' alt="Emotion" />
-                </Header>
-                <ContentWrapper>
-                    <Dropdown value={emotion} onChange={handleEmotionChange}>
-                        {['전체', '화남', '기쁨', '우울', '슬픔', '당황', '불안', '뿌듯', '설렘'].map(emotion => (
-                            <option key={emotion} value={emotion}>{emotion}</option>
-                        ))}
-                    </Dropdown>
-                    <ButtonGroup>
-                        <Button onClick={() => handlePeriodChange('날짜 지정 선택')}>날짜 지정 선택</Button>
-                        <Button onClick={() => handlePeriodChange('오늘')}>오늘</Button>
-                        <Button onClick={() => handlePeriodChange('7일')}>7일</Button>
-                        <Button onClick={() => handlePeriodChange('30일')}>30일</Button>
-                    </ButtonGroup>
-                    {renderConsumptions()}
-                </ContentWrapper>
-                <Menu>
-                    <MenuItem onClick={() => navigate('/inputpage')}>
-                        <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
-                        내용입력
-                    </MenuItem>
-                    <MenuItem onClick={() => navigate('/home')}>
-                        <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
-                        홈
-                    </MenuItem>
-                    <MenuItem active>
-                        <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
-                        조회
-                    </MenuItem>
-                </Menu>
-            </AppWrapper>
-        </Container>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Header>
+                        <Logo>Logo</Logo>
+                        <Emoji src='./angry.png' alt="Emotion" />
+                    </Header>
+                    <ContentWrapper>
+                        <Dropdown value={emotion} onChange={handleEmotionChange}>
+                            {['전체', '화남', '기쁨', '우울', '슬픔', '당황', '불안', '뿌듯', '설렘'].map(emotion => (
+                                <option key={emotion} value={emotion}>{emotion}</option>
+                            ))}
+                        </Dropdown>
+                        <ButtonGroup>
+                            <Button onClick={() => handlePeriodChange('날짜 지정 선택')}>날짜 지정 선택</Button>
+                            <Button onClick={() => handlePeriodChange('오늘')}>오늘</Button>
+                            <Button onClick={() => handlePeriodChange('7일')}>7일</Button>
+                            <Button onClick={() => handlePeriodChange('30일')}>30일</Button>
+                        </ButtonGroup>
+                        {renderConsumptions()}
+                    </ContentWrapper>
+                    <Menu>
+                        <MenuItem onClick={() => navigate('/inputpage')}>
+                            <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
+                            내용입력
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate('/home')}>
+                            <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
+                            홈
+                        </MenuItem>
+                        <MenuItem active>
+                            <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
+                            조회
+                        </MenuItem>
+                    </Menu>
+                </AppWrapper>
+            </Container>
+        </>
     );
 };
 

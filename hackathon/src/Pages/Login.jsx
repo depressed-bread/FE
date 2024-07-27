@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -36,6 +46,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
 `;
 
 const LoginButton = styled.button`
@@ -48,6 +59,7 @@ const LoginButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
+    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
 
     &:hover {
         color: #FF86FF;
@@ -65,6 +77,7 @@ const Link = styled.a`
     cursor: pointer;
     text-decoration: none;
     color: black;
+    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
 
     &:hover {
         text-decoration: underline;
@@ -78,10 +91,12 @@ const Footer = styled.div`
     display: flex;
     align-items: center;
     font-size: 14px;
+    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
 `;
 
 const FooterText = styled.span`
     margin-left: 5px;
+    font-family: 'Ownglyph_meetme-Rg', sans-serif; /* 폰트 패밀리 직접 적용 */
 `;
 
 const QuestionMark = styled.div`
@@ -94,12 +109,14 @@ const QuestionMark = styled.div`
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const SignupLink = styled.a`
     cursor: pointer;
     text-decoration: underline;
     color: #00D065;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         text-decoration: underline;
@@ -143,35 +160,38 @@ const Login = () => {
     };
 
     return (
-        <Container>
-            <AppWrapper>
-                <Logo>Logo</Logo>
-                <Input
-                    type="text"
-                    placeholder="아이디"
-                    value={userId}
-                    onChange={(e) => setUserId(e.target.value)}
-                />
-                <Input
-                    type="password"
-                    placeholder="비밀번호"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <LoginButton onClick={handleLoginClick}>로그인하기</LoginButton>
-                <LinkContainer>
-                    <Link onClick={handleFindIdClick}>아이디찾기</Link>
-                    <span>|</span>
-                    <Link onClick={handleSendTempPasswordClick}>임시 비번 전송</Link>
-                </LinkContainer>
-                <Footer>
-                    <QuestionMark>?</QuestionMark>
-                    <span>아직 계정이 없으신가요?</span>
-                    <FooterText></FooterText>
-                    <SignupLink onClick={handleSignupClick}>회원가입</SignupLink>
-                </Footer>
-            </AppWrapper>
-        </Container>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Logo>Logo</Logo>
+                    <Input
+                        type="text"
+                        placeholder="아이디"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                    />
+                    <Input
+                        type="password"
+                        placeholder="비밀번호"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <LoginButton onClick={handleLoginClick}>로그인하기</LoginButton>
+                    <LinkContainer>
+                        <Link onClick={handleFindIdClick}>아이디찾기</Link>
+                        <span>|</span>
+                        <Link onClick={handleSendTempPasswordClick}>임시 비번 전송</Link>
+                    </LinkContainer>
+                    <Footer>
+                        <QuestionMark>?</QuestionMark>
+                        <span>아직 계정이 없으신가요?</span>
+                        <FooterText></FooterText>
+                        <SignupLink onClick={handleSignupClick}>회원가입</SignupLink>
+                    </Footer>
+                </AppWrapper>
+            </Container>
+        </>
     );
 };
 

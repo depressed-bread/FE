@@ -1,10 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import image01 from "./image01.png";
 import image02 from "./image02.png";
 import image03 from "./image03.png";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const Container = styled.div`
     display: flex;
@@ -58,7 +64,6 @@ const StyledImage = styled.img`
   object-fit: cover;
 `;
 
-
 const Controls = styled.div`
   display: flex;
   justify-content: center;
@@ -76,13 +81,13 @@ const Arrow = styled.div`
 
 const DotsContainer = styled.div`
     display: flex;
-    justify-Content: center;
+    justify-content: center;
 `;
 
 const DotStyles = styled.div`
     margin: 0 10px;
     cursor: pointer;
-    font-Size: 30px;
+    font-size: 30px;
     color: ${({ isActive }) => (isActive ? '#00D065' : 'white')};
 `;
 
@@ -96,11 +101,12 @@ const StartButton = styled.button`
     font-size: 35px;
     width: 60%;
     margin-bottom: 20%;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const slides = [image01, image02, image03];
 
-const Start = ({Slides}) => {
+const Start = ({ Slides }) => {
     const navigate = useNavigate();
 
     const handleStartClick = () => {
@@ -128,35 +134,34 @@ const Start = ({Slides}) => {
     }
 
     return (
-        <Container>
-            <AppWrapper>
-                <Logo onClick={handleLogoClick}>Logo</Logo>
+        <>
+            <GlobalStyle />
+            <Container>
+                <AppWrapper>
+                    <Logo onClick={handleLogoClick}>Logo</Logo>
 
+                    <Title>
+                        {Titles[currentIndex]}
+                    </Title>
 
+                    <ImageContainer>
+                        <StyledImage src={slides[currentIndex]} alt={`slide ${currentIndex}`} />
+                    </ImageContainer>
 
-                <Title>
-                    {Titles[currentIndex]}
-                </Title>  
+                    <Controls>
+                        <Arrow onClick={goToPrevious}>&lt;</Arrow>
+                        <DotsContainer>
+                            {slides.map((slide, slideIndex) => (
+                                <DotStyles key={slideIndex} isActive={slideIndex === currentIndex} onClick={() => goToSlide(slideIndex)}>&#9679;</DotStyles>
+                            ))}
+                        </DotsContainer>
+                        <Arrow onClick={goToNext}>&gt;</Arrow>
+                    </Controls>
 
-                <ImageContainer>
-                    <StyledImage src={slides[currentIndex]} alt={`slide ${currentIndex}`}/>
-                </ImageContainer>
-
-                <Controls>
-                    <Arrow onClick={goToPrevious}>&lt;</Arrow>
-                    <DotsContainer>
-                        {slides.map((slide, slideIndex) => (
-                            <DotStyles key={slideIndex} isActive={slideIndex === currentIndex} onClick={() => goToSlide(slideIndex)}>&#9679;</DotStyles>
-                        ))}
-                    </DotsContainer>
-                    <Arrow onClick={goToNext}>&gt;</Arrow>
-                </Controls>
-
-
-
-                <StartButton onClick={handleStartClick}>시작하기</StartButton>
-            </AppWrapper>
-        </Container>
+                    <StartButton onClick={handleStartClick}>시작하기</StartButton>
+                </AppWrapper>
+            </Container>
+        </>
     );
 };
 
