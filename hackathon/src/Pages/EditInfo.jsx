@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -100,15 +101,35 @@ const ModalText = styled.p`
 const EditInfo = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await api.get('/api/user/info');
+                setName(response.data.name || '');
+                setPhone(response.data.phone || '');
+                setEmail(response.data.email || '');
+            } catch (error) {
+                console.error('사용자 정보를 가져오는 중 오류가 발생했습니다.', error);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
 
     const handleEditClick = async () => {
         try {
-            // api 호출
-            // 예시 콘솔
-            console.log('수정완료');
+            const response = await api.put('/api/user/info', {
+                name,
+                phone,
+                email
+            });
 
-            // API 호출 성공시, 모달 열기
-            setModalOpen(true);
+            console.log(response.data.message); // 정보 업데이트 성공 메시지 출력
+            setModalOpen(true); // 모달 열기
 
             // 3초 후 홈으로 이동
             setTimeout(() => {
@@ -117,7 +138,6 @@ const EditInfo = () => {
             }, 3000);
 
         } catch (error) {
-            // API 호출 실패
             console.error('수정에러', error);
         }
     };
@@ -132,8 +152,8 @@ const EditInfo = () => {
             <Container>
                 <AppWrapper>
                     <Logo>Logo</Logo>
-                    <Input type="text" placeholder="이름" />
-                    <Input type="tel" placeholder="전화번호" />
+                    <Input type="text" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
+                    <Input type="tel" placeholder="전화번호" value={phone} onChange={(e) => setPhone(e.target.value)} />
                     <EditButton onClick={handleEditClick}>수정하기</EditButton>
                 </AppWrapper>
 
