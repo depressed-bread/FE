@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import styled, { createGlobalStyle } from 'styled-components';
+import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -207,10 +208,35 @@ const MenuItem = styled.div.withConfig({
   align-items: center;
 `;
 
+const emotionToImage = {
+  '기쁨': '/happy.png',
+  '슬픔': '/sad.png',
+  '화남': '/angry.png',
+  '불안': '/anxiety.png',
+  '뿌듯': '/proud.png',
+  '당황': '/embarrased.png',
+  '설렘': '/excited.png',
+  '우울': '/gloomy.png',
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [month, setMonth] = useState(7);
   const [year, setYear] = useState(2024);
+  const [topEmotion, setTopEmotion] = useState('');
+
+  useEffect(() => {
+    const fetchTopEmotion = async () => {
+      try {
+        const response = await api.get('/api/user/emotion');
+        setTopEmotion(response.data.emotion);
+      } catch (error) {
+        console.error('Error fetching top emotion:', error);
+      }
+    };
+
+    fetchTopEmotion();
+  }, []);
 
   const handlePrevMonth = () => {
     if (month === 1) {
@@ -277,7 +303,7 @@ const Home = () => {
         <AppWrapper>
           <Header>
             <Logo>Logo</Logo>
-            <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')} />
+            <Emoji src={emotionToImage[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />
           </Header>
           <ContentWrapper>
             <MonthNavigation>
