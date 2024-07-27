@@ -133,16 +133,14 @@ const FindId = () => {
 
             if (response.data.email) {
                 setFoundId(response.data.email); // API에서 가져온 이메일 설정
-                setModalOpen(true); // 모달 열기
             } else {
                 setError('사용자가 존재하지 않습니다.');
-                setModalOpen(true);
             }
         } catch (error) {
             console.error('API 호출 중 오류가 발생했습니다.', error);
             setError('사용자가 존재하지 않습니다.');
-            setModalOpen(true);
         }
+        setModalOpen(true); // 모달 열기
     };
 
     const closeModal = () => {
@@ -190,6 +188,7 @@ const FindId = () => {
                                 ) : (
                                     <>
                                         <ModalText>이메일이 존재하지 않습니다.</ModalText>
+                                        <ErrorMessage>{error}</ErrorMessage>
                                         <ModalButton onClick={handleActionButtonClick}>회원가입하기</ModalButton>
                                     </>
                                 )}
