@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import api from './Api'; // Import the api instance
+import api from './Api';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('/fonts/온글잎\\ 밑미.ttf') format('woff2');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg';
+  }
+`;
 
 const emojis = {
     '화남': '/angry.png',
@@ -69,6 +79,7 @@ const Dropdown = styled.select`
     background-color: white;
     appearance: none;
     box-sizing: border-box;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ButtonGroup = styled.div`
@@ -85,6 +96,7 @@ const Button = styled.button`
     border: none;
     border-radius: 50px;
     cursor: pointer;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -94,6 +106,7 @@ const Button = styled.button`
 const Title = styled.h2`
     margin-top: 20px;
     font-size: 24px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     span {
         color: #00D065;
@@ -131,6 +144,7 @@ const ItemDetails = styled.div`
     margin-left: 10px;
     flex-grow: 1;
     font-size: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const MoreButton = styled.button`
@@ -141,12 +155,14 @@ const MoreButton = styled.button`
     text-decoration: underline;
     margin-top: 5px;
     text-align: left;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ExpenseSummary = styled.div`
     font-size: 20px;
     display: flex;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Price = styled.span`
@@ -179,6 +195,7 @@ const MenuItem = styled.div.withConfig({
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ViewPage = () => {
@@ -287,6 +304,7 @@ const ViewPage = () => {
 
     return (
         <Container>
+            <GlobalStyle />
             <AppWrapper>
                 <Header>
                     <Logo>Logo</Logo>

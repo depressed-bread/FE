@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import api from './Api'; // Import the api instance
+import api from './Api';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url('/fonts/온글잎\\ 밑미.ttf') format('truetype');
+  }
+  body {
+    font-family: 'Ownglyph_meetme-Rg', sans-serif;
+  }
+`;
 
 const emojis = {
     '화남': '/angry.png',
@@ -141,6 +151,7 @@ const LoadingPage = () => {
 
     return (
         <Container>
+            <GlobalStyle />
             <AppWrapper>
                 <Header>
                     <Logo>Logo</Logo>
