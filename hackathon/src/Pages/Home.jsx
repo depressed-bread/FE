@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎_밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -102,13 +102,11 @@ const CalendarGrid = styled.div`
   text-align: center;
 `;
 
-const Day = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['$isSunday', '$isSaturday'].includes(prop),
-})`
+const Day = styled.div`
   position: relative;
   padding: 10px;
-  color: ${props => props.$isSunday ? '#FF3B30' : props.$isSaturday ? '#007AFF' : 'black'};
-  font-family: 'Ownglyph_meetme-Rg';
+  color: ${props => props.isSunday ? '#FF3B30' : props.isSaturday ? '#007AFF' : 'black'};
+  cursor: pointer;
 `;
 
 const DateTitleWrapper = styled.div`
@@ -123,14 +121,12 @@ const DateTitle = styled.div`
   margin-top: 3%;
   font-size: 25px;
   color: #00D065;
-  font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ExpenseSummary = styled.div`
   font-size: 20px;
   display: flex;
   align-items: center;
-  font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Price = styled.span`
@@ -147,7 +143,6 @@ const ExpenseItem = styled.div`
   width: 90%;
   display: flex;
   align-items: center;
-  font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ItemDetails = styled.div`
@@ -182,7 +177,6 @@ const MoreLink = styled.button`
   margin-top: 5px;
   text-align: center;
   width: 100%;
-  font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Menu = styled.div`
@@ -197,45 +191,49 @@ const Menu = styled.div`
   margin-bottom: 3%;
 `;
 
-const MenuItem = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== '$active',
-})`
+const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
-  color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
+  color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const emotionToImage = {
-  '기쁨': '/joy.png',
-  '슬픔': '/sad.png',
-  '화남': '/angry.png',
-  '불안': '/anxiety.png',
-  '뿌듯': '/proud.png',
-  '당황': '/panic.png',
-  '설렘': '/thrill.png',
-  '우울': '/depression.png',
-};
-
 const Home = () => {
   const navigate = useNavigate();
-  const [month, setMonth] = useState(7);
-  const [year, setYear] = useState(2024);
-  const [topEmotion, setTopEmotion] = useState('');
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [consumptions, setConsumptions] = useState([]);
+  const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
 
   useEffect(() => {
-    const fetchTopEmotion = async () => {
+    const today = new Date();
+
+    const fetchExpenseData = async () => {
       try {
-        const response = await api.get('/api/user/emotion');
-        setTopEmotion(response.data.emotion);
+        const response = await api.get('/api/report/day?&emotionType=ALL');
+        const data = Array.isArray(response.data) ? response.data : [response.data];
+        setConsumptions(data);
+
+        // Set today's expenses
+        const todayExpenses = data.filter(expense => {
+          const expenseDate = new Date(expense.date);
+          return (
+            expenseDate.getDate() === today.getDate() &&
+            expenseDate.getMonth() + 1 === today.getMonth() + 1 &&
+            expenseDate.getFullYear() === today.getFullYear()
+          );
+        }).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        setSelectedDateExpenses(todayExpenses);
       } catch (error) {
-        console.error('Error fetching top emotion:', error);
+        console.error('There was an error', error);
       }
     };
 
-    fetchTopEmotion();
+    fetchExpenseData();
   }, []);
 
   const handlePrevMonth = () => {
@@ -256,24 +254,49 @@ const Home = () => {
     }
   };
 
-  const stamps = {
-    1: '/angry.png',
-    7: '/joy.png',
-    8: '/angry.png',
-    11: '/depression.png',
-    13: '/sad.png',
-    14: '/thrill.png',
-    17: 'joy.png',
-    20: '/anxiety.png',
-    21: '/proud.png',
-    23: '/angry.png',
-    25: '/angry.png',
-    29: '/panic.png'
+  const handleDayClick = (day) => {
+    setSelectedDate(day);
+    const expensesForDay = consumptions.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return (
+        expenseDate.getDate() === day &&
+        expenseDate.getMonth() + 1 === month &&
+        expenseDate.getFullYear() === year
+      );
+    });
+
+    setSelectedDateExpenses(expensesForDay.sort((a, b) => new Date(b.date) - new Date(a.date)));
+  };
+
+  const getEmotionForDay = (day) => {
+    const expensesForDay = consumptions.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return (
+        expenseDate.getDate() === day &&
+        expenseDate.getMonth() + 1 === month &&
+        expenseDate.getFullYear() === year
+      );
+    });
+
+    if (expensesForDay.length === 0) return null;
+
+    const emotionTotals = expensesForDay.reduce((acc, expense) => {
+      if (acc[expense.emotion]) {
+        acc[expense.emotion] += expense.price;
+      } else {
+        acc[expense.emotion] = expense.price;
+      }
+      return acc;
+    }, {});
+
+    const maxEmotion = Object.keys(emotionTotals).reduce((a, b) => emotionTotals[a] > emotionTotals[b] ? a : b);
+    return maxEmotion;
   };
 
   const renderCalendar = () => {
     const daysInMonth = new Date(year, month, 0).getDate();
     const firstDayIndex = new Date(year, month - 1, 1).getDay();
+
     const calendarDays = [];
 
     for (let i = 0; i < firstDayIndex; i++) {
@@ -283,12 +306,12 @@ const Home = () => {
     for (let i = 1; i <= daysInMonth; i++) {
       const isSunday = (firstDayIndex + i - 1) % 7 === 0;
       const isSaturday = (firstDayIndex + i - 1) % 7 === 6;
-      const stamp = stamps[i];
+      const emotion = getEmotionForDay(i);
 
       calendarDays.push(
-        <Day key={i} $isSunday={isSunday} $isSaturday={isSaturday}>
+        <Day key={i} isSunday={isSunday} isSaturday={isSaturday} onClick={() => handleDayClick(i)}>
           {i}
-          {stamp && <img src={stamp} alt="Stamp" style={{ width: '30px', position: 'absolute', top: '5px', left: '5px' }} />}
+          {emotion && <img src={`/${emotion}.png`} alt="Emotion" style={{ width: '30px', position: 'absolute', top: '5px', left: '5px' }} />}
         </Day>
       );
     }
@@ -296,74 +319,69 @@ const Home = () => {
     return calendarDays;
   };
 
+  const renderExpenses = () => {
+    return selectedDateExpenses.length > 0 ? (
+      selectedDateExpenses.map((expense, index) => (
+        <ExpenseItem key={index}>
+          <EmojiIcon src={`/${expense.emotion}.png`} alt="Emotion" />
+          <ItemDetails>
+            <div>{expense.keyword}</div>
+            <MoreButton onClick={() => navigate('/detail', { state: expense.id })}>상세보기</MoreButton>
+          </ItemDetails>
+          <ExpenseSummary>
+            <Price>{expense.price}</Price>원
+          </ExpenseSummary>
+        </ExpenseItem>
+      ))
+    ) : (
+      <div>해당 날짜의 소비내역이 없습니다.</div>
+    );
+  };
+
   return (
-    <>
+    <Container>
       <GlobalStyle />
-      <Container>
-        <AppWrapper>
-          <Header>
-            <Logo>Logo</Logo>
-            <Emoji src={emotionToImage[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />
-          </Header>
-          <ContentWrapper>
-            <MonthNavigation>
-              <Arrow onClick={handlePrevMonth}>&lt;</Arrow>
-              <div>{year}.{month < 10 ? `0${month}` : month}</div>
-              <Arrow onClick={handleNextMonth}>&gt;</Arrow>
-            </MonthNavigation>
-            <CalendarWrapper>
-              <CalendarGrid>
-                {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
-                  <Day key={index} $isSunday={index === 0} $isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
-                ))}
-                {renderCalendar()}
-              </CalendarGrid>
-            </CalendarWrapper>
-            <DateTitleWrapper>
-              <DateTitle>7월 13일 소비내역</DateTitle>
-              <ExpenseSummary>
-                <Price>41200</Price>원
-              </ExpenseSummary>
-            </DateTitleWrapper>
-            <ExpenseItem>
-              <EmojiIcon src='./angry.png' alt="Emotion" />
-              <ItemDetails>
-                <div>떡볶이</div>
-                <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
-              </ItemDetails>
-              <ExpenseSummary>
-                <Price>21200</Price>원
-              </ExpenseSummary>
-            </ExpenseItem>
-            <ExpenseItem>
-              <EmojiIcon src='./sad.png' alt="Emotion" />
-              <ItemDetails>
-                <div>노래방</div>
-                <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
-              </ItemDetails>
-              <ExpenseSummary>
-                <Price>6000</Price>원
-              </ExpenseSummary>
-            </ExpenseItem>
-            <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
-          </ContentWrapper>
-          <Menu>
-            <MenuItem onClick={() => navigate('/inputpage')}>
-              <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
-              내용입력
-            </MenuItem>
-            <MenuItem $active>
-              <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
-              홈
-            </MenuItem>
-            <MenuItem onClick={() => navigate('/loadingpage')}>
-              <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
-              조회
-            </MenuItem>
-          </Menu>
-        </AppWrapper>
-      </Container>
-    </>
+      <AppWrapper>
+        <Header>
+          <Logo>Logo</Logo>
+          <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')} />
+        </Header>
+        <ContentWrapper>
+          <MonthNavigation>
+            <Arrow onClick={handlePrevMonth}>&lt;</Arrow>
+            <div>{year}.{month < 10 ? `0${month}` : month}</div>
+            <Arrow onClick={handleNextMonth}>&gt;</Arrow>
+          </MonthNavigation>
+          <CalendarWrapper>
+            <CalendarGrid>
+              {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
+                <Day key={index} isSunday={index === 0} isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
+              ))}
+              {renderCalendar()}
+            </CalendarGrid>
+          </CalendarWrapper>
+          <DateTitleWrapper>
+            <DateTitle>{month}월 {selectedDate}일 소비내역</DateTitle>
+          </DateTitleWrapper>
+          {renderExpenses()}
+          <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
+        </ContentWrapper>
+        <Menu>
+          <MenuItem onClick={() => navigate('/inputpage')}>
+            <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
+            내용입력
+          </MenuItem>
+          <MenuItem active>
+            <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
+            홈
+          </MenuItem>
+          <MenuItem onClick={() => navigate('/loadingpage')}>
+            <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
+            조회
+          </MenuItem>
+        </Menu>
+      </AppWrapper>
+    </Container>
   );
 };
 

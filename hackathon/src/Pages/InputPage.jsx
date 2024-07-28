@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import React, { useState,useRef } from 'react';
+import styled,{createGlobalStyle} from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+
 import api from './Api';
+
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Ownglyph_meetme-Rg';
-    src: url('fonts/온글잎\ 밑미.ttf') format('woff2');
+    src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
@@ -23,7 +24,6 @@ const Container = styled.div`
     height: 100vh;
     background-color: #FEFEFE;
 `;
-
 const AppWrapper = styled.div`
     width: 375px;
     height: 100vh;
@@ -96,7 +96,6 @@ const Input = styled.input`
     border-radius: 5px;
     border: 1px solid #00D065;
     font-size: 16px;
-    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const PriceWrapper = styled.div`
@@ -112,7 +111,6 @@ const TextArea = styled.textarea`
     border-radius: 5px;
     font-size: 12px;
     resize: vertical;
-    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Select = styled.select`
@@ -121,7 +119,6 @@ const Select = styled.select`
     border-radius: 5px;
     font-size: 16px;
     border: 1px solid #00D065;
-    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Button = styled.button`
@@ -134,7 +131,7 @@ const Button = styled.button`
     color: black;
     cursor: pointer;
     margin-top: 20px;
-    font-family: 'Ownglyph_meetme-Rg';
+
     &:hover {
         color: #FF86FF;
     }
@@ -158,12 +155,10 @@ const Menu = styled.div`
     margin-bottom: 3%;
 `;
 
-const MenuItem = styled.div.withConfig({
-    shouldForwardProp: (prop) => prop !== '$active',
-})`
+const MenuItem = styled.div`
     cursor: pointer;
     font-size: 16px;
-    color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
+    color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -189,13 +184,11 @@ const ModalContent = styled.div`
     text-align: center;
     width: 80%;
     max-width: 300px;
-    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalText = styled.p`
     font-size: 20px;
     margin-bottom: 10px;
-    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalButton = styled.button`
@@ -207,7 +200,6 @@ const ModalButton = styled.button`
     cursor: pointer;
     font-size: 25px;
     margin-top: 20px;
-    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
@@ -216,60 +208,74 @@ const ModalButton = styled.button`
 
 const InputPage = () => {
     const navigate = useNavigate();
-    const [emotion, setEmotion] = useState('화남');
     const [modalOpen, setModalOpen] = useState(false);
-    const [keyword, setKeyword] = useState('');
-    const [price, setPrice] = useState('');
-    const [date, setDate] = useState('');
-    const [content, setContent] = useState('');
-    const [topEmotion, setTopEmotion] = useState('');
+    const [keyword,setKeyword]=useState('');
+    const [emotion,setEmotion]=useState('ANGRY');
+    const [content,setContent]=useState('');
+    const [price,setPrice]=useState('');
+    const [date,setDate]=useState('');
+
+    const details={
+        keyword,
+        price: parseInt(price),
+        date,
+        content,
+        emotion
+    }
 
     const emotionImages = {
-        '화남': '/angry.png',
-        '기쁨': '/joy.png',
-        '우울': '/depression.png',
-        '슬픔': '/sad.png',
-        '당황': '/panic.png',
-        '불안': '/anxiety.png',
-        '뿌듯': '/proud.png',
-        '설렘': '/thrill.png'
-    };
+        'ANGRY': '/angry.png',
+        'JOY': '/joy.png',
+        'ANXIETY': '/anxiety.png',
+        'DEPRESSION': '/depression.png',
+        'SAD': '/sad.png',
+        'PROUD': '/proud.png',
+        'PANIC': '/panic.png',
+        'THRILL': '/thrill.png'
+    }; 
 
-    useEffect(() => {
-        const fetchTopEmotion = async () => {
-            try {
-                const response = await api.get('/api/user/emotion');
-                setTopEmotion(response.data.emotion);
-            } catch (error) {
-                console.error('Error fetching top emotion:', error);
-                setTopEmotion('화남'); // 기본 감정 설정
-            }
-        };
 
-        fetchTopEmotion();
-    }, []);
+    const keywordInput=useRef();
+    const priceInput=useRef();
+    const dateInput=useRef();
+    const contentInput=useRef();
 
+
+    // 글자를 적지 않으면 수정불가
     const handleCompletionClick = async () => {
-        const expenseData = {
-            keyword,
-            price: parseInt(price),
-            date,
-            content,
-            emotionType: emotion.toUpperCase() // 감정을 상응하는 대문자로 변환
-        };
+        console.log(details)
 
-        try {
-            const response = await axios.post('/api/expenses', expenseData, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log(response.data);
-            setModalOpen(true);
-        } catch (error) {
-            console.error('There was an error posting the data:', error);
+        if(details.keyword.length < 1){
+            keywordInput.current.focus();
+            return;
         }
-    };
+
+        if(details.price.length < 1){
+            priceInput.current.focus();
+            return;
+        }
+
+        if(details.date.length < 1){
+            dateInput.current.focus();
+            return;
+        }
+
+
+        if(details.content.length < 1){
+            contentInput.current.focus();
+            return;
+        }
+
+        // 수정 API
+        try{
+            const response = await api.post(`/api/expenses` , details);
+                console.log(response.data.message)
+                setModalOpen(true);
+        } catch (error){
+            console.log('Error updating data', error)
+        }
+    }
+
 
     const closeModal = () => {
         setModalOpen(false);
@@ -282,82 +288,82 @@ const InputPage = () => {
 
     return (
         <>
-            <GlobalStyle />
-            <Container>
-                <AppWrapper>
-                    <Header>
-                        <Logo>Logo</Logo>
-                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
-                    </Header>
+        <GlobalStyle />
+        <Container>
+            <AppWrapper>
+                <Header>
+                    <Logo>Logo</Logo>
+                    <Emoji src='./angry.png' alt="Emotion" onClick={() => navigate('/setting')}/>
+                </Header>
 
-                    <ContentWrapper>
-                        <Heading>소비 내역을 작성해주세요.</Heading>
-                        <InputSection>
-                            <Label>키워드</Label>
-                            <Input width="60%" placeholder="ex) 떡볶이" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-                        </InputSection>
+                <ContentWrapper>
+                    <Heading>소비 내역을 작성해주세요.</Heading>
+                    <InputSection>
+                        <Label>키워드</Label>
+                        <Input width="60%" placeholder="ex) 떡볶이" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+                    </InputSection>
 
-                        <InputSection>
-                            <Label>가격</Label>
-                            <PriceWrapper>
-                                <Input width="50%" placeholder="ex) 21200" value={price} onChange={(e) => setPrice(e.target.value)} />
-                                <span style={{ marginLeft: '10px', fontSize: '16px', fontWeight: 'bold' }}>원</span>
-                            </PriceWrapper>
-                        </InputSection>
+                    <InputSection>
+                        <Label>가격</Label>
+                        <PriceWrapper>
+                            <Input width="50%" placeholder="ex) 21200" value={price} onChange={(e) => setPrice(e.target.value)} />
+                            <span style={{ marginLeft: '10px', fontSize: '16px', fontWeight: 'bold' }}>원</span>
+                        </PriceWrapper>
+                    </InputSection>
 
-                        <InputSection>
-                            <Label>날짜</Label>
-                            <Input width="50%" type="date" placeholder="날짜 선택" value={date} onChange={(e) => setDate(e.target.value)} />
-                        </InputSection>
+                    <InputSection>
+                        <Label>날짜</Label>
+                        <Input width="50%" type="date" placeholder="날짜 선택" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </InputSection>
 
-                        <InputSection>
-                            <Label>상세 내용</Label>
-                            <TextArea rows="4" placeholder="ex) 레포트 작성하는데 저장 버튼 아직 안눌렀는데&#13;&#10;갑자기 정전이 나서 꺼진거야...&#13;&#10;화나서 떡볶이 시켜먹었어" value={content} onChange={(e) => setContent(e.target.value)} />
-                        </InputSection>
+                    <InputSection>
+                        <Label>상세 내용</Label>
+                        <TextArea rows="4" placeholder="ex) 레포트 작성하는데 저장 버튼 아직 안눌렀는데&#13;&#10;갑자기 정전이 나서 꺼진거야...&#13;&#10;화나서 떡볶이 시켜먹었어" value={content} onChange={(e) => setContent(e.target.value)} />
+                    </InputSection>
 
-                        <InputSection>
-                            <Label>감정 선택</Label>
-                            <Select width="30%" value={emotion} onChange={(e) => setEmotion(e.target.value)}>
-                                <option value="화남">화남</option>
-                                <option value="기쁨">기쁨</option>
-                                <option value="우울">우울</option>
-                                <option value="슬픔">슬픔</option>
-                                <option value="당황">당황</option>
-                                <option value="불안">불안</option>
-                                <option value="뿌듯">뿌듯</option>
-                                <option value="설렘">설렘</option>
-                            </Select>
-                            <SelectedEmoji src={emotionImages[emotion]} alt={emotion} />
-                        </InputSection>
+                    <InputSection>
+                        <Label>감정 선택</Label>
+                        <Select width="30%" value={emotion} onChange={(e) => setEmotion(e.target.value)}>
+                            <option value="ANGRY">화남</option>
+                            <option value="JOY">기쁨</option>
+                            <option value="DEPRESSION">우울</option>
+                            <option value="SAD">슬픔</option>
+                            <option value="PANIC">당황</option>
+                            <option value="ANXIETY">불안</option>
+                            <option value="PROUD">뿌듯</option>
+                            <option value="THRILL">설렘</option>
+                        </Select>
+                        <SelectedEmoji src={emotionImages[emotion]} alt={emotion} />
+                    </InputSection>
 
-                        <Button onClick={handleCompletionClick}>작성 완료</Button>
-                    </ContentWrapper>
-                    
-                    <Menu>
-                        <MenuItem $active>
-                            <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
-                            내용입력
-                        </MenuItem>
-                        <MenuItem onClick={() => navigate('/home')}>
-                            <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
-                            홈
-                        </MenuItem>
-                        <MenuItem onClick={() => navigate('/loadingpage')}>
-                            <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
-                            조회
-                        </MenuItem>
-                    </Menu>
-                </AppWrapper>
+                    <Button onClick={handleCompletionClick}>작성 완료</Button>
+                </ContentWrapper>
+                
+                <Menu>
+                    <MenuItem active>
+                        <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
+                        내용입력
+                    </MenuItem>
+                    <MenuItem onClick={() => navigate('/home')}>
+                        <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
+                        홈
+                    </MenuItem>
+                    <MenuItem onClick={() => navigate('/loadingpage')}>
+                        <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
+                        조회
+                    </MenuItem>
+                </Menu>
+            </AppWrapper>
 
-                {modalOpen && (
-                    <ModalBackdrop>
-                        <ModalContent>
-                            <ModalText>작성이 완료되었습니다!</ModalText>
-                            <ModalButton onClick={handleViewClick}>작성 내용 확인하기</ModalButton>
-                        </ModalContent>
-                    </ModalBackdrop>
-                )}
-            </Container>
+            {modalOpen && (
+                <ModalBackdrop>
+                    <ModalContent>
+                        <ModalText>작성이 완료되었습니다!</ModalText>
+                        <ModalButton onClick={handleViewClick}>작성 내용 확인하기</ModalButton>
+                    </ModalContent>
+                </ModalBackdrop>
+            )}
+        </Container>
         </>
     );
 };
