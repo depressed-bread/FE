@@ -226,13 +226,13 @@ const InputPage = () => {
 
     const emotionImages = {
         '화남': '/angry.png',
-        '기쁨': '/happy.png',
-        '우울': '/gloomy.png',
+        '기쁨': '/joy.png',
+        '우울': '/depression.png',
         '슬픔': '/sad.png',
-        '당황': '/embarrased.png',
+        '당황': '/panic.png',
         '불안': '/anxiety.png',
         '뿌듯': '/proud.png',
-        '설렘': '/excited.png'
+        '설렘': '/thrill.png'
     };
 
     useEffect(() => {

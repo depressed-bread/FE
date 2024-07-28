@@ -209,14 +209,14 @@ const MenuItem = styled.div.withConfig({
 `;
 
 const emotionToImage = {
-  '기쁨': '/happy.png',
+  '기쁨': '/joy.png',
   '슬픔': '/sad.png',
   '화남': '/angry.png',
   '불안': '/anxiety.png',
   '뿌듯': '/proud.png',
-  '당황': '/embarrased.png',
-  '설렘': '/excited.png',
-  '우울': '/gloomy.png',
+  '당황': '/panic.png',
+  '설렘': '/thrill.png',
+  '우울': '/depression.png',
 };
 
 const Home = () => {
@@ -258,17 +258,17 @@ const Home = () => {
 
   const stamps = {
     1: '/angry.png',
-    7: '/happy.png',
+    7: '/joy.png',
     8: '/angry.png',
-    11: '/gloomy.png',
+    11: '/depression.png',
     13: '/sad.png',
-    14: '/excited.png',
-    17: 'happy.png',
+    14: '/thrill.png',
+    17: 'joy.png',
     20: '/anxiety.png',
     21: '/proud.png',
     23: '/angry.png',
     25: '/angry.png',
-    29: '/embarrased.png'
+    29: '/panic.png'
   };
 
   const renderCalendar = () => {

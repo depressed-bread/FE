@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import api from './Api';
+import { useLocation } from 'react-router-dom'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -72,6 +73,13 @@ const Label = styled.div`
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
+const Detail = styled.div`
+    margin : auto 20px;
+    flex-direction: column;
+    font-size: 23px;
+
+`;
+
 const LabelWrapper = styled.div`
     background-color: white;
     border-radius: 10px;
@@ -84,11 +92,40 @@ const LabelWrapper = styled.div`
     align-items: center;
 `;
 
+const LabelWrapper1 = styled.div`
+    display: flex;
+`;
+
 const LabelWrapper2 = styled.div`
     width: 100%;
     overflow-y: auto;
     padding-top: 5px;
     padding-bottom: 5px;
+`;
+
+const ContentLabelWrapper = styled.div`
+    background-color: white;
+    border-radius: 10px;
+    border: 2px solid #B0B0B0;
+    padding: 4px;
+    margin: 2px 0;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ContentLabel = styled.div`
+    font-size: 13px;
+    font-weight: bold;
+    color: #B0B0B0;
+    font-family: 'Ownglyph_meetme-Rg';
+`;
+
+const ContentDetail = styled.div`
+font-size: 15px;
+margin: 10px 0 10px  5px;
+font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Button = styled.button`
@@ -202,7 +239,6 @@ const ExpenseItem = styled.div`
     padding: 20px;
     margin: 10px 0;
     width: 85%;
-    display: flex;
     align-items: center;
     font-family: 'Ownglyph_meetme-Rg';
 `;
@@ -237,20 +273,25 @@ const arrowStyle = {
 
 const DetailPage = () => {
     const navigate = useNavigate();
-    const [emotion] = useState('화남');
     const [modalOpen, setModalOpen] = useState(false);
     const [topEmotion, setTopEmotion] = useState('');
-
+    const [details, setDetails] = useState('')
+    
     const emotionImages = {
         '화남': '/angry.png',
-        '기쁨': '/happy.png',
+        '기쁨': '/joy.png',
         '무표정': '/emotionless.png',
-        '우울': '/gloomy.png',
+        '우울': '/depression.png',
         '슬픔': '/sad.png',
         '스트레스': '/stress.png',
-        '당황': '/embarrased.png',
-        '설렘': '/excited.png'
+        '당황': '/panic.png',
+        '설렘': '/thrill.png'
     };
+
+    // 글마다의 expenseId를 Viewㅖage에서 가져옴
+    const location = useLocation();
+    const expenseId = location.state; 
+
 
     useEffect(() => {
         const fetchTopEmotion = async () => {
@@ -262,12 +303,35 @@ const DetailPage = () => {
             }
         };
 
-        fetchTopEmotion();
+        // 조회 API
+        const fetchDetail = async () => {
+            try{
+                const response = await api.get(`/api/expenses/${expenseId}`)
+                // console.log(response)
+                setDetails(response.data)
+            } catch (error) {
+                console.error('Error fetching Detail:', error);
+            }    
+    
+        }
+
+        fetchTopEmotion(); fetchDetail();
     }, []);
 
-    const handleCompletionClick = () => {
-        setModalOpen(true);
-    };
+    // 삭제 API
+    const handleCompletionClick = async () => {
+        
+        try{
+            const response = await api.delete(`/api/expenses/${expenseId}`);
+                console.log(response.data.message)
+                setModalOpen(true);
+
+        } catch (error){
+            console.log('Error updating data', error)
+        }
+        
+    }
+
 
     const closeModal = () => {
         setModalOpen(false);
@@ -285,20 +349,28 @@ const DetailPage = () => {
                 <AppWrapper>
                     <Header>
                         <Logo>Logo</Logo>
-                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" />}
+                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                     </Header>
                     <ContentWrapper>
                         <br></br>
                         <BackButton onClick={() => navigate(-1)}><div style={arrowStyle}></div></BackButton>
-                        <EmojiWrapper><SelectedEmoji src={emotionImages[emotion]} alt={emotion} /></EmojiWrapper>
+                        <EmojiWrapper><SelectedEmoji src={`/${details.emotion}.png`} /></EmojiWrapper>
                         <InputSection>
                             <ExpenseItem>
                                 <LabelWrapper2>
-                                    <div><LabelWrapper><Label>키워드</Label></LabelWrapper></div>
+                                    
+                                    <LabelWrapper1>
+                                        <LabelWrapper><Label>키워드</Label></LabelWrapper><Detail>{details.keyword} </Detail>
+                                    </LabelWrapper1>
                                     <br></br>
-                                    <div><LabelWrapper><Label>가격</Label></LabelWrapper></div>
+                                    <LabelWrapper1>
+                                        <LabelWrapper><Label>가격</Label></LabelWrapper><Detail>{details.price} </Detail>
+                                    </LabelWrapper1>
                                     <br></br>
-                                    <LabelWrapper><Label>날짜</Label></LabelWrapper>
+                                    <LabelWrapper1>
+                                    <LabelWrapper><Label>날짜</Label></LabelWrapper><Detail>{details.date} </Detail>
+                                    </LabelWrapper1>
+
                                     <ItemDetails>
                                         <div>
                                         </div>
@@ -308,14 +380,14 @@ const DetailPage = () => {
                         </InputSection>
                         <InputSection>
                             <ExpenseItem>
-                                <LabelWrapper><Label>상세 내용</Label></LabelWrapper>
+                                <ContentLabelWrapper><ContentLabel>상세 내용</ContentLabel></ContentLabelWrapper><ContentDetail>{details.content} </ContentDetail>
                                 <ItemDetails>
                                     <div>
                                     </div>
                                 </ItemDetails>
                             </ExpenseItem>
                         </InputSection>
-                        <Button onClick={() => navigate("/editdetail")}>수정하기</Button>
+                        <Button onClick={() => navigate("/editdetail", {state: expenseId})}>수정하기</Button>
                         <Button onClick={handleCompletionClick}>삭제하기</Button>
                     </ContentWrapper>
                     <Menu>

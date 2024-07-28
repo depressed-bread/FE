@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import api from './Api'; // Import the api instance
+import { useLocation } from 'react-router-dom'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -225,19 +226,32 @@ const arrowStyle = {
 
 const EditDetail = () => {
     const navigate = useNavigate();
-    const [emotion, setEmotion] = useState('화남');
+    const [emotionType, setEmotionType] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [topEmotion, setTopEmotion] = useState('');
+    const [details, setDetails] = useState({
+        keyword: '',
+        price: '',
+        date: '',
+        content: '',
+        emotionType: '',    // 백엔드 key값이 다름
+    })
+
+
+
+    // 가져온 expenseId 값
+    const location = useLocation();
+    const expenseId = location.state; 
 
     const emotionImages = {
-        '화남': '/angry.png',
-        '기쁨': '/happy.png',
-        '무표정': '/emotionless.png',
-        '우울': '/gloomy.png',
-        '슬픔': '/sad.png',
-        '스트레스': '/stress.png',
-        '당황': '/embarrased.png',
-        '설렘': '/excited.png'
+        'ANGRY': '/angry.png',
+        'JOY': '/joy.png',
+        'ANXIETY': '/anxiety.png',
+        'DEPRESSION': '/depression.png',
+        'SAD': '/sad.png',
+        'PROUD': '/proud.png',
+        'PANIC': '/panic.png',
+        'THRILL': '/thrill.png'
     };
 
     useEffect(() => {
@@ -250,12 +264,79 @@ const EditDetail = () => {
             }
         };
 
-        fetchTopEmotion();
+        //조회 API
+        const fetchDetail = async () => {
+            try{
+                const response = await api.get(`/api/expenses/${expenseId}`)
+                // console.log(response)
+                setEmotionType(response.data.emotion)
+                setDetails({
+                    keyword: response.data.keyword,
+                    price: response.data.price,
+                    date: response.data.date,
+                    content: response.data.content,
+                    emotionType: response.data.emotion,
+                });
+            } catch (error) {
+                console.error('Error fetching Detail:', error);
+            }    
+    
+        };
+
+        fetchTopEmotion(); fetchDetail();
     }, []);
 
-    const handleCompletionClick = () => {
-        setModalOpen(true);
+    //바뀔때마다 상태변화
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setDetails((prevDetails) => ({
+            ...prevDetails,
+            [name]: value
+        }));
     };
+
+    // console.log(details)
+
+    const keywordInput = useRef();
+    const priceInput = useRef();
+    const dateInput = useRef();
+    const contentInput = useRef();
+
+
+    // 글자를 적지 않으면 수정불가
+    const handleCompletionClick = async () => {
+        console.log(details)
+
+        if(details.keyword.length < 1){
+            keywordInput.current.focus();
+            return;
+        }
+
+        if(details.price.length < 1){
+            priceInput.current.focus();
+            return;
+        }
+
+        if(details.date.length < 1){
+            dateInput.current.focus();
+            return;
+        }
+
+
+        if(details.content.length < 1){
+            contentInput.current.focus();
+            return;
+        }
+
+        // 수정 API
+        try{
+            const response = await api.put(`/api/expenses/${expenseId}` , details);
+                console.log(response.data.message)
+                setModalOpen(true);
+        } catch (error){
+            console.log('Error updating data', error)
+        }
+    }
 
     const closeModal = () => {
         setModalOpen(false);
@@ -273,42 +354,42 @@ const EditDetail = () => {
                 <AppWrapper>
                     <Header>
                         <Logo>Logo</Logo>
-                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" />}
+                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                     </Header>
                     <ContentWrapper>
                         <BackButton onClick={() => navigate(-1)}><div style={arrowStyle}></div></BackButton>
                         <InputSection>
                             <Label>키워드</Label>
-                            <Input width="60%" placeholder="떡볶이" />
+                            <Input width="60%" ref={keywordInput} name="keyword" value={details.keyword} onChange={handleChange}/>
                         </InputSection>
                         <InputSection>
                             <Label>가격</Label>
                             <PriceWrapper>
-                                <Input width="50%" placeholder="21200" />
+                                <Input width="50%" ref={priceInput} name="price" value={details.price} onChange={handleChange}/>
                                 <span style={{ marginLeft: '10px', fontSize: '16px', fontWeight: 'bold' }}>원</span>
                             </PriceWrapper>
                         </InputSection>
                         <InputSection>
                             <Label>날짜</Label>
-                            <Input width="50%" type="date" placeholder="날짜 선택" />
+                            <Input width="50%" ref={dateInput} type="date"  name="date" value={details.date} onChange={handleChange}/>
                         </InputSection>
                         <InputSection>
                             <Label>상세 내용</Label>
-                            <TextArea rows="4" placeholder="레포트 작성하는데 저장 버튼 아직 안눌렀는데&#13;&#10;갑자기 정전이 나서 꺼진거야...&#13;&#10;화나서 떡볶이 시켜먹었어" />
+                            <TextArea rows="4" ref={contentInput}  name="content" value={details.content} onChange={handleChange}/>
                         </InputSection>
                         <InputSection>
                             <Label>감정 선택</Label>
-                            <Select width="30%" value={emotion} onChange={(e) => setEmotion(e.target.value)}>
-                                <option value="화남">화남</option>
-                                <option value="기쁨">기쁨</option>
-                                <option value="무표정">무표정</option>
-                                <option value="우울">우울</option>
-                                <option value="슬픔">슬픔</option>
-                                <option value="스트레스">스트레스</option>
-                                <option value="당황">당황</option>
-                                <option value="설렘">설렘</option>
+                            <Select width="30%"   name="emotionType" value={emotionType} onChange={(e) => setEmotionType(e.target.value)} onClick={handleChange}>
+                                <option value="ANGRY">화남</option>
+                                <option value="JOY">기쁨</option>
+                                <option value="PROUD">뿌듯</option>
+                                <option value="DEPRESSION">우울</option>
+                                <option value="SAD">슬픔</option>
+                                <option value="ANXIETY">불안</option>
+                                <option value="PANIC">당황</option>
+                                <option value="THRILL">설렘</option>
                             </Select>
-                            <SelectedEmoji src={emotionImages[emotion]} alt={emotion} />
+                            <SelectedEmoji src={emotionImages[emotionType]} alt={emotionType} />
                         </InputSection>
                         <Button onClick={handleCompletionClick}>수정완료</Button>
                     </ContentWrapper>
