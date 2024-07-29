@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from './Api';
+import logoImage from './logo.png';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -32,9 +33,8 @@ const AppWrapper = styled.div`
     position: relative;
 `;
 
-const Logo = styled.div`
-    font-size: 50px;
-    font-weight: bold;
+const Logo = styled.img`
+    width: 100px;
     margin-top: 50%;
     margin-bottom: 20%;
 `;
@@ -161,7 +161,7 @@ const FindId = () => {
             <GlobalStyle />
             <Container>
                 <AppWrapper>
-                    <Logo>Logo</Logo>
+                    <Logo src={logoImage} alt="Logo" />
                     <Input
                         type="text"
                         placeholder="이름"

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
+import logoImage from './logo.png';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -32,12 +33,10 @@ const AppWrapper = styled.div`
     position: relative;
 `;
 
-const Logo = styled.div`
-    font-size: 50px;
-    font-weight: bold;
+const Logo = styled.img`
+    width: 150px;
     margin-top: 50%;
     margin-bottom: 20%;
-    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Input = styled.input`
@@ -59,7 +58,7 @@ const EditButton = styled.button`
     cursor: pointer;
     font-size: 35px;
     width: 90%;
-    margin-bottom: 20px;
+    margin-top: 20px;
     font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
@@ -141,7 +140,8 @@ const ResetPassword = () => {
             <GlobalStyle />
             <Container>
                 <AppWrapper>
-                    <Logo>Logo</Logo>
+                    <Logo src={logoImage} alt="Logo" />
+
                     <Input
                         type="password"
                         placeholder="현재 비밀번호"

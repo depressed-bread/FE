@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import api from './Api';
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
+import logoImage from './logo.png';
+
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -252,9 +254,9 @@ const ItemDetails = styled.div`
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
-const Logo = styled.div`
-    font-size: 24px;
-    font-weight: bold;
+const Logo = styled.img`
+    width: 30px;
+    height: auto;
 `;
 
 const Emoji = styled.img`
@@ -348,7 +350,7 @@ const DetailPage = () => {
             <Container>
                 <AppWrapper>
                     <Header>
-                        <Logo>Logo</Logo>
+                        <Logo src={logoImage} alt="Logo" />
                         {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                     </Header>
                     <ContentWrapper>

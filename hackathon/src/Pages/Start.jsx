@@ -2,9 +2,9 @@ import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import image01 from "./image01.png";
 import image02 from "./image02.png";
 import image03 from "./image03.png";
+import logoImage from './logo.png';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -31,17 +31,22 @@ const AppWrapper = styled.div`
     position: relative;
 `;
 
-const Logo = styled.div`
-    font-size: 24px;
-    font-weight: bold;
-    position: absolute;
-    top: 20px;
-    left: 20px;
+const Header = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+const Logo = styled.img`
+    width: 30px;
+    height: auto;
+    margin-top: 10px;
 `;
 
 const Title = styled.div`
     margin: 20px 0;
-    font-size: 18px;
+    font-size: 40px;
     text-align: center;
     flex-grow: 1;
     display: flex;
@@ -51,25 +56,25 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  width: 150px;
-  height: 300px;
-  margin: 0 auto;
-  overflow: hidden;
-  margin-bottom: 15%;
+    width: 150px;
+    height: 300px;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-bottom: 15%;
 `;
 
 const StyledImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    margin-top: 50%;
+    object-fit: cover;
 `;
 
 const Controls = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 23%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 23%;
 `;
 
 const Arrow = styled.div`
@@ -106,7 +111,7 @@ const StartButton = styled.button`
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
-const slides = [image01, image02, image03];
+const slides = [logoImage, image02, image03];
 
 const Start = ({ Slides }) => {
     const navigate = useNavigate();
@@ -115,11 +120,7 @@ const Start = ({ Slides }) => {
         navigate('/login');
     };
 
-    const handleLogoClick = () => {
-        navigate('/home');
-    };
-
-    const Titles = ["감정 기반 지출 관리 서비스", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"];
+    const Titles = ["우울해서 빵 샀어", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"];
     const [currentIndex, setCurrentIndex] = useState(0);
     const goToPrevious = () => {
         const isFirstSlide = currentIndex === 0;
@@ -140,7 +141,9 @@ const Start = ({ Slides }) => {
             <GlobalStyle />
             <Container>
                 <AppWrapper>
-                    <Logo onClick={handleLogoClick}>Logo</Logo>
+                    <Header>
+                        <Logo src={logoImage} alt="Logo" />
+                    </Header>
 
                     <Title>
                         {Titles[currentIndex]}

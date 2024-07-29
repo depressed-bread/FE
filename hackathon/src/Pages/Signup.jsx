@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from './Api';
+import logoImage from './logo.png';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -32,11 +33,10 @@ const AppWrapper = styled.div`
   position: relative;
 `;
 
-const Logo = styled.div`
-  font-size: 50px;
-  font-weight: bold;
-  margin-top: 30%;
-  margin-bottom: 10%;
+const Logo = styled.img`
+    width: 100px;
+    margin-top: 20%;
+    margin-bottom: 10%;
 `;
 
 const Input = styled.input`
@@ -219,7 +219,7 @@ const Signup = () => {
       <GlobalStyle />
       <Container>
         <AppWrapper>
-          <Logo>Logo</Logo>
+          <Logo src={logoImage} alt="Logo" />
           <Input type="text" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
           <Input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
           <Input type="tel" placeholder="전화번호" value={phone} onChange={(e) => setPhone(e.target.value)} />

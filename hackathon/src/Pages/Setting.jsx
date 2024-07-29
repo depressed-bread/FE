@@ -4,6 +4,7 @@ import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
+import logoImage from './logo.png';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -72,13 +73,11 @@ const Header = styled.div`
     z-index: 3;
 `;
 
-const Logo = styled.div`
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-left: 10px;
-    color: black;
-    font-family: 'Ownglyph_meetme-Rg';
+const Logo = styled.img`
+  width: 30px;
+  height: auto;
+  margin-top: 10px;
+  margin-left: 10px;
 `;
 
 const Emoji = styled.img`
@@ -209,7 +208,7 @@ const Setting = () => {
 
                 <Overlay>
                     <Header>
-                        <Logo>Logo</Logo>
+                        <Logo src={logoImage} alt="Logo" />
                         {topEmotion && emotionImages[topEmotion] && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate(-1)} />}
                     </Header>
                 </Overlay>
