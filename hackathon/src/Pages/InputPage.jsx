@@ -349,7 +349,7 @@ const InputPage = () => {
             </ContentWrapper>
             
             <Menu>
-                <MenuItem onClick={() => navigate('/inputpage')}>
+                <MenuItem active>
                     <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                     내용입력
                 </MenuItem>
@@ -357,7 +357,7 @@ const InputPage = () => {
                     <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                     홈
                 </MenuItem>
-                <MenuItem active>
+                <MenuItem onClick={() => navigate('/viewpage')}>
                     <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                     조회
                 </MenuItem>
