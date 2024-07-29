@@ -16,14 +16,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const emojis = {
-    '화남': '/angry.png',
-    '기쁨': '/joy.png',
-    '우울': '/depression.png',
-    '슬픔': '/sad.png',
-    '당황': '/panic.png',
-    '불안': '/anxiety.png',
-    '뿌듯': '/proud.png',
-    '설렘': '/thrill.png'
+    'ANGRY': '/angry.png',
+    'JOY': '/joy.png',
+    'DEPRESSION': '/depression.png',
+    'SAD': '/sad.png',
+    'PANIC': '/panic.png',
+    'ANXIETY': '/anxiety.png',
+    'PROUD': '/proud.png',
+    'THRILL': '/thrill.png'
 };
 
 const Container = styled.div`
@@ -144,8 +144,8 @@ const ContentWrapper = styled.div`
     overflow-y: auto;
     padding-top: 60px;
     padding-bottom: auto;
-        min-height: 500px; // 최소 높이 설정
-  max-height: 750px; // 최대 높이 설정
+    min-height: 500px;
+    max-height: 750px;
 `;
 
 const ExpenseItem = styled.div`
@@ -204,7 +204,6 @@ const Totalprice = styled.div`
     z-index: 1;
     float: right;
     margin-right: 10px;
-   
 `;
 
 const Unit = styled.span`
@@ -243,37 +242,34 @@ const ViewPage = () => {
     const [topEmotion, setTopEmotion] = useState('');
     const [totalPrice, setTotalPrice] = useState('');
 
-
-     //달력
-     const [selectedStartDate, setSelectedStartDate] = useState('');
-     const [selectedEndDate, setSelectedEndDate] = useState('');
-     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-     const toggleDatePicker = () => {setIsDatePickerOpen(!isDatePickerOpen);};
-     const handleEndDateChange = (event) => {
+    //달력
+    const [selectedStartDate, setSelectedStartDate] = useState('');
+    const [selectedEndDate, setSelectedEndDate] = useState('');
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const toggleDatePicker = () => { setIsDatePickerOpen(!isDatePickerOpen); };
+    const handleEndDateChange = (event) => {
         setSelectedEndDate(event.target.value);
     };
     const handleStartDateChange = (event) => {
         setSelectedStartDate(event.target.value);
     };
 
-
-     //날짜변환함수
-     const formatDate = (dateString) => {
+    //날짜변환함수
+    const formatDate = (dateString) => {
         const [year, month, day] = dateString.split('-');
         const rendermonth = month.startsWith('0') ? month.slice(1) : month;
-        const renderday= day.startsWith('0') ? day.slice(1) : day;
+        const renderday = day.startsWith('0') ? day.slice(1) : day;
         console.log(year)
         return (`${rendermonth}월 ${renderday}일`);
     };
 
-
     // 첫번째 호출
     useEffect(() => {
-
         const fetchTopEmotion = async () => {
             try {
                 const response = await api.get('/api/user/emotion');
-                setTopEmotion(response.data.emotion);
+                const emotion = response.data.emotion;
+                setTopEmotion(emotion);
             } catch (error) {
                 console.error('Error fetching top emotion:', error);
             }
@@ -281,18 +277,15 @@ const ViewPage = () => {
 
         // 첫번째 day 호출
         const fetchData = async () => {
-            try{
+            try {
                 const response = await api.get('/api/report/day?&emotionType=ALL')
                 setConsumptions(response.data)
-                // console.log(consumptions)
 
                 const res = await api.get('/api/stat/day')
-                // console.log(res.data)
                 setTotalPrice(res.data)
-            } catch(error) {
+            } catch (error) {
                 console.error('Error fetching Data:', error);
             }
-           
         };
 
         fetchData();
@@ -304,12 +297,10 @@ const ViewPage = () => {
         try {
             const response = await api.get(`/api/report/${endpoint}?&emotionType=ALL`);
             const res = await api.get(`/api/stat/${endpoint}`);
-            setPeriod(endpoint)
-            setConsumptions(response.data)
-            // console.log(response.data)
-            setTotalPrice(res.data)
-            // console.log(res.data)
-        } catch(error) {
+            setPeriod(endpoint);
+            setConsumptions(response.data);
+            setTotalPrice(res.data);
+        } catch (error) {
             console.error('Error fetching Data:', error);
         }
     };
@@ -318,244 +309,202 @@ const ViewPage = () => {
     const CustomfetchedData = async (endpoint) => {
         try {
             const response = await api.get(`/api/report/custom?&startDate=${selectedStartDate}&endDate=${selectedEndDate}&emotionType=ALL`);
-
-            setPeriod(endpoint)
-            setConsumptions(response.data)
-            console.log(response.data)
-            
-        } catch{
-            
+            setPeriod(endpoint);
+            setConsumptions(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching Data:', error);
         }
     };
 
-
     // API 엔드포인트 전달
     const handleTodayClick = () => {
-        fetchedData('day'); 
-        setIsDatePickerOpen(false)
+        fetchedData('day');
+        setIsDatePickerOpen(false);
     };
 
     const handleWeekClick = () => {
-        fetchedData('week'); 
-        setIsDatePickerOpen(false)
+        fetchedData('week');
+        setIsDatePickerOpen(false);
     };
 
     const handleMonthClick = () => {
-        fetchedData('month'); 
-        setIsDatePickerOpen(false)
+        fetchedData('month');
+        setIsDatePickerOpen(false);
     };
 
     const handleCustomDateClick = () => {
-        CustomfetchedData('custom'); 
+        CustomfetchedData('custom');
     };
 
     const handleEmotionChange = (e) => {
-        // console.log(e.target.value)
         setEmotion(e.target.value);
     };
 
-
-
     // 렌더링 5가지 경우
     const renderConsumptions = function () {
-    
-        // 전체, day 일때 렌더링
-        if (emotion === '전체' && period === 'day' && typeof consumptions.date !== 'undefined'){ 
-            // console.log('성공')
-            // console.log(consumptions)
-            // console.log(consumptions.expenses)
-            
-            return  ( 
+        if (emotion === '전체' && period === 'day' && typeof consumptions.date !== 'undefined') {
+            return (
                 <div>
-                    {consumptions.expenses.length > 0  && (<Title><Date>{formatDate(consumptions.date)}</Date> 소비내역</Title>)}
-                    {consumptions.expenses.slice(0).reverse().map((items, index)=>(    
+                    {consumptions.expenses.length > 0 && (
+                        <Title><Date>{formatDate(consumptions.date)}</Date> 소비내역</Title>
+                    )}
+                    {consumptions.expenses.slice(0).reverse().map((items, index) => (
                         <ExpenseItem key={index} value={items.id}>
-                            <EmojiIcon  src={`/${items.emotion}.png`} alt='emotion'/>
-                                <ItemDetails>
-                                    <div>{items.keyword}</div>
-                                    <MoreButton onClick={() => navigate('/detail', {state: items.id})}> 상세보기 </MoreButton>
-                                </ItemDetails>
+                            <EmojiIcon src={emojis[items.emotion]} alt='emotion' />
+                            <ItemDetails>
+                                <div>{items.keyword}</div>
+                                <MoreButton onClick={() => navigate('/detail', { state: items.id })}>상세보기</MoreButton>
+                            </ItemDetails>
                             <ExpenseSummary>
                                 <Price>{items.price}</Price><Unit>원</Unit>
                             </ExpenseSummary>
-                        </ExpenseItem> 
-                    ))} 
-                        <Totalprice>
-                        {/* {console.log(totalPrice)} */}
+                        </ExpenseItem>
+                    ))}
+                    <Totalprice>
                         {totalPrice} <Unit>원</Unit>
-                        </Totalprice>
+                    </Totalprice>
                 </div>
-            )
+            );
+        } else if (emotion === '전체' && period === 'day' && typeof consumptions.date === 'undefined') {
+            // 초기 오류값 잡기
+        } else if (emotion !== '전체' && period !== 'day') {
+            const emotionExpensesByDate = consumptions.filter(entry => entry.expenses.some(expense => expense.emotion === emotion))
+                .map(entry => ({
+                    date: entry.date,
+                    expenses: entry.expenses.filter(expense => expense.emotion === emotion)
+                }));
 
-
-
-        // 초기 오류값 잡기
-        } else if(emotion === '전체' && period === 'day' && typeof consumptions.date === 'undefined'){
-            // {console.log(period + '성공')}
-                
-
-
-
-
-        //감정을 선택한 경우, 현재 선택되어 있는 기간으로 렌더링 (week, month, custom 가능)  // week, month, custom 전체에서 감정으로 변화 렌더링
-        }else if(emotion !== '전체' && period !== 'day'){ 
-
-            // console.log(period + 'good');
-            // 감정을 바꾸고 이미 period는 변화없이 API호출이 되어져 있는 상태
-
-            const emotionExpensesByDate = consumptions.filter(entry => entry.expenses.some(expense => expense.emotion === emotion)) // emotion 감정이 있는 날짜 필터링
-            .map(entry => ({
-                date: entry.date,
-                expenses: entry.expenses.filter(expense => expense.emotion === emotion) // 해당 날짜의 emotion 감정 지출만 추출
-            }));
-            // console.log(emotionExpensesByDate); 
-            
-            // 감정에 따른 기간별 금액합계
             let emotionTotalPrice = emotionExpensesByDate.reduce((acc, cur) => {
                 return acc + cur.expenses.reduce((expenseAcc, expenseCur) => {
                     return expenseAcc + expenseCur.price;
                 }, 0);
-                }, 0);
-                
-            // console.log(emotionTotalPrice);
-            return(
+            }, 0);
+
+            return (
                 <div>
-                    {emotionExpensesByDate.slice(0).reverse().map((item, index)=>(
-                        <div>
+                    {emotionExpensesByDate.slice(0).reverse().map((item, index) => (
+                        <div key={index}>
                             <Title>
-                                <Date>{formatDate(item.date)}</Date>  소비내역
+                                <Date>{formatDate(item.date)}</Date> 소비내역
                             </Title>
-                                {item.expenses.slice(0).reverse().map((it,secindex) => (
+                            {item.expenses.slice(0).reverse().map((it, secindex) => (
                                 <ExpenseItem key={secindex}>
-                                    <EmojiIcon src={`/${it.emotion}.png`} alt='emotion'/>
-                                        <ItemDetails>
-                                            <div>{it.keyword}</div>
-                                            <MoreButton onClick={() => navigate('/detail', {state: it.id})}>상세보기</MoreButton>
-                                        </ItemDetails>
+                                    <EmojiIcon src={emojis[it.emotion]} alt='emotion' />
+                                    <ItemDetails>
+                                        <div>{it.keyword}</div>
+                                        <MoreButton onClick={() => navigate('/detail', { state: it.id })}>상세보기</MoreButton>
+                                    </ItemDetails>
                                     <ExpenseSummary>
                                         <Price>{it.price}</Price><Unit>원</Unit>
                                     </ExpenseSummary>
-                                </ExpenseItem>  
+                                </ExpenseItem>
                             ))}
                         </div>
                     ))}
                     <Totalprice>
-                        {console.log(emotionTotalPrice)}
                         {emotionTotalPrice} <Unit>원</Unit>
                     </Totalprice>
                 </div>
-            )
-            
-            // 전체 day에서 감정으로의 변화 api호출없이   // 감정 !day에서 day로의 변화 api호출
-            }else if(emotion !== '전체' && period === 'day'){ 
-                // console.log('마지막')
-                // console.log(consumptions)
-                // console.log(consumptions.expenses.filter(entry => entry.emotion === emotion))
-                const totalExpenses = consumptions.expenses.filter(entry => entry.emotion === emotion)
-                const totalExpense = totalExpenses.reduce((acc, it) => acc + it.price, 0);
-                console.log(totalExpense)
-
-
-                return  ( 
-                    <div>
-                        {totalExpenses.length > 0 && (<Title><Date>{formatDate(consumptions.date)}</Date> 소비내역</Title>)} 
-                        {consumptions.expenses.filter(entry =>entry.emotion === emotion).slice(0).reverse().map((items, index)=>(
-                            <ExpenseItem key={index}>
-                                <EmojiIcon  src={`/${items.emotion}.png`} alt='emotion'/>
-                                    <ItemDetails>
-                                        <div>{items.keyword}</div>
-                                        <MoreButton onClick={() => navigate('/detail', {state: items.id})}>상세보기</MoreButton>
-                                    </ItemDetails>
-                                <ExpenseSummary>
-                                    <Price>{items.price}</Price><Unit>원</Unit>
-                                </ExpenseSummary>
-                            </ExpenseItem>
-                        ))}
-                        <Totalprice>
-                        {totalExpense} <Unit>원</Unit>
-                        </Totalprice>
-                    </div>
-                )
-    
-            // 처음 전체/day에서 바로 custom으로의 변화시
-            }else if(emotion === '전체' && period === 'custom'){
-                // console.log(period + 'good');
-                // console.log(consumptions)
-                let totalExpenses = consumptions.reduce((acc, cur) => {
-                    return acc + cur.expenses.reduce((expenseAcc, expenseCur) => {
-                    return expenseAcc + expenseCur.price;
-                    }, 0);
-                }, 0);
-                 // console.log(totalExpenses);
+            );
+        } else if (emotion !== '전체' && period === 'day') {
+            const totalExpenses = consumptions.expenses.filter(entry => entry.emotion === emotion);
+            const totalExpense = totalExpenses.reduce((acc, it) => acc + it.price, 0);
 
             return (
                 <div>
-                    {consumptions.filter(it => it.expenses.length > 0).slice(0).reverse().map((items, index)=>(
-                            <div key={index}>
-                                <Title>
-                                    <Date>{formatDate(items.date)}</Date>  소비내역
-                                </Title>
-                                {items.expenses.length > 0 ? items.expenses.slice(0).reverse().map((i, secindex) => (
-                                    <ExpenseItem key={secindex}>
-                                        <EmojiIcon src={`/${i.emotion}.png`} alt='emotion'/>
-                                            <ItemDetails>
-                                                <div>{i.keyword}</div>
-                                                <MoreButton onClick={() => navigate('/detail', {state: i.id})}>상세보기</MoreButton>
-                                            </ItemDetails>
-                                        <ExpenseSummary>
-                                            <Price>{i.price}</Price>
-                                            <Unit>원</Unit>
-                                        </ExpenseSummary>
-                                    </ExpenseItem>  
-                                )): <div></div>}     
-                            </div>  
+                    {totalExpenses.length > 0 && (
+                        <Title><Date>{formatDate(consumptions.date)}</Date> 소비내역</Title>
+                    )}
+                    {totalExpenses.slice(0).reverse().map((items, index) => (
+                        <ExpenseItem key={index}>
+                            <EmojiIcon src={emojis[items.emotion]} alt='emotion' />
+                            <ItemDetails>
+                                <div>{items.keyword}</div>
+                                <MoreButton onClick={() => navigate('/detail', { state: items.id })}>상세보기</MoreButton>
+                            </ItemDetails>
+                            <ExpenseSummary>
+                                <Price>{items.price}</Price><Unit>원</Unit>
+                            </ExpenseSummary>
+                        </ExpenseItem>
                     ))}
                     <Totalprice>
-                    {console.log(totalExpenses)}
-                    {totalExpenses} <Unit>원</Unit>
+                        {totalExpense} <Unit>원</Unit>
                     </Totalprice>
                 </div>
-            )
+            );
+        } else if (emotion === '전체' && period === 'custom') {
+            let totalExpenses = consumptions.reduce((acc, cur) => {
+                return acc + cur.expenses.reduce((expenseAcc, expenseCur) => {
+                    return expenseAcc + expenseCur.price;
+                }, 0);
+            }, 0);
 
-            // 나머지
-            }else{
             return (
-                    <div>
-                        {consumptions.filter(it => it.expenses.length > 0).slice(0).reverse().map((items, index)=>(
-                                <div key={index}>
-                                    <Title>
-                                        <Date>{formatDate(items.date)}</Date>  소비내역
-                                    </Title>
-                                    {items.expenses.length > 0 ? items.expenses.slice(0).reverse().map((i, secindex) => (
-                                        <ExpenseItem key={secindex}>
-                                            <EmojiIcon src={`/${i.emotion}.png`} alt='emotion'/>
-                                                <ItemDetails>
-                                                    <div>{i.keyword}</div>
-                                                    <MoreButton onClick={() => navigate('/detail', {state: i.id})}>상세보기</MoreButton>
-                                                </ItemDetails>
-                                            <ExpenseSummary>
-                                                <Price>{i.price}</Price>
-                                                <Unit>원</Unit>
-                                            </ExpenseSummary>
-                                        </ExpenseItem>  
-                                    )): <div></div>}     
-                                </div>
-                        ))}
-                        <Totalprice>
-                        {/* {console.log(totalPrice)} */}
+                <div>
+                    {consumptions.filter(it => it.expenses.length > 0).slice(0).reverse().map((items, index) => (
+                        <div key={index}>
+                            <Title>
+                                <Date>{formatDate(items.date)}</Date> 소비내역
+                            </Title>
+                            {items.expenses.length > 0 ? items.expenses.slice(0).reverse().map((i, secindex) => (
+                                <ExpenseItem key={secindex}>
+                                    <EmojiIcon src={emojis[i.emotion]} alt='emotion' />
+                                    <ItemDetails>
+                                        <div>{i.keyword}</div>
+                                        <MoreButton onClick={() => navigate('/detail', { state: i.id })}>상세보기</MoreButton>
+                                    </ItemDetails>
+                                    <ExpenseSummary>
+                                        <Price>{i.price}</Price>
+                                        <Unit>원</Unit>
+                                    </ExpenseSummary>
+                                </ExpenseItem>
+                            )) : <div></div>}
+                        </div>
+                    ))}
+                    <Totalprice>
+                        {totalExpenses} <Unit>원</Unit>
+                    </Totalprice>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    {consumptions.filter(it => it.expenses.length > 0).slice(0).reverse().map((items, index) => (
+                        <div key={index}>
+                            <Title>
+                                <Date>{formatDate(items.date)}</Date> 소비내역
+                            </Title>
+                            {items.expenses.length > 0 ? items.expenses.slice(0).reverse().map((i, secindex) => (
+                                <ExpenseItem key={secindex}>
+                                    <EmojiIcon src={emojis[i.emotion]} alt='emotion' />
+                                    <ItemDetails>
+                                        <div>{i.keyword}</div>
+                                        <MoreButton onClick={() => navigate('/detail', { state: i.id })}>상세보기</MoreButton>
+                                    </ItemDetails>
+                                    <ExpenseSummary>
+                                        <Price>{i.price}</Price>
+                                        <Unit>원</Unit>
+                                    </ExpenseSummary>
+                                </ExpenseItem>
+                            )) : <div></div>}
+                        </div>
+                    ))}
+                    <Totalprice>
                         {totalPrice} <Unit>원</Unit>
-                        </Totalprice>
-                    </div>
-            )}
+                    </Totalprice>
+                </div>
+            );
+        }
     };
-    
+
     return (
         <Container>
             <GlobalStyle />
             <AppWrapper>
                 <Header>
                     <Logo>Logo</Logo>
-                    {topEmotion && <Emoji src={emojis[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} /> }
+                    {topEmotion && <Emoji src={emojis[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                 </Header>
                 <ContentWrapper>
                     <Dropdown value={emotion} onChange={handleEmotionChange}>
@@ -564,26 +513,25 @@ const ViewPage = () => {
                         ))}
                     </Dropdown>
                     <ButtonGroup>
-                        <Button style={{ color : period === 'custom' ? '#FF86FF' : 'black'}} onClick={toggleDatePicker} >날짜 지정 선택</Button>
-                        <Button style={{ color : period === 'day' ? '#FF86FF' : 'black'}} onClick={() => handleTodayClick('day')}>오늘</Button>
-                        <Button style={{ color : period === 'week' ? '#FF86FF' : 'black'}} onClick={() => handleWeekClick('week')}>7일</Button>
-                        <Button style={{ color : period === 'month' ? '#FF86FF' : 'black'}} onClick={() => handleMonthClick('month')}>30일</Button>
+                        <Button style={{ color: period === 'custom' ? '#FF86FF' : 'black' }} onClick={toggleDatePicker} >날짜 지정 선택</Button>
+                        <Button style={{ color: period === 'day' ? '#FF86FF' : 'black' }} onClick={handleTodayClick}>오늘</Button>
+                        <Button style={{ color: period === 'week' ? '#FF86FF' : 'black' }} onClick={handleWeekClick}>7일</Button>
+                        <Button style={{ color: period === 'month' ? '#FF86FF' : 'black' }} onClick={handleMonthClick}>30일</Button>
                     </ButtonGroup>
                     <CalanderGroup>
-                    {isDatePickerOpen && (
-                    <Calander>
-                        <input 
-                        type="date" 
-                        value={selectedStartDate} 
-                        onChange={handleStartDateChange} /> &nbsp;
-                        ~&nbsp;
-                        <input 
-                        type="date" 
-                        value={selectedEndDate} 
-                        onChange={handleEndDateChange} />
-                    </Calander> 
-                    )}
-                    {isDatePickerOpen && (<CalanderButton onClick={()=> {handleCustomDateClick('custom')}} >확인</CalanderButton>)}  
+                        {isDatePickerOpen && (
+                            <Calander>
+                                <input
+                                    type="date"
+                                    value={selectedStartDate}
+                                    onChange={handleStartDateChange} /> &nbsp;
+                                                                    <input
+                                    type="date"
+                                    value={selectedEndDate}
+                                    onChange={handleEndDateChange} />
+                            </Calander>
+                        )}
+                        {isDatePickerOpen && (<CalanderButton onClick={() => { handleCustomDateClick('custom') }} >확인</CalanderButton>)}
                     </CalanderGroup>
                     {renderConsumptions()}
                 </ContentWrapper>
@@ -607,3 +555,4 @@ const ViewPage = () => {
 };
 
 export default ViewPage;
+

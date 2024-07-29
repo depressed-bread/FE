@@ -16,14 +16,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const emojis = {
-    '화남': '/angry.png',
-    '기쁨': '/joy.png',
-    '우울': '/depression.png',
-    '슬픔': '/sad.png',
-    '당황': '/panic.png',
-    '불안': '/anxiety.png',
-    '뿌듯': '/proud.png',
-    '설렘': '/thrill.png'
+    'ANGRY': '/angry.png',
+    'JOY': '/joy.png',
+    'DEPRESSION': '/depression.png',
+    'SAD': '/sad.png',
+    'PANIC': '/panic.png',
+    'ANXIETY': '/anxiety.png',
+    'PROUD': '/proud.png',
+    'THRILL': '/thrill.png'
 };
 
 const rotate = keyframes`
@@ -134,7 +134,8 @@ const LoadingPage = () => {
         const fetchTopEmotion = async () => {
             try {
                 const response = await api.get('/api/user/emotion');
-                setTopEmotion(response.data.emotion);
+                const emotion = response.data.emotion;
+                setTopEmotion(emotion);
             } catch (error) {
                 console.error('Error fetching top emotion:', error);
             }

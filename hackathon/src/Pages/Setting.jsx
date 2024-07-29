@@ -51,8 +51,8 @@ const Overlay = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-    margin-top: -40%;
-    width: 30%;
+    margin-top: -30%;
+    width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -162,7 +162,8 @@ const Setting = () => {
         const fetchTopEmotion = async () => {
             try {
                 const response = await api.get('/api/user/emotion');
-                setTopEmotion(response.data.emotion);
+                const emotion = response.data.emotion;
+                setTopEmotion(emotion);
             } catch (error) {
                 console.error('Error fetching top emotion:', error);
             }
@@ -186,14 +187,14 @@ const Setting = () => {
     };
 
     const emotionImages = {
-        '화남': '/angry.png',
-        '기쁨': '/joy.png',
-        '우울': '/depression.png',
-        '슬픔': '/sad.png',
-        '당황': '/panic.png',
-        '불안': '/anxiety.png',
-        '뿌듯': '/proud.png',
-        '설렘': '/thrill.png'
+        'ANGRY': '/angry.png',
+        'JOY': '/joy.png',
+        'DEPRESSION': '/depression.png',
+        'SAD': '/sad.png',
+        'PANIC': '/panic.png',
+        'ANXIETY': '/anxiety.png',
+        'PROUD': '/proud.png',
+        'THRILL': '/thrill.png'
     };
 
     return (
@@ -209,7 +210,7 @@ const Setting = () => {
                 <Overlay>
                     <Header>
                         <Logo>Logo</Logo>
-                        {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate(-1)} />}
+                        {topEmotion && emotionImages[topEmotion] && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate(-1)} />}
                     </Header>
                 </Overlay>
 

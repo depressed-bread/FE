@@ -278,14 +278,14 @@ const DetailPage = () => {
     const [details, setDetails] = useState('')
     
     const emotionImages = {
-        '화남': '/angry.png',
-        '기쁨': '/joy.png',
-        '무표정': '/emotionless.png',
-        '우울': '/depression.png',
-        '슬픔': '/sad.png',
-        '스트레스': '/stress.png',
-        '당황': '/panic.png',
-        '설렘': '/thrill.png'
+        'ANGRY': '/angry.png',
+        'JOY': '/joy.png',
+        'EMOTIONLESS': '/emotionless.png',
+        'DEPRESSION': '/depression.png',
+        'SAD': '/sad.png',
+        'STRESS': '/stress.png',
+        'PANIC': '/panic.png',
+        'THRILL': '/thrill.png'
     };
 
     // 글마다의 expenseId를 Viewㅖage에서 가져옴
@@ -354,7 +354,9 @@ const DetailPage = () => {
                     <ContentWrapper>
                         <br></br>
                         <BackButton onClick={() => navigate(-1)}><div style={arrowStyle}></div></BackButton>
-                        <EmojiWrapper><SelectedEmoji src={`/${details.emotion}.png`} /></EmojiWrapper>
+                        <EmojiWrapper>
+                            <SelectedEmoji src={emotionImages[details.emotion]} />
+                        </EmojiWrapper>
                         <InputSection>
                             <ExpenseItem>
                                 <LabelWrapper2>

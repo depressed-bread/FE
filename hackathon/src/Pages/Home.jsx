@@ -16,14 +16,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const emotionIcons = {
-    '화남': '/angry.png',
-    '기쁨': '/joy.png',
-    '우울': '/depression.png',
-    '슬픔': '/sad.png',
-    '당황': '/panic.png',
-    '불안': '/anxiety.png',
-    '뿌듯': '/proud.png',
-    '설렘': '/thrill.png'  
+  'ANGRY': '/angry.png',
+  'JOY': '/joy.png',
+  'DEPRESSION': '/depression.png',
+  'SAD': '/sad.png',
+  'PANIC': '/panic.png',
+  'ANXIETY': '/anxiety.png',
+  'PROUD': '/proud.png',
+  'THRILL': '/thrill.png'  
 };
 
 const Container = styled.div`
@@ -224,7 +224,13 @@ const Home = () => {
     const fetchTopEmotion = async () => {
       try {
         const response = await api.get('/api/user/emotion');
-        setTopEmotion(response.data.emotion);
+        const emotion = response.data.emotion;
+    
+        if (emotionIcons[emotion]) {
+          setTopEmotion(emotion);
+        } else {
+          console.error('Invalid emotion received:', emotion);
+        }
       } catch (error) {
         console.error('Error fetching top emotion:', error);
       }
@@ -347,7 +353,7 @@ const Home = () => {
       <AppWrapper>
         <Header>
           <Logo>Logo</Logo>
-          {topEmotion && <Emoji src={emotionIcons[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
+          {topEmotion && emotionIcons[topEmotion] && <Emoji src={emotionIcons[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
         </Header>
         <ContentWrapper>
           <MonthNavigation>
