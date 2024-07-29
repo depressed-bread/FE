@@ -23,7 +23,7 @@ const emotionIcons = {
   'PANIC': '/panic.png',
   'ANXIETY': '/anxiety.png',
   'PROUD': '/proud.png',
-  'THRILL': '/thrill.png'  
+  'THRILL': '/thrill.png'
 };
 
 const Container = styled.div`
@@ -216,16 +216,17 @@ const Home = () => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
   const [consumptions, setConsumptions] = useState([]);
+  const [emotions, setEmotions] = useState([]);
   const [topEmotion, setTopEmotion] = useState('');
   const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
     const fetchTopEmotion = async () => {
       try {
         const response = await api.get('/api/user/emotion');
         const emotion = response.data.emotion;
-    
+
         if (emotionIcons[emotion]) {
           setTopEmotion(emotion);
         } else {
@@ -242,21 +243,27 @@ const Home = () => {
         const data = Array.isArray(response.data) ? response.data : [response.data];
         setConsumptions(data);
 
-        const today = new Date();
-        const todayExpenses = data.filter(expense => {
-          const expenseDate = new Date(expense.date);
-          return expenseDate.toDateString() === today.toDateString();
-        }).sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 2);
-
-        setSelectedDateExpenses(todayExpenses);
+        const today = new Date().toISOString().split('T')[0];
+        const todayExpenses = data.find(expense => expense.date === today);
+        setSelectedDateExpenses(todayExpenses ? todayExpenses.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
       } catch (error) {
         console.error('There was an error fetching expense data', error);
       }
     };
 
+    const fetchMonthlyEmotions = async () => {
+      try {
+        const response = await api.get(`/api/report/emotion?year=${year}&month=${month}`);
+        setEmotions(response.data);
+      } catch (error) {
+        console.error('There was an error fetching monthly emotions', error);
+      }
+    };
+
     fetchTopEmotion();
     fetchExpenseData();
-  }, []);
+    fetchMonthlyEmotions();
+  }, [month, year]);
 
   const handlePrevMonth = () => {
     setMonth(prevMonth => prevMonth === 1 ? 12 : prevMonth - 1);
@@ -269,38 +276,25 @@ const Home = () => {
   };
 
   const handleDayClick = (day) => {
-    setSelectedDate(day);
-    const expensesForDay = consumptions.filter(expense => {
-      const expenseDate = new Date(expense.date);
-      return expenseDate.getDate() === day &&
-             expenseDate.getMonth() + 1 === month &&
-             expenseDate.getFullYear() === year;
-    });
-
-    const sortedExpenses = expensesForDay.sort((a, b) => new Date(b.date) - new Date(a.date));
-    setSelectedDateExpenses(sortedExpenses.slice(0, 2));
+    const clickedDate = new Date(year, month - 1, day, 12); // 시간대를 명시적으로 설정
+    setSelectedDate(clickedDate);
+    const dateStr = clickedDate.toISOString().split('T')[0];
+    const expensesForDay = consumptions.find(expense => expense.date === dateStr);
+    setSelectedDateExpenses(expensesForDay ? expensesForDay.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
   };
 
-  const getEmotionForDay = useMemo(() => {
+  const getEmotion = useMemo(() => {
+    const emotionMap = {};
+    emotions.forEach(({ date, emotion }) => {
+      if (emotion) {
+        emotionMap[date] = emotion;
+      }
+    });
     return (day) => {
-      const expensesForDay = consumptions.filter(expense => {
-        const expenseDate = new Date(expense.date);
-        return expenseDate.getDate() === day &&
-               expenseDate.getMonth() + 1 === month &&
-               expenseDate.getFullYear() === year;
-      });
-
-      if (expensesForDay.length === 0) return null;
-
-      const emotionTotals = expensesForDay.reduce((acc, expense) => {
-        acc[expense.emotion] = (acc[expense.emotion] || 0) + expense.price;
-        return acc;
-      }, {});
-
-      const maxEmotion = Object.keys(emotionTotals).reduce((a, b) => emotionTotals[a] > emotionTotals[b] ? a : b);
-      return maxEmotion;
+      const dateStr = new Date(year, month - 1, day, 12).toISOString().split('T')[0]; // 시간대를 명시적으로 설정
+      return emotionMap[dateStr] || null;
     };
-  }, [consumptions, month, year]);
+  }, [emotions, month, year]);
 
   const renderCalendar = () => {
     const daysInMonth = new Date(year, month, 0).getDate();
@@ -315,12 +309,12 @@ const Home = () => {
     for (let i = 1; i <= daysInMonth; i++) {
       const isSunday = (firstDayIndex + i - 1) % 7 === 0;
       const isSaturday = (firstDayIndex + i - 1) % 7 === 6;
-      const emotion = getEmotionForDay(i);
+      const emotion = getEmotion(i);
 
       calendarDays.push(
         <Day key={i} isSunday={isSunday} isSaturday={isSaturday} onClick={() => handleDayClick(i)}>
           {i}
-          {emotion && <img src={emotionIcons[emotion]} alt="Emotion" style={{ width: '30px', position: 'absolute', top: '5px', left: '5px' }} />}
+          {emotion && <img src={emotionIcons[emotion]} alt={emotion} style={{ width: '30px', position: 'absolute', top: '5px', left: '5px' }} />}
         </Day>
       );
     }
@@ -335,7 +329,7 @@ const Home = () => {
           <EmojiIcon src={emotionIcons[expense.emotion]} alt="Emotion" />
           <ItemDetails>
             <div>{expense.keyword}</div>
-            <MoreButton onClick={() => navigate('/detail')}>상세보기</MoreButton>
+            <MoreButton onClick={() => navigate('/detail', { state: { id: expense.id } })}>상세보기</MoreButton>
           </ItemDetails>
           <ExpenseSummary>
             <Price>{expense.price}</Price>원
@@ -370,7 +364,7 @@ const Home = () => {
             </CalendarGrid>
           </CalendarWrapper>
           <DateTitleWrapper>
-            <DateTitle>{month}월 {selectedDate}일 소비내역</DateTitle>
+            <DateTitle>{month}월 {selectedDate.getDate()}일 소비내역</DateTitle>
           </DateTitleWrapper>
           {renderExpenses()}
           <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
