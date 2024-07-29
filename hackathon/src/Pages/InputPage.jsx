@@ -210,17 +210,17 @@ const InputPage = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [keyword,setKeyword]=useState('');
-    const [emotion,setEmotion]=useState('ANGRY');
+    const [emotionType,setEmotionType]=useState('ANGRY');
     const [content,setContent]=useState('');
     const [price,setPrice]=useState('');
     const [date,setDate]=useState('');
 
     const details={
         keyword,
-        price: parseInt(price),
+        price,
         date,
         content,
-        emotion
+        emotionType
     }
 
     const emotionImages = {
@@ -323,7 +323,7 @@ const InputPage = () => {
 
                     <InputSection>
                         <Label>감정 선택</Label>
-                        <Select width="30%" value={emotion} onChange={(e) => setEmotion(e.target.value)}>
+                        <Select width="30%" value={emotionType} onChange={(e) => setEmotionType(e.target.value)}>
                             <option value="ANGRY">화남</option>
                             <option value="JOY">기쁨</option>
                             <option value="DEPRESSION">우울</option>
@@ -333,7 +333,7 @@ const InputPage = () => {
                             <option value="PROUD">뿌듯</option>
                             <option value="THRILL">설렘</option>
                         </Select>
-                        <SelectedEmoji src={emotionImages[emotion]} alt={emotion} />
+                        <SelectedEmoji src={emotionImages[emotionType]} alt={emotionType} />
                     </InputSection>
 
                     <Button onClick={handleCompletionClick}>작성 완료</Button>
