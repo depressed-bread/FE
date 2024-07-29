@@ -52,7 +52,6 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
     top: 0;
     padding: 10px 20px;
     z-index: 1;
@@ -142,10 +141,8 @@ const ContentWrapper = styled.div`
     flex: 1;
     width: 100%;
     overflow-y: auto;
-    padding-top: 60px;
-    padding-bottom: auto;
-    min-height: 500px;
-    max-height: 750px;
+    padding-top: 10px;
+    padding-bottom: 80px;
 `;
 
 const ExpenseItem = styled.div`
@@ -215,7 +212,6 @@ const Menu = styled.div`
     display: flex;
     justify-content: space-around;
     padding: 10px 0;
-    position: absolute;
     bottom: 0;
     background-color: #FEF69B;
     z-index: 1;
