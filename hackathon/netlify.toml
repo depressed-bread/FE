@@ -1,0 +1,9 @@
+[build]
+  command = "CI=true npm run build"
+  publish = "build"
+
+[context.production]
+  environment = { CI = "true" }
+
+[context.deploy-preview]
+  environment = { CI = "true" }
