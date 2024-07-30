@@ -100,9 +100,9 @@ const ModalText = styled.p`
 const ResetPassword = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
+    const [email, setEmail] = useState('');  // 이메일 상태 추가
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const email = "olivia1103@naver.com"; // 이메일은 고정 값으로 설정
 
     const handleEditClick = async () => {
         try {
@@ -142,6 +142,12 @@ const ResetPassword = () => {
                 <AppWrapper>
                     <Logo src={logoImage} alt="Logo" />
 
+                    <Input
+                        type="email"
+                        placeholder="이메일"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                     <Input
                         type="password"
                         placeholder="현재 비밀번호"

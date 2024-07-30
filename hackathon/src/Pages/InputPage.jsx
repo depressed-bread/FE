@@ -96,6 +96,7 @@ const Input = styled.input`
     border-radius: 5px;
     border: 1px solid #00D065;
     font-size: 16px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const PriceWrapper = styled.div`
@@ -111,6 +112,7 @@ const TextArea = styled.textarea`
     border-radius: 5px;
     font-size: 12px;
     resize: vertical;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Select = styled.select`
@@ -119,6 +121,7 @@ const Select = styled.select`
     border-radius: 5px;
     font-size: 16px;
     border: 1px solid #00D065;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Button = styled.button`
@@ -131,7 +134,8 @@ const Button = styled.button`
     color: black;
     cursor: pointer;
     margin-top: 20px;
-
+    font-family: 'Ownglyph_meetme-Rg';
+    
     &:hover {
         color: #FF86FF;
     }

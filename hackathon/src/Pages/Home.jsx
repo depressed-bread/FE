@@ -178,6 +178,7 @@ const MoreButton = styled.button`
   text-decoration: underline;
   margin-top: 5px;
   text-align: left;
+  font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const MoreLink = styled.button`
@@ -189,6 +190,7 @@ const MoreLink = styled.button`
   margin-top: 5px;
   text-align: center;
   width: 100%;
+  font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Menu = styled.div`
