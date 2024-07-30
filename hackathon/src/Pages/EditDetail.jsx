@@ -6,6 +6,7 @@ import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-ico
 import api from './Api';
 import { useLocation } from 'react-router-dom';
 import logoImage from './logo.png';
+import BackImage from './back.png';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -216,14 +217,6 @@ const Logo = styled.img`
     height: auto;
 `;
 
-const arrowStyle = {
-    width: 0,
-    height: 0,
-    borderTop: '10px solid transparent',
-    borderBottom: '10px solid transparent',
-    borderRight: '10px solid black',
-    margin: '10px'
-};
 
 const EditDetail = () => {
     const navigate = useNavigate();
@@ -358,7 +351,7 @@ const EditDetail = () => {
                         {topEmotion && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                     </Header>
                     <ContentWrapper>
-                        <BackButton onClick={() => navigate(-1)}><div style={arrowStyle}></div></BackButton>
+                        <BackButton onClick={() => navigate(-1)}><img src={BackImage} alt="Back" style={{width:'30px',height:'40px'}}/></BackButton>
                         <InputSection>
                             <Label>키워드</Label>
                             <Input width="60%" ref={keywordInput} name="keyword" value={details.keyword} onChange={handleChange}/>

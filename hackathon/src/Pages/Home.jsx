@@ -220,9 +220,15 @@ const Home = () => {
   const [emotions, setEmotions] = useState([]);
   const [topEmotion, setTopEmotion] = useState('');
   const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
 
   useEffect(() => {
+    // Fetch today's date expenses on component mount
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    setSelectedDate(today);
+    fetchDateExpenses(todayStr);
+    
     const fetchTopEmotion = async () => {
       try {
         const response = await api.get('/api/user/emotion');
@@ -243,10 +249,6 @@ const Home = () => {
         const response = await api.get('/api/report/day?emotionType=ALL');
         const data = Array.isArray(response.data) ? response.data : [response.data];
         setConsumptions(data);
-
-        const today = new Date().toISOString().split('T')[0];
-        const todayExpenses = data.find(expense => expense.date === today);
-        setSelectedDateExpenses(todayExpenses ? todayExpenses.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
       } catch (error) {
         console.error('There was an error fetching expense data', error);
       }
@@ -266,6 +268,17 @@ const Home = () => {
     fetchMonthlyEmotions();
   }, [month, year]);
 
+  const fetchDateExpenses = async (dateStr) => {
+    try {
+      const response = await api.get(`/api/report/calendar/day?Date=${dateStr}`);
+      const data = response.data;
+      const expensesForDay = data.find(expense => expense.date === dateStr);
+      setSelectedDateExpenses(expensesForDay ? expensesForDay.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
+    } catch (error) {
+      console.error('There was an error fetching expenses for the selected date', error);
+    }
+  };
+
   const handlePrevMonth = () => {
     setMonth(prevMonth => prevMonth === 1 ? 12 : prevMonth - 1);
     setYear(prevYear => month === 1 ? prevYear - 1 : prevYear);
@@ -277,11 +290,10 @@ const Home = () => {
   };
 
   const handleDayClick = (day) => {
-    const clickedDate = new Date(year, month - 1, day, 12); // 시간대를 명시적으로 설정
+    const clickedDate = new Date(year, month - 1, day, 12);
     setSelectedDate(clickedDate);
     const dateStr = clickedDate.toISOString().split('T')[0];
-    const expensesForDay = consumptions.find(expense => expense.date === dateStr);
-    setSelectedDateExpenses(expensesForDay ? expensesForDay.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
+    fetchDateExpenses(dateStr);
   };
 
   const getEmotion = useMemo(() => {
@@ -292,7 +304,7 @@ const Home = () => {
       }
     });
     return (day) => {
-      const dateStr = new Date(year, month - 1, day, 12).toISOString().split('T')[0]; // 시간대를 명시적으로 설정
+      const dateStr = new Date(year, month - 1, day, 12).toISOString().split('T')[0];
       return emotionMap[dateStr] || null;
     };
   }, [emotions, month, year]);

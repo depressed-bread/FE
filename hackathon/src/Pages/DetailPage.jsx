@@ -6,6 +6,7 @@ import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-ico
 import api from './Api';
 import { useLocation } from 'react-router-dom';
 import logoImage from './logo.png';
+import BackImage from './back.png';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -264,14 +265,6 @@ const Emoji = styled.img`
     height: 24px;
 `;
 
-const arrowStyle = {
-    width: 0,
-    height: 0,
-    borderTop: '10px solid transparent',
-    borderBottom: '10px solid transparent',
-    borderRight: '10px solid black',
-    margin: '10px'
-};
 
 const DetailPage = () => {
     const navigate = useNavigate();
@@ -355,7 +348,7 @@ const DetailPage = () => {
                     </Header>
                     <ContentWrapper>
                         <br></br>
-                        <BackButton onClick={() => navigate(-1)}><div style={arrowStyle}></div></BackButton>
+                        <BackButton onClick={() => navigate(-1)}><img src={BackImage} alt="Back" style={{width:'30px',height:'40px'}}/></BackButton>
                         <EmojiWrapper>
                             <SelectedEmoji src={emotionImages[details.emotion]} />
                         </EmojiWrapper>
