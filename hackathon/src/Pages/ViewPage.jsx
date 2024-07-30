@@ -552,4 +552,3 @@ const ViewPage = () => {
 };
 
 export default ViewPage;
-

@@ -17,14 +17,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const emotionIcons = {
-  'ANGRY': '/angry.png',
-  'JOY': '/joy.png',
-  'DEPRESSION': '/depression.png',
-  'SAD': '/sad.png',
-  'PANIC': '/panic.png',
-  'ANXIETY': '/anxiety.png',
-  'PROUD': '/proud.png',
-  'THRILL': '/thrill.png'
+    'ANGRY': '/angry.png',
+    'JOY': '/joy.png',
+    'DEPRESSION': '/depression.png',
+    'SAD': '/sad.png',
+    'PANIC': '/panic.png',
+    'ANXIETY': '/anxiety.png',
+    'PROUD': '/proud.png',
+    'THRILL': '/thrill.png'
 };
 
 const Container = styled.div`

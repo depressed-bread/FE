@@ -225,14 +225,14 @@ const InputPage = () => {
     };
 
     const emotionImages = {
-        'ANGRY': '/angry.png',
-        'JOY': '/joy.png',
-        'ANXIETY': '/anxiety.png',
-        'DEPRESSION': '/depression.png',
-        'SAD': '/sad.png',
-        'PROUD': '/proud.png',
-        'PANIC': '/panic.png',
-        'THRILL': '/thrill.png'
+    'ANGRY': '/angry.png',
+    'JOY': '/joy.png',
+    'DEPRESSION': '/depression.png',
+    'SAD': '/sad.png',
+    'PANIC': '/panic.png',
+    'ANXIETY': '/anxiety.png',
+    'PROUD': '/proud.png',
+    'THRILL': '/thrill.png'
     };
 
     const keywordInput = useRef();

@@ -273,14 +273,14 @@ const DetailPage = () => {
     const [details, setDetails] = useState('')
     
     const emotionImages = {
-        'ANGRY': '/angry.png',
-        'JOY': '/joy.png',
-        'EMOTIONLESS': '/emotionless.png',
-        'DEPRESSION': '/depression.png',
-        'SAD': '/sad.png',
-        'STRESS': '/stress.png',
-        'PANIC': '/panic.png',
-        'THRILL': '/thrill.png'
+    'ANGRY': '/angry.png',
+    'JOY': '/joy.png',
+    'DEPRESSION': '/depression.png',
+    'SAD': '/sad.png',
+    'PANIC': '/panic.png',
+    'ANXIETY': '/anxiety.png',
+    'PROUD': '/proud.png',
+    'THRILL': '/thrill.png'
     };
 
     // 글마다의 expenseId를 Viewㅖage에서 가져옴
