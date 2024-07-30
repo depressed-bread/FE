@@ -342,7 +342,7 @@ const Home = () => {
           <EmojiIcon src={emotionIcons[expense.emotion]} alt="Emotion" />
           <ItemDetails>
             <div>{expense.keyword}</div>
-            <MoreButton onClick={() => navigate('/detail', { state: { id: expense.id } })}>상세보기</MoreButton>
+            <MoreButton onClick={() => navigate('/detail', { state: expense.id })}>상세보기</MoreButton>
           </ItemDetails>
           <ExpenseSummary>
             <Price>{expense.price}</Price>원
