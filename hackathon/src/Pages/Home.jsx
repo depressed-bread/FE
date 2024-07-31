@@ -214,6 +214,17 @@ const MenuItem = styled.div`
   align-items: center;
 `;
 
+const Totalprice = styled.div`
+    color: #00D065;
+    font-size: 27px;
+    z-index: 1;
+    margin-right: 10px;
+`;
+
+const Unit = styled.span`
+    color: black;
+`;
+
 const Home = () => {
   const navigate = useNavigate();
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -223,8 +234,11 @@ const Home = () => {
   const [topEmotion, setTopEmotion] = useState('');
   const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [selectedStartDate, setSelectedStartDate] = useState('');
+  const [selectedEndDate, setSelectedEndDate] = useState('');
 
-  //날짜 형식 변환
+  // 날짜 형식 변환
   const date = new Date(selectedDate);
   const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
@@ -234,7 +248,7 @@ const Home = () => {
     const todayStr = today.toISOString().split('T')[0];
     setSelectedDate(today);
     fetchDateExpenses(todayStr);
-    
+
     const fetchTopEmotion = async () => {
       try {
         const response = await api.get('/api/user/emotion');
@@ -279,6 +293,8 @@ const Home = () => {
       const response = await api.get(`/api/report/calendar/day?Date=${dateStr}`);
       const data = response.data;
       const expensesForDay = data.find(expense => expense.date === dateStr);
+      const totalAmount = expensesForDay ? expensesForDay.expenses.reduce((sum, expense) => sum + expense.price, 0) : 0;
+      setTotalPrice(totalAmount);
       setSelectedDateExpenses(expensesForDay ? expensesForDay.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
     } catch (error) {
       console.error('There was an error fetching expenses for the selected date', error);
@@ -298,8 +314,21 @@ const Home = () => {
   const handleDayClick = (day) => {
     const clickedDate = new Date(year, month - 1, day, 12);
     setSelectedDate(clickedDate);
+    setSelectedEndDate(clickedDate);
+    setSelectedStartDate(clickedDate);
     const dateStr = clickedDate.toISOString().split('T')[0];
     fetchDateExpenses(dateStr);
+  };
+
+  const CustomfetchedData = async (endpoint) => {
+    try {
+      const response = await api.get(`/api/report/custom?&startDate=${selectedStartDate}&endDate=${selectedEndDate}&emotionType=ALL`);
+      setConsumptions(response.data);
+      console.log(response.data);
+      setTotalPrice(response.data);
+    } catch (error) {
+      console.error('Error fetching Data:', error);
+    }
   };
 
   const getEmotion = useMemo(() => {
@@ -356,7 +385,8 @@ const Home = () => {
         </ExpenseItem>
       ))
     ) : (
-      <div>해당 날짜의 소비내역이 없습니다.</div>
+      <div><br></br>해당 날짜의 소비내역이 없습니다.</div>
+     
     );
   };
 
@@ -385,8 +415,13 @@ const Home = () => {
           <DateTitleWrapper>
             <DateTitle>{month}월 {selectedDate.getDate()}일 소비내역</DateTitle>
           </DateTitleWrapper>
+          <Totalprice>
+            {totalPrice}<Unit>원</Unit>
+          </Totalprice>
           {renderExpenses()}
-          <MoreLink onClick={() => navigate('/Viewpage', {state : formattedDate})}>소비내역 더보기</MoreLink>
+          {selectedDateExpenses.length > 0 && ( // 추가된 조건
+            <MoreLink onClick={() => navigate('/Viewpage', { state: formattedDate })}>소비내역 더보기</MoreLink>
+          )}
         </ContentWrapper>
         <Menu>
           <MenuItem onClick={() => navigate('/inputpage')}>

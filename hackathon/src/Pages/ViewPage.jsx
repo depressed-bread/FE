@@ -585,7 +585,7 @@ const ViewPage = () => {
                 </Header>
                 <ContentWrapper>
                     <Dropdown value={emotion} onChange={handleEmotionChange}>
-                        {['전체', 'ANGRY', 'JOY', 'THRILL', 'SAD', 'PANIC', 'ANXIETY', 'PROUD', 'DEPRESSION'].map(emotion => (
+                        {['전체', '화남', '기쁨', '설렘', '슬픔', '당황', '불안', '뿌듯', '우울'].map(emotion => (
                             <option key={emotion} value={emotion}>{emotion}</option>
                         ))}
                     </Dropdown>
