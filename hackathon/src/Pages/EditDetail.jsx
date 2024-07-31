@@ -278,7 +278,7 @@ const EditDetail = () => {
         };
 
         fetchTopEmotion(); fetchDetail();
-    }, []);
+    }, [expenseId]);
 
     //바뀔때마다 상태변화
     const handleChange = (e) => {

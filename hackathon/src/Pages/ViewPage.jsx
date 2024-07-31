@@ -347,7 +347,7 @@ const ViewPage = () => {
           
             
             fetchTopEmotion();
-        }, []);
+        }, [location.state]);
     
 
     // 첫번째 아닌 day, week, month 선택시 호출

@@ -311,7 +311,7 @@ const DetailPage = () => {
         }
 
         fetchTopEmotion(); fetchDetail();
-    }, []);
+    }, [expenseId]);
 
     // 삭제 API
     const handleCompletionClick = async () => {
