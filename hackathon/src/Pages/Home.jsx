@@ -17,14 +17,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const emotionIcons = {
-    'ANGRY': '/angry.png',
-    'JOY': '/joy.png',
-    'DEPRESSION': '/depression.png',
-    'SAD': '/sad.png',
-    'PANIC': '/panic.png',
-    'ANXIETY': '/anxiety.png',
-    'PROUD': '/proud.png',
-    'THRILL': '/thrill.png'
+  'ANGRY': '/angry.png',
+  'JOY': '/joy.png',
+  'DEPRESSION': '/depression.png',
+  'SAD': '/sad.png',
+  'PANIC': '/panic.png',
+  'ANXIETY': '/anxiety.png',
+  'PROUD': '/proud.png',
+  'THRILL': '/thrill.png'
 };
 
 const Container = styled.div`
@@ -109,16 +109,63 @@ const CalendarWrapper = styled.div`
 const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 2px; /* 날짜 간격을 좁게 설정 */
   width: 100%;
   text-align: center;
 `;
 
 const Day = styled.div`
   position: relative;
-  padding: 10px;
+  padding: 8px;
   color: ${props => (props.isSunday ? '#FF3B30' : props.isSaturday ? '#007AFF' : 'black')};
   cursor: pointer;
+`;
+
+const EmojiDateWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  perspective: 1000px;
+`;
+
+const EmojiFlipCard = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  transform: ${props => (props.isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
+`;
+
+const EmojiFront = styled.div`
+  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(${props => props.src});
+  background-size: cover;
+`;
+
+const EmojiBack = styled.div`
+  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  color: black;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateY(180deg);
+`;
+
+const DateText = styled.div`
+  font-size: 14px;
+  color: black;
+  text-align: center;
+  margin-top: 5px;
 `;
 
 const DateTitleWrapper = styled.div`
@@ -232,20 +279,15 @@ const Home = () => {
   const [emotions, setEmotions] = useState([]);
   const [topEmotion, setTopEmotion] = useState('');
   const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const [flippedDays, setFlippedDays] = useState({});
 
   // 날짜 형식 변환
   const date = new Date(selectedDate);
   const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-// 이모티콘 회전
-  const [rotate, setRotate] = useState(0);
-  const [isRotating, setIsRotating] = useState(true);
-
   useEffect(() => {
-    // Fetch today's date expenses on component mount
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
     setSelectedDate(today);
@@ -277,31 +319,6 @@ const Home = () => {
     fetchMonthlyEmotions();
   }, [month, year]);
 
-    useEffect(() => {
-    const rotateInterval = setInterval(() => {
-      if (isRotating) {
-        setRotate((prevRotate) => prevRotate + 180);
-      }
-    }, 2000);
-    const timeout = setTimeout(() => {
-      setIsRotating(false);
-    }, 2000);
-    const resumeRotation = setTimeout(() => {
-      setIsRotating(true);
-    }, 1000);
-    return () => {
-      clearInterval(rotateInterval);
-      clearTimeout(timeout);
-      clearTimeout(resumeRotation);
-    };
-  }, [isRotating]);
-
-
-
-
-
-
-
   const fetchDateExpenses = async (dateStr) => {
     try {
       const response = await api.get(`/api/report/calendar/day?Date=${dateStr}`);
@@ -332,7 +349,13 @@ const Home = () => {
     fetchDateExpenses(dateStr);
   };
 
+  const handleMouseEnter = (day) => {
+    setFlippedDays(prevState => ({ ...prevState, [day]: true }));
+  };
 
+  const handleMouseLeave = (day) => {
+    setFlippedDays(prevState => ({ ...prevState, [day]: false }));
+  };
 
   const getEmotion = useMemo(() => {
     const emotionMap = {};
@@ -363,10 +386,24 @@ const Home = () => {
       const emotion = getEmotion(i);
 
       calendarDays.push(
-        <Day key={i} isSunday={isSunday} isSaturday={isSaturday} onClick={() => handleDayClick(i)}>
-          {i}
-          {emotion && <img src={emotionIcons[emotion]} alt={emotion} style={{ width: '30px', position: 'absolute', top: '5px', left: '5px', transform: `rotateY(${rotate}deg)`, transition: 'transform 2s ease' }} />}
-
+        <Day
+          key={i}
+          isSunday={isSunday}
+          isSaturday={isSaturday}
+          onClick={() => handleDayClick(i)}
+          onMouseEnter={() => handleMouseEnter(i)}
+          onMouseLeave={() => handleMouseLeave(i)}
+        >
+          <EmojiDateWrapper>
+            {emotion ? (
+              <EmojiFlipCard isFlipped={flippedDays[i]}>
+                <EmojiFront src={emotionIcons[emotion]} />
+                <EmojiBack>{i}</EmojiBack>
+              </EmojiFlipCard>
+            ) : (
+              <DateText>{i}</DateText>
+            )}
+          </EmojiDateWrapper>
         </Day>
       );
     }
@@ -390,7 +427,6 @@ const Home = () => {
       ))
     ) : (
       <div><br></br>해당 날짜의 소비내역이 없습니다.</div>
-     
     );
   };
 
@@ -423,7 +459,7 @@ const Home = () => {
             {totalPrice}<Unit>원</Unit>
           </Totalprice>
           {renderExpenses()}
-          {selectedDateExpenses.length > 0 && ( // 추가된 조건
+          {selectedDateExpenses.length > 0 && (
             <MoreLink onClick={() => navigate('/Viewpage', { state: formattedDate })}>소비내역 더보기</MoreLink>
           )}
         </ContentWrapper>
