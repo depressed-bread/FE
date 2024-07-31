@@ -274,7 +274,6 @@ const ViewPage = () => {
     const [consumptions, setConsumptions] = useState([]);
     const [topEmotion, setTopEmotion] = useState('');
     const [totalPrice, setTotalPrice] = useState('');
-
     //달력
     const [selectedStartDate, setSelectedStartDate] = useState('');
     const [selectedEndDate, setSelectedEndDate] = useState('');
@@ -286,7 +285,6 @@ const ViewPage = () => {
     const handleStartDateChange = (event) => {
         setSelectedStartDate(event.target.value);
     };
-
     //날짜변환함수
     const formatDate = (dateString) => {
         const [year, month, day] = dateString.split('-');
@@ -297,7 +295,17 @@ const ViewPage = () => {
     };
 
     const location = useLocation();
-
+    const convertEmotions = {
+        전체: "전체",
+        화남: "ANGER",
+        기쁨: "JOY",
+        설렘: "THRILL",
+        슬픔: "SAD",
+        당황: "PANIC",
+        불안: "ANXIETY",
+        뿌듯: "RROUD",
+        우울: "DEPRESSION"
+      };
     // 첫번째 호출
     useEffect(() => {
         const fetchTopEmotion = async () => {
@@ -309,7 +317,6 @@ const ViewPage = () => {
                 console.error('Error fetching top emotion:', error);
             }
         };
-
         // 첫번째 day 호출
         const fetchData = async () => {
             try {
@@ -322,11 +329,8 @@ const ViewPage = () => {
                 console.error('Error fetching Data:', error);
             }
         };
-
-         // home에서 date 가져오기
          const date = location.state; 
          console.log(date)
-
         // 날짜별 지출 호출
         const fetchDate = async () => {
             try {
@@ -338,19 +342,14 @@ const ViewPage = () => {
                 console.error('Error fetching top emotion:', error);
             }
         };
-    
             if(date !== null){
                 fetchDate();
             } else {
                 fetchData();
             }
-          
-            
             fetchTopEmotion();
         }, [location.state]);
-    
 
-    // 첫번째 아닌 day, week, month 선택시 호출
     const fetchedData = async (endpoint) => {
         try {
             const response = await api.get(`/api/report/${endpoint}?&emotionType=ALL`);
@@ -362,7 +361,6 @@ const ViewPage = () => {
             console.error('Error fetching Data:', error);
         }
     };
-
     // custom 호출
     const CustomfetchedData = async (endpoint) => {
         try {
@@ -374,32 +372,26 @@ const ViewPage = () => {
             console.error('Error fetching Data:', error);
         }
     };
-
     // API 엔드포인트 전달
     const handleTodayClick = () => {
         fetchedData('day');
         setIsDatePickerOpen(false);
     };
-
     const handleWeekClick = () => {
         fetchedData('week');
         setIsDatePickerOpen(false);
     };
-
     const handleMonthClick = () => {
         fetchedData('month');
         setIsDatePickerOpen(false);
     };
-
     const handleCustomDateClick = () => {
         CustomfetchedData('custom');
     };
-
     const handleEmotionChange = (e) => {
         setEmotion(e.target.value);
+        console.log(e.target.value)
     };
-
-     // 렌더링 5가지 경우
      const renderConsumptions = function () {
         if (emotion === '전체' && period === 'day' && typeof consumptions.date !== 'undefined') {
             return (
@@ -537,8 +529,6 @@ const ViewPage = () => {
                             </Dayprice>
                         </div>
                     ))}
-
-                   
                 </div>
             );
         } else {
@@ -574,7 +564,6 @@ const ViewPage = () => {
             );
         }
     };
-
     return (
         <Container>
             <GlobalStyle />
@@ -584,9 +573,9 @@ const ViewPage = () => {
                     {topEmotion && <Emoji src={emojis[topEmotion]} alt="Emotion" onClick={() => navigate('/setting')} />}
                 </Header>
                 <ContentWrapper>
-                    <Dropdown value={emotion} onChange={handleEmotionChange}>
-                        {['전체', '화남', '기쁨', '설렘', '슬픔', '당황', '불안', '뿌듯', '우울'].map(emotion => (
-                            <option key={emotion} value={emotion}>{emotion}</option>
+                    <Dropdown value={convertEmotions[emotion]} onChange={handleEmotionChange}>
+                        {Object.keys(convertEmotions).map(emotion => (
+                            <option key={convertEmotions[emotion]} value={convertEmotions[emotion]}>{emotion}</option>
                         ))}
                     </Dropdown>
                     <ButtonGroup>
