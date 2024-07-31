@@ -56,10 +56,10 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 130px;
+    width: 200px;
     margin: 0 auto;
     overflow: hidden;
-    margin-bottom: 15%;
+    margin-bottom: 10%;
 `;
 
 const StyledImage = styled.img`
