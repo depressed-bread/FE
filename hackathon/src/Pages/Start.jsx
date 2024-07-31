@@ -31,18 +31,18 @@ const AppWrapper = styled.div`
     position: relative;
 `;
 
-const Header = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-`;
+// const Header = styled.div`
+//     width: 100%;
+//     display: flex;
+//     justify-content: flex-start;
+//     align-items: center;
+// `;
 
-const Logo = styled.img`
-    width: 30px;
-    height: auto;
-    margin-top: 10px;
-`;
+// const Logo = styled.img`
+//     width: 30px;
+//     height: auto;
+//     margin-top: 10px;
+// `;
 
 const Title = styled.div`
     margin: 20px 0;
@@ -140,9 +140,9 @@ const Start = ({ Slides }) => {
             <GlobalStyle />
             <Container>
                 <AppWrapper>
-                    <Header>
+                    {/* <Header>
                         <Logo src={logoImage} alt="Logo" />
-                    </Header>
+                    </Header> */}
 
                     <Title>
                         {Titles[currentIndex]}
