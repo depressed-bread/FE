@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import api from './Api';
 import logoImage from './logo.png';
+import { useLocation } from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -40,6 +41,7 @@ const AppWrapper = styled.div`
     height: 100vh;
     background-color: #FEF69B;
     padding: 20px;
+    padding-bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,7 +56,7 @@ const Header = styled.div`
     justify-content: space-between;
     align-items: center;
     top: 0;
-    padding: 10px 20px;
+    padding: 0 20px;
     z-index: 1;
     background-color: #FEF69B;
 `;
@@ -200,7 +202,15 @@ const Totalprice = styled.div`
     font-size: 30px;
     font-weight : bold;
     z-index: 1;
-    float: right;
+    margin-right: 10px;
+`;
+
+const Dayprice = styled.div`
+    color: #00D065;
+    font-size: 30px;
+    font-weight : bold;
+    text-align: right;
+    z-index: 1;
     margin-right: 10px;
 `;
 
@@ -216,7 +226,20 @@ const Menu = styled.div`
     bottom: 0;
     background-color: #FEF69B;
     z-index: 1;
-    margin-bottom: 3%;
+    margin-bottom: 3.5%;
+`;
+
+const LeftMenuItem = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== '$active',
+})`
+    cursor: pointer;
+    font-size: 16px;
+    color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
+    padding-right: 40px;
 `;
 
 const MenuItem = styled.div.withConfig({
@@ -229,6 +252,19 @@ const MenuItem = styled.div.withConfig({
     flex-direction: column;
     align-items: center;
     font-family: 'Ownglyph_meetme-Rg';
+`;
+
+const RightMenuItem = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== '$active',
+})`
+    cursor: pointer;
+    font-size: 16px;
+    color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Ownglyph_meetme-Rg';
+    padding-left: 40px;
 `;
 
 const ViewPage = () => {
@@ -260,6 +296,8 @@ const ViewPage = () => {
         return (`${rendermonth}월 ${renderday}일`);
     };
 
+    const location = useLocation();
+
     // 첫번째 호출
     useEffect(() => {
         const fetchTopEmotion = async () => {
@@ -285,9 +323,32 @@ const ViewPage = () => {
             }
         };
 
-        fetchData();
-        fetchTopEmotion();
-    }, []);
+         // home에서 date 가져오기
+         const date = location.state; 
+         console.log(date)
+
+        // 날짜별 지출 호출
+        const fetchDate = async () => {
+            try {
+                const response = await api.get(`/api/report/calendar/day?Date=${date}`);
+                setConsumptions(response.data)
+                console.log(response)
+                setPeriod('custom')
+            } catch (error) {
+                console.error('Error fetching top emotion:', error);
+            }
+        };
+    
+            if(date !== null){
+                fetchDate();
+            } else {
+                fetchData();
+            }
+          
+            
+            fetchTopEmotion();
+        }, []);
+    
 
     // 첫번째 아닌 day, week, month 선택시 호출
     const fetchedData = async (endpoint) => {
@@ -338,14 +399,19 @@ const ViewPage = () => {
         setEmotion(e.target.value);
     };
 
-    // 렌더링 5가지 경우
-    const renderConsumptions = function () {
+     // 렌더링 5가지 경우
+     const renderConsumptions = function () {
         if (emotion === '전체' && period === 'day' && typeof consumptions.date !== 'undefined') {
             return (
                 <div>
+                    <Totalprice>
+                         {totalPrice.toLocaleString()} <Unit>원</Unit>
+                    </Totalprice>
+                    
                     {consumptions.expenses.length > 0 && (
                         <Title><Date>{formatDate(consumptions.date)}</Date> 소비내역</Title>
                     )}
+                    
                     {consumptions.expenses.slice(0).reverse().map((items, index) => (
                         <ExpenseItem key={index} value={items.id}>
                             <EmojiIcon src={emojis[items.emotion]} alt='emotion' />
@@ -354,13 +420,13 @@ const ViewPage = () => {
                                 <MoreButton onClick={() => navigate('/detail', { state: items.id })}>상세보기</MoreButton>
                             </ItemDetails>
                             <ExpenseSummary>
-                                <Price>{items.price}</Price><Unit>원</Unit>
+                                <Price>{items.price.toLocaleString()}</Price><Unit>원</Unit>
                             </ExpenseSummary>
                         </ExpenseItem>
                     ))}
-                    <Totalprice>
-                        {totalPrice} <Unit>원</Unit>
-                    </Totalprice>
+                    <Dayprice>
+                         {totalPrice.toLocaleString()} <Unit>원</Unit>
+                    </Dayprice>
                 </div>
             );
         } else if (emotion === '전체' && period === 'day' && typeof consumptions.date === 'undefined') {
@@ -380,6 +446,9 @@ const ViewPage = () => {
 
             return (
                 <div>
+                    <Totalprice>
+                        {emotionTotalPrice.toLocaleString()} <Unit>원</Unit>
+                    </Totalprice>
                     {emotionExpensesByDate.slice(0).reverse().map((item, index) => (
                         <div key={index}>
                             <Title>
@@ -393,15 +462,15 @@ const ViewPage = () => {
                                         <MoreButton onClick={() => navigate('/detail', { state: it.id })}>상세보기</MoreButton>
                                     </ItemDetails>
                                     <ExpenseSummary>
-                                        <Price>{it.price}</Price><Unit>원</Unit>
+                                        <Price>{it.price.toLocaleString()}</Price><Unit>원</Unit>
                                     </ExpenseSummary>
                                 </ExpenseItem>
                             ))}
+                            <Dayprice>
+                            {item.expenses.map(expense => expense.price).reduce((acc, price) => acc + price, 0).toLocaleString()} <Unit>원</Unit>
+                            </Dayprice>
                         </div>
                     ))}
-                    <Totalprice>
-                        {emotionTotalPrice} <Unit>원</Unit>
-                    </Totalprice>
                 </div>
             );
         } else if (emotion !== '전체' && period === 'day') {
@@ -410,6 +479,9 @@ const ViewPage = () => {
 
             return (
                 <div>
+                    <Totalprice>
+                        {totalExpense.toLocaleString()} <Unit>원</Unit>
+                    </Totalprice>
                     {totalExpenses.length > 0 && (
                         <Title><Date>{formatDate(consumptions.date)}</Date> 소비내역</Title>
                     )}
@@ -421,13 +493,13 @@ const ViewPage = () => {
                                 <MoreButton onClick={() => navigate('/detail', { state: items.id })}>상세보기</MoreButton>
                             </ItemDetails>
                             <ExpenseSummary>
-                                <Price>{items.price}</Price><Unit>원</Unit>
+                                <Price>{items.price.toLocaleString()}</Price><Unit>원</Unit>
                             </ExpenseSummary>
                         </ExpenseItem>
                     ))}
-                    <Totalprice>
-                        {totalExpense} <Unit>원</Unit>
-                    </Totalprice>
+                    <Dayprice>
+                         {totalExpense.toLocaleString()} <Unit>원</Unit>
+                    </Dayprice>
                 </div>
             );
         } else if (emotion === '전체' && period === 'custom') {
@@ -439,6 +511,9 @@ const ViewPage = () => {
 
             return (
                 <div>
+                     <Totalprice>
+                        {totalExpenses.toLocaleString()} <Unit>원</Unit>
+                    </Totalprice>
                     {consumptions.filter(it => it.expenses.length > 0).slice(0).reverse().map((items, index) => (
                         <div key={index}>
                             <Title>
@@ -452,21 +527,26 @@ const ViewPage = () => {
                                         <MoreButton onClick={() => navigate('/detail', { state: i.id })}>상세보기</MoreButton>
                                     </ItemDetails>
                                     <ExpenseSummary>
-                                        <Price>{i.price}</Price>
+                                        <Price>{i.price.toLocaleString()}</Price>
                                         <Unit>원</Unit>
                                     </ExpenseSummary>
                                 </ExpenseItem>
                             )) : <div></div>}
+                            <Dayprice>
+                            {items.expenses.map(expense => expense.price).reduce((acc, price) => acc + price, 0).toLocaleString()} <Unit>원</Unit>
+                            </Dayprice>
                         </div>
                     ))}
-                    <Totalprice>
-                        {totalExpenses} <Unit>원</Unit>
-                    </Totalprice>
+
+                   
                 </div>
             );
         } else {
             return (
                 <div>
+                    <Totalprice>
+                        {totalPrice.toLocaleString()} <Unit>원</Unit>
+                    </Totalprice>
                     {consumptions.filter(it => it.expenses.length > 0).slice(0).reverse().map((items, index) => (
                         <div key={index}>
                             <Title>
@@ -480,16 +560,16 @@ const ViewPage = () => {
                                         <MoreButton onClick={() => navigate('/detail', { state: i.id })}>상세보기</MoreButton>
                                     </ItemDetails>
                                     <ExpenseSummary>
-                                        <Price>{i.price}</Price>
+                                        <Price>{i.price.toLocaleString()}</Price>
                                         <Unit>원</Unit>
                                     </ExpenseSummary>
                                 </ExpenseItem>
                             )) : <div></div>}
+                            <Dayprice>
+                            {items.expenses.map(expense => expense.price).reduce((acc, price) => acc + price, 0).toLocaleString()} <Unit>원</Unit>
+                            </Dayprice>
                         </div>
                     ))}
-                    <Totalprice>
-                        {totalPrice} <Unit>원</Unit>
-                    </Totalprice>
                 </div>
             );
         }
@@ -505,15 +585,15 @@ const ViewPage = () => {
                 </Header>
                 <ContentWrapper>
                     <Dropdown value={emotion} onChange={handleEmotionChange}>
-                        {['전체', '화남', '기쁨', '설렘', '슬픔', '당황', '불안', '뿌듯', '우울'].map(emotion => (
+                        {['전체', 'ANGRY', 'JOY', 'THRILL', 'SAD', 'PANIC', 'ANXIETY', 'PROUD', 'DEPRESSION'].map(emotion => (
                             <option key={emotion} value={emotion}>{emotion}</option>
                         ))}
                     </Dropdown>
                     <ButtonGroup>
                         <Button style={{ color: period === 'custom' ? '#FF86FF' : 'black' }} onClick={toggleDatePicker} >날짜 지정 선택</Button>
                         <Button style={{ color: period === 'day' ? '#FF86FF' : 'black' }} onClick={handleTodayClick}>오늘</Button>
-                        <Button style={{ color: period === 'week' ? '#FF86FF' : 'black' }} onClick={handleWeekClick}>이번주</Button>
-                        <Button style={{ color: period === 'month' ? '#FF86FF' : 'black' }} onClick={handleMonthClick}>이번달</Button>
+                        <Button style={{ color: period === 'week' ? '#FF86FF' : 'black' }} onClick={handleWeekClick}>7일</Button>
+                        <Button style={{ color: period === 'month' ? '#FF86FF' : 'black' }} onClick={handleMonthClick}>30일</Button>
                     </ButtonGroup>
                     <CalanderGroup>
                         {isDatePickerOpen && (
@@ -533,18 +613,18 @@ const ViewPage = () => {
                     {renderConsumptions()}
                 </ContentWrapper>
                 <Menu>
-                    <MenuItem onClick={() => navigate('/inputpage')}>
+                    <LeftMenuItem onClick={() => navigate('/inputpage')}>
                         <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
                         내용입력
-                    </MenuItem>
+                    </LeftMenuItem>
                     <MenuItem onClick={() => navigate('/home')}>
                         <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
                         홈
                     </MenuItem>
-                    <MenuItem $active>
+                    <RightMenuItem $active>
                         <FontAwesomeIcon icon={faClipboardList} style={{ fontSize: '40px' }} />
                         조회
-                    </MenuItem>
+                    </RightMenuItem>
                 </Menu>
             </AppWrapper>
         </Container>

@@ -224,6 +224,10 @@ const Home = () => {
   const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
 
+  //날짜 형식 변환
+  const date = new Date(selectedDate);
+  const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
   useEffect(() => {
     // Fetch today's date expenses on component mount
     const today = new Date();
@@ -382,7 +386,7 @@ const Home = () => {
             <DateTitle>{month}월 {selectedDate.getDate()}일 소비내역</DateTitle>
           </DateTitleWrapper>
           {renderExpenses()}
-          <MoreLink onClick={() => navigate('/loadingpage')}>소비내역 더보기</MoreLink>
+          <MoreLink onClick={() => navigate('/Viewpage', {state : formattedDate})}>소비내역 더보기</MoreLink>
         </ContentWrapper>
         <Menu>
           <MenuItem onClick={() => navigate('/inputpage')}>
