@@ -34,9 +34,9 @@ const AppWrapper = styled.div`
 `;
 
 const Logo = styled.img`
-    width: 100px;
-    margin-top: 20%;
-    margin-bottom: 10%;
+  width: 100px;
+  margin-top: 20%;
+  margin-bottom: 10%;
 `;
 
 const Input = styled.input`
@@ -193,11 +193,16 @@ const Signup = () => {
         passwordChk
       });
 
+      if (response.data.message === '이미사용중인 이메일 입니다.') {
+        setError('이미 사용중인 이메일입니다.');
+        return;
+      }
+
       console.log(response.data.message); // 회원가입 완료 메시지 출력
       setModalOpen(true); // 회원가입 성공 시 모달 열기
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setError('이미 존재하는 이메일입니다.');
+      if (error.response && error.response.data.message === '이미사용중인 이메일 입니다.') {
+        setError('이미 사용중인 이메일입니다.');
       } else {
         console.error('회원가입 에러:', error);
         setError('회원가입 중 오류가 발생했습니다.');
