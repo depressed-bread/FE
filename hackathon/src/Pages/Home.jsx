@@ -229,18 +229,20 @@ const Home = () => {
   const navigate = useNavigate();
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [consumptions, setConsumptions] = useState([]);
   const [emotions, setEmotions] = useState([]);
   const [topEmotion, setTopEmotion] = useState('');
   const [selectedDateExpenses, setSelectedDateExpenses] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
   const [totalPrice, setTotalPrice] = useState(0);
-  const [selectedStartDate, setSelectedStartDate] = useState('');
-  const [selectedEndDate, setSelectedEndDate] = useState('');
+
 
   // 날짜 형식 변환
   const date = new Date(selectedDate);
   const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+// 이모티콘 회전
+  const [rotate, setRotate] = useState(0);
+  const [isRotating, setIsRotating] = useState(true);
 
   useEffect(() => {
     // Fetch today's date expenses on component mount
@@ -248,7 +250,6 @@ const Home = () => {
     const todayStr = today.toISOString().split('T')[0];
     setSelectedDate(today);
     fetchDateExpenses(todayStr);
-
     const fetchTopEmotion = async () => {
       try {
         const response = await api.get('/api/user/emotion');
@@ -264,16 +265,6 @@ const Home = () => {
       }
     };
 
-    const fetchExpenseData = async () => {
-      try {
-        const response = await api.get('/api/report/day?emotionType=ALL');
-        const data = Array.isArray(response.data) ? response.data : [response.data];
-        setConsumptions(data);
-      } catch (error) {
-        console.error('There was an error fetching expense data', error);
-      }
-    };
-
     const fetchMonthlyEmotions = async () => {
       try {
         const response = await api.get(`/api/report/emotion?year=${year}&month=${month}`);
@@ -282,11 +273,34 @@ const Home = () => {
         console.error('There was an error fetching monthly emotions', error);
       }
     };
-
     fetchTopEmotion();
-    fetchExpenseData();
     fetchMonthlyEmotions();
   }, [month, year]);
+
+    useEffect(() => {
+    const rotateInterval = setInterval(() => {
+      if (isRotating) {
+        setRotate((prevRotate) => prevRotate + 180);
+      }
+    }, 2000);
+    const timeout = setTimeout(() => {
+      setIsRotating(false);
+    }, 2000);
+    const resumeRotation = setTimeout(() => {
+      setIsRotating(true);
+    }, 1000);
+    return () => {
+      clearInterval(rotateInterval);
+      clearTimeout(timeout);
+      clearTimeout(resumeRotation);
+    };
+  }, [isRotating]);
+
+
+
+
+
+
 
   const fetchDateExpenses = async (dateStr) => {
     try {
@@ -314,22 +328,11 @@ const Home = () => {
   const handleDayClick = (day) => {
     const clickedDate = new Date(year, month - 1, day, 12);
     setSelectedDate(clickedDate);
-    setSelectedEndDate(clickedDate);
-    setSelectedStartDate(clickedDate);
     const dateStr = clickedDate.toISOString().split('T')[0];
     fetchDateExpenses(dateStr);
   };
 
-  const CustomfetchedData = async (endpoint) => {
-    try {
-      const response = await api.get(`/api/report/custom?&startDate=${selectedStartDate}&endDate=${selectedEndDate}&emotionType=ALL`);
-      setConsumptions(response.data);
-      console.log(response.data);
-      setTotalPrice(response.data);
-    } catch (error) {
-      console.error('Error fetching Data:', error);
-    }
-  };
+
 
   const getEmotion = useMemo(() => {
     const emotionMap = {};
@@ -362,7 +365,8 @@ const Home = () => {
       calendarDays.push(
         <Day key={i} isSunday={isSunday} isSaturday={isSaturday} onClick={() => handleDayClick(i)}>
           {i}
-          {emotion && <img src={emotionIcons[emotion]} alt={emotion} style={{ width: '30px', position: 'absolute', top: '5px', left: '5px' }} />}
+          {emotion && <img src={emotionIcons[emotion]} alt={emotion} style={{ width: '30px', position: 'absolute', top: '5px', left: '5px', transform: `rotateY(${rotate}deg)`, transition: 'transform 2s ease' }} />}
+
         </Day>
       );
     }
