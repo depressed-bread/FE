@@ -2,9 +2,9 @@ import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import image02 from "./image02.png";
-import image03 from "./image03.png";
 import logoImage from './logo.png';
+import Home from './home.png';
+import View from './view.png';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -56,8 +56,7 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 150px;
-    height: 300px;
+    width: 130px;
     margin: 0 auto;
     overflow: hidden;
     margin-bottom: 15%;
@@ -111,7 +110,7 @@ const StartButton = styled.button`
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
-const slides = [logoImage, image02, image03];
+const slides = [logoImage, Home, View];
 
 const Start = ({ Slides }) => {
     const navigate = useNavigate();
