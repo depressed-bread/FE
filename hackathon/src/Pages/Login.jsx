@@ -59,7 +59,7 @@ const LoginButton = styled.button`
     font-size: 35px;
     width: 90%;
     margin-bottom: 20px;
-    font-family: 'Ownglyph_meetme-Rg'
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
