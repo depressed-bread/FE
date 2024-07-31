@@ -297,15 +297,16 @@ const ViewPage = () => {
     const location = useLocation();
     const convertEmotions = {
         전체: "전체",
-        화남: "ANGER",
+        화남: "ANGRY",
         기쁨: "JOY",
         설렘: "THRILL",
         슬픔: "SAD",
         당황: "PANIC",
         불안: "ANXIETY",
-        뿌듯: "RROUD",
+        뿌듯: "PROUD",
         우울: "DEPRESSION"
       };
+      
     // 첫번째 호출
     useEffect(() => {
         const fetchTopEmotion = async () => {
