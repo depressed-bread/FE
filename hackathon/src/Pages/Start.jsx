@@ -53,13 +53,14 @@ const Title = styled.div`
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    margin-top: 10%;
 `;
 
 const ImageContainer = styled.div`
     width: 200px;
     margin: 0 auto;
     overflow: hidden;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 `;
 
 const StyledImage = styled.img`
