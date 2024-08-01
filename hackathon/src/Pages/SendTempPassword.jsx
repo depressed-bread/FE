@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import api from './Api';
 import logoImage from './logo.png';
 import font from './온글잎밑미.ttf';
+import BackImage from './back.png';
 
 const GlobalStyle = createGlobalStyle`
    @font-face {
@@ -118,6 +119,17 @@ const ModalButton = styled.button`
     }
 `;
 
+const BackButton = styled.button`
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    background-color: #FEF69B;
+    font-family: 'Ownglyph_meetme-Rg';
+    position: absolute;
+    top: 40px;
+    left: 20px;
+`;
+
 const SendTempPassword = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
@@ -165,6 +177,9 @@ const SendTempPassword = () => {
             <Container>
                 <AppWrapper>
                     <Logo src={logoImage} alt="Logo" />
+
+                    <BackButton onClick={() => navigate(-1)}><img src={BackImage} alt="Back" style={{width:'30px',height:'40px'}}/></BackButton>
+
                     <Input
                         type="email"
                         placeholder="이메일"

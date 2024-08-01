@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
 import logoImage from './logo.png';
 import font from './온글잎밑미.ttf';
+import BackImage from './back.png';
 
 const GlobalStyle = createGlobalStyle`
    @font-face {
@@ -98,6 +99,17 @@ const ModalText = styled.p`
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
+const BackButton = styled.button`
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    background-color: #FEF69B;
+    font-family: 'Ownglyph_meetme-Rg';
+    position: absolute;
+    top: 40px;
+    left: 20px;
+`;
+
 const ResetPassword = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
@@ -142,6 +154,8 @@ const ResetPassword = () => {
             <Container>
                 <AppWrapper>
                     <Logo src={logoImage} alt="Logo" />
+
+                    <BackButton onClick={() => navigate(-1)}><img src={BackImage} alt="Back" style={{width:'30px',height:'40px'}}/></BackButton>
 
                     <Input
                         type="email"
