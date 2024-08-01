@@ -205,6 +205,7 @@ const ModalButton = styled.button`
     cursor: pointer;
     font-size: 25px;
     margin-top: 20px;
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         color: #FF86FF;
