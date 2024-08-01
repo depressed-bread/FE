@@ -45,56 +45,40 @@ const AppWrapper = styled.div`
 // `;
 
 const Title = styled.div`
-    margin: 20px 0 0 0;
-    font-size: 30px;
+    font-size: 25px;
     text-align: center;
-    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    margin-top: 10%;
+    margin: 10% 0 0.2% 0;
+    height: 10vh;
 `;
 
 const ImageContainer = styled.div`
-    width: 200px;
-    margin: 0 auto;
-    margin-bottom: 5%;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    
 `;
 
 const StyledImage = styled.img`
     width: 100%;
     margin-top: 30%;
     object-fit: cover;
-`;
-
-const Controls = styled.div`
-    display: flex;
-    justify-content: center;
     align-items: center;
-    margin-top: 1rem;
-    margin-bottom: 23%;
+    margin-right: 10px;
+    margin-left: 10px;
 `;
 
 const Arrow = styled.div`
     cursor: pointer;
-    font-size: 35px;
-    margin: 0 30px;
+    font-size: 35px; 
+    margin: 0 50px;
     color: #00D065;
-`;
-
-const DotsContainer = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-
-const DotStyles = styled.div.withConfig({
-    shouldForwardProp: (prop) => prop !== '$isActive',
-})`
-    margin: 0 10px;
-    cursor: pointer;
-    font-size: 30px;
-    color: ${({ $isActive }) => ($isActive ? '#00D065' : 'white')};
 `;
 
 const StartButton = styled.button`
@@ -106,13 +90,14 @@ const StartButton = styled.button`
     cursor: pointer;
     font-size: 35px;
     width: 60%;
-    margin-bottom: 20%;
+    margin-top: 60px;
     font-family: 'Ownglyph_meetme-Rg';
+    
 `;
 
 const slides = [logoImage, Home, View];
 
-const Start = ({ Slides }) => {
+const Start = () => {
     const navigate = useNavigate();
 
     const handleStartClick = () => {
@@ -131,37 +116,20 @@ const Start = ({ Slides }) => {
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
     }
-    const goToSlide = (slideIndex) => {
-        setCurrentIndex(slideIndex);
-    }
 
     return (
         <>
             <GlobalStyle />
             <Container>
                 <AppWrapper>
-                    {/* <Header>
-                        <Logo src={logoImage} alt="Logo" />
-                    </Header> */}
-
                     <Title>
                         {Titles[currentIndex]}
                     </Title>
-
                     <ImageContainer>
-                        <StyledImage src={slides[currentIndex]} alt={`slide ${currentIndex}`} />
-                    </ImageContainer>
-
-                    <Controls>
                         <Arrow onClick={goToPrevious}>&lt;</Arrow>
-                        <DotsContainer>
-                            {slides.map((slide, slideIndex) => (
-                                <DotStyles key={slideIndex} $isActive={slideIndex === currentIndex} onClick={() => goToSlide(slideIndex)}>&#9679;</DotStyles>
-                            ))}
-                        </DotsContainer>
+                        <StyledImage src={slides[currentIndex]} alt={`slide ${currentIndex}`} />
                         <Arrow onClick={goToNext}>&gt;</Arrow>
-                    </Controls>
-
+                    </ImageContainer>
                     <StartButton onClick={handleStartClick}>시작하기</StartButton>
                 </AppWrapper>
             </Container>
