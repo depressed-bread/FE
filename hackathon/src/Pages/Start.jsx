@@ -37,7 +37,7 @@ const AppWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
-    // box-sizing: border-box;
+    box-sizing: border-box;
 `;
 
 const Title = styled.div`
@@ -52,17 +52,18 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 150px;
+    flex: 1; // 남은 공간을 차지하게 설정
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 70%;
     margin: 0 10px;
 `;
 
 const StyledImage = styled.img`
-    width: 100%;
-    margin-top: 30%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 `;
 
 const Arrow = styled.div`
@@ -83,7 +84,7 @@ const StartButton = styled.button`
     width: 60%;
     margin-top: auto;
     font-family: 'Ownglyph_meetme-Rg';
-    margin-bottom: 30%;
+    margin-bottom: 10%;
 `;
 
 const slides = [logoImage, Home, View];
@@ -129,4 +130,3 @@ const Start = () => {
 };
 
 export default Start;
-
