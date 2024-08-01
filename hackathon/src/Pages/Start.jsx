@@ -45,7 +45,7 @@ const AppWrapper = styled.div`
 // `;
 
 const Title = styled.div`
-    margin: 20px 0;
+    margin: 20px 0 0 0;
     font-size: 30px;
     text-align: center;
     flex-grow: 1;
@@ -57,15 +57,14 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 60%;
+    width: 200px;
     margin: 0 auto;
-    overflow: hidden;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 `;
 
 const StyledImage = styled.img`
     width: 100%;
-    margin-top: 10%;
+    margin-top: 30%;
     object-fit: cover;
 `;
 
