@@ -46,7 +46,7 @@ const AppWrapper = styled.div`
 
 const Title = styled.div`
     margin: 20px 0;
-    font-size: 40px;
+    font-size: 30px;
     text-align: center;
     flex-grow: 1;
     display: flex;
@@ -57,15 +57,15 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 200px;
+    width: 60%;
     margin: 0 auto;
     overflow: hidden;
-    margin-bottom: 5%;
+    margin-bottom: 10%;
 `;
 
 const StyledImage = styled.img`
     width: 100%;
-    margin-top: 50%;
+    margin-top: 10%;
     object-fit: cover;
 `;
 
@@ -117,7 +117,7 @@ const Start = ({ Slides }) => {
     const navigate = useNavigate();
 
     const handleStartClick = () => {
-        navigate('/home');
+        navigate('/login');
     };
 
     const Titles = ["우울해서 빵 샀어", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"];
