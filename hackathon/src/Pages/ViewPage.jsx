@@ -288,10 +288,9 @@ const ViewPage = () => {
     };
     //날짜변환함수
     const formatDate = (dateString) => {
-        const [year, month, day] = dateString.split('-');
+        const [, month, day] = dateString.split('-');
         const rendermonth = month.startsWith('0') ? month.slice(1) : month;
         const renderday = day.startsWith('0') ? day.slice(1) : day;
-        console.log(year)
         return (`${rendermonth}월 ${renderday}일`);
     };
 
@@ -332,7 +331,6 @@ const ViewPage = () => {
             }
         };
          const date = location.state; 
-         console.log(date)
         // 날짜별 지출 호출
         const fetchDate = async () => {
             try {
@@ -392,7 +390,6 @@ const ViewPage = () => {
     };
     const handleEmotionChange = (e) => {
         setEmotion(e.target.value);
-        console.log(e.target.value)
     };
      const renderConsumptions = function () {
         if (emotion === '전체' && period === 'day' && typeof consumptions.date !== 'undefined') {
