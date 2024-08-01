@@ -14,6 +14,8 @@ const GlobalStyle = createGlobalStyle`
    }
   body {
     font-family: 'Ownglyph_meetme-Rg';
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -23,31 +25,20 @@ const Container = styled.div`
     align-items: center;
     height: 100vh;
     background-color: #FEFEFE;
+    overflow: hidden;
 `;
 
 const AppWrapper = styled.div`
     width: 375px;
-    height: 100vh;
+    min-height: 100vh; // 최소 길이
     background-color: #FEF69B; 
     padding: 20px;
     display: flex; 
     flex-direction: column;
     align-items: center;
     position: relative;
+    // box-sizing: border-box;
 `;
-
-// const Header = styled.div`
-//     width: 100%;
-//     display: flex;
-//     justify-content: flex-start;
-//     align-items: center;
-// `;
-
-// const Logo = styled.img`
-//     width: 30px;
-//     height: auto;
-//     margin-top: 10px;
-// `;
 
 const Title = styled.div`
     font-size: 25px;
@@ -61,28 +52,23 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    width: 120px;
+    width: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 10px;
-    margin-left: 10px;
-    
+    margin: 0 10px;
 `;
 
 const StyledImage = styled.img`
     width: 100%;
     margin-top: 30%;
     object-fit: cover;
-    align-items: center;
-    margin-right: 10px;
-    margin-left: 10px;
 `;
 
 const Arrow = styled.div`
     cursor: pointer;
     font-size: 35px; 
-    margin: 0 50px;
+    margin: 0 20px;
     color: #00D065;
 `;
 
@@ -95,9 +81,9 @@ const StartButton = styled.button`
     cursor: pointer;
     font-size: 35px;
     width: 60%;
-    margin-top: 60px;
+    margin-top: auto;
     font-family: 'Ownglyph_meetme-Rg';
-    
+    margin-bottom: 30%;
 `;
 
 const slides = [logoImage, Home, View];
@@ -143,3 +129,4 @@ const Start = () => {
 };
 
 export default Start;
+
