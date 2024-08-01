@@ -262,14 +262,14 @@ const MenuItem = styled.div`
 `;
 
 const Totalprice = styled.div`
-    color: #00D065;
-    font-size: 27px;
-    z-index: 1;
-    margin-right: 10px;
+  color: #00D065;
+  font-size: 27px;
+  z-index: 1;
+  margin-right: 10px;
 `;
 
 const Unit = styled.span`
-    color: black;
+  color: black;
 `;
 
 const Home = () => {
@@ -283,20 +283,13 @@ const Home = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [flippedDays, setFlippedDays] = useState({});
 
-  // 날짜 형식 변환
-  const date = new Date(selectedDate);
-  const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
 
   useEffect(() => {
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    setSelectedDate(today);
-    fetchDateExpenses(todayStr);
     const fetchTopEmotion = async () => {
       try {
         const response = await api.get('/api/user/emotion');
         const emotion = response.data.emotion;
-
         if (emotionIcons[emotion]) {
           setTopEmotion(emotion);
         } else {
@@ -315,38 +308,56 @@ const Home = () => {
         console.error('There was an error fetching monthly emotions', error);
       }
     };
+
     fetchTopEmotion();
     fetchMonthlyEmotions();
   }, [month, year]);
 
-  const fetchDateExpenses = async (dateStr) => {
-    try {
-      const response = await api.get(`/api/report/calendar/day?Date=${dateStr}`);
-      const data = response.data;
-      const expensesForDay = data.find(expense => expense.date === dateStr);
-      const totalAmount = expensesForDay ? expensesForDay.expenses.reduce((sum, expense) => sum + expense.price, 0) : 0;
-      setTotalPrice(totalAmount);
-      setSelectedDateExpenses(expensesForDay ? expensesForDay.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
-    } catch (error) {
-      console.error('There was an error fetching expenses for the selected date', error);
+  useEffect(() => {
+    const fetchDateExpenses = async (dateStr) => {
+      try {
+        const response = await api.get(`/api/report/calendar/day?Date=${dateStr}`);
+        const data = response.data;
+        const expensesForDay = data.find(expense => expense.date === dateStr);
+        const totalAmount = expensesForDay ? expensesForDay.expenses.reduce((sum, expense) => sum + expense.price, 0) : 0;
+        setTotalPrice(totalAmount);
+        setSelectedDateExpenses(expensesForDay ? expensesForDay.expenses.slice().sort((a, b) => b.id - a.id).slice(0, 2) : []);
+      } catch (error) {
+        console.error('There was an error fetching expenses for the selected date', error);
+      }
+    };
+
+    fetchDateExpenses(formattedDate);
+  }, [formattedDate]); // updated dependency
+
+  useEffect(() => {
+    const today = new Date();
+    if (year !== today.getFullYear() || month !== today.getMonth() + 1) {
+      setSelectedDate(new Date(year, month - 1, 1));
+    } else {
+      setSelectedDate(today);
     }
-  };
+  }, [year, month]);
 
   const handlePrevMonth = () => {
-    setMonth(prevMonth => prevMonth === 1 ? 12 : prevMonth - 1);
-    setYear(prevYear => month === 1 ? prevYear - 1 : prevYear);
+    setMonth(prevMonth => {
+      const newMonth = prevMonth === 1 ? 12 : prevMonth - 1;
+      setYear(prevYear => prevMonth === 1 ? prevYear - 1 : prevYear);
+      return newMonth;
+    });
   };
 
   const handleNextMonth = () => {
-    setMonth(prevMonth => prevMonth === 12 ? 1 : prevMonth + 1);
-    setYear(prevYear => month === 12 ? prevYear + 1 : prevYear);
+    setMonth(prevMonth => {
+      const newMonth = prevMonth === 12 ? 1 : prevMonth + 1;
+      setYear(prevYear => prevMonth === 12 ? prevYear + 1 : prevYear);
+      return newMonth;
+    });
   };
 
   const handleDayClick = (day) => {
     const clickedDate = new Date(year, month - 1, day, 12);
     setSelectedDate(clickedDate);
-    const dateStr = clickedDate.toISOString().split('T')[0];
-    fetchDateExpenses(dateStr);
   };
 
   const handleMouseEnter = (day) => {
