@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+
 const emotionIcons = {
   'ANGRY': '/angry.png',
   'JOY': '/joy.png',
@@ -27,7 +28,6 @@ const emotionIcons = {
   'PROUD': '/proud.png',
   'THRILL': '/thrill.png'
 };
-
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -35,7 +35,6 @@ const Container = styled.div`
   height: 100vh;
   background-color: #FEFEFE;
 `;
-
 const AppWrapper = styled.div`
   width: 375px;
   height: 100vh;
@@ -47,7 +46,6 @@ const AppWrapper = styled.div`
   position: relative;
   overflow: hidden;
 `;
-
 const Header = styled.div`
   width: 100%;
   display: flex;
@@ -59,14 +57,12 @@ const Header = styled.div`
   z-index: 1;
   background-color: #FEF69B;
 `;
-
 const Logo = styled.img`
   width: 30px;
   height: auto;
   margin-top: 10px;
   margin-left: 10px;
 `;
-
 const Emoji = styled.img`
   width: 24px;
   height: 24px;
@@ -74,7 +70,6 @@ const Emoji = styled.img`
   margin-right: 10px;
   cursor: pointer;
 `;
-
 const MonthNavigation = styled.div`
   display: flex;
   justify-content: center;
@@ -82,14 +77,12 @@ const MonthNavigation = styled.div`
   margin: 80px 0 20px;
   font-size: 35px;
 `;
-
 const Arrow = styled.div`
   cursor: pointer;
   font-size: 24px;
   margin: 0 20px;
   color: #00D065;
 `;
-
 const ContentWrapper = styled.div`
   flex: 1;
   width: 100%;
@@ -97,7 +90,6 @@ const ContentWrapper = styled.div`
   padding-top: 1vh;
   padding-bottom: 10vh;
 `;
-
 const CalendarWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -106,7 +98,6 @@ const CalendarWrapper = styled.div`
   padding: 10px;
   border-radius: 10px;
 `;
-
 const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -114,15 +105,12 @@ const CalendarGrid = styled.div`
   width: 100%;
   text-align: center;
 `;
-
 const Day = styled.div`
   position: relative;
-  padding: 8px;
-  color: ${props => (props.$isSunday === 'true' ? '#FF3B30' : props.$isSaturday === 'true' ? '#007AFF' : 'black')};
+  padding: 10px;
+  color: ${props => (props.isSunday ? '#FF3B30' : props.isSaturday ? '#007AFF' : 'black')};
   cursor: pointer;
 `;
-
-
 
 const EmojiDateWrapper = styled.div`
   position: relative;
@@ -131,16 +119,14 @@ const EmojiDateWrapper = styled.div`
   height: 30px;
   perspective: 1000px;
 `;
-
 const EmojiFlipCard = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
   transform-style: preserve-3d;
   transition: transform 1s;
-  transform: ${props => (props.$isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
+  transform: ${props => (props.isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
 `;
-
 const EmojiFront = styled.div`
   backface-visibility: hidden;
   position: absolute;
@@ -149,7 +135,6 @@ const EmojiFront = styled.div`
   background-image: url(${props => props.src});
   background-size: cover;
 `;
-
 const EmojiBack = styled.div`
   backface-visibility: hidden;
   position: absolute;
@@ -163,14 +148,12 @@ const EmojiBack = styled.div`
   justify-content: center;
   transform: rotateY(180deg);
 `;
-
 const DateText = styled.div`
   font-size: 14px;
   color: black;
   text-align: center;
   margin-top: 5px;
 `;
-
 const DateTitleWrapper = styled.div`
   width: 90%;
   margin: 10px 0;
@@ -178,24 +161,20 @@ const DateTitleWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `;
-
 const DateTitle = styled.div`
   margin-top: 3%;
   font-size: 25px;
   color: #00D065;
 `;
-
 const ExpenseSummary = styled.div`
   font-size: 20px;
   display: flex;
   align-items: center;
 `;
-
 const Price = styled.span`
   color: #00D065;
   margin-right: 5px;
 `;
-
 const ExpenseItem = styled.div`
   background-color: white;
   border-radius: 10px;
@@ -206,7 +185,6 @@ const ExpenseItem = styled.div`
   display: flex;
   align-items: center;
 `;
-
 const ItemDetails = styled.div`
   display: flex;
   flex-direction: column;
@@ -214,12 +192,10 @@ const ItemDetails = styled.div`
   flex-grow: 1;
   font-size: 20px;
 `;
-
 const EmojiIcon = styled.img`
   width: 60px;
   height: 60px;
 `;
-
 const MoreButton = styled.button`
   background-color: transparent;
   border: none;
@@ -230,7 +206,6 @@ const MoreButton = styled.button`
   text-align: left;
   font-family: 'Ownglyph_meetme-Rg';
 `;
-
 const MoreLink = styled.button`
   background-color: transparent;
   border: none;
@@ -242,7 +217,6 @@ const MoreLink = styled.button`
   width: 100%;
   font-family: 'Ownglyph_meetme-Rg';
 `;
-
 const Menu = styled.div`
   width: 100%;
   display: flex;
@@ -254,27 +228,23 @@ const Menu = styled.div`
   z-index: 1;
   margin-bottom: 3%;
 `;
-
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
-  color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
+  color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const Totalprice = styled.div`
   color: #00D065;
   font-size: 27px;
   z-index: 1;
   margin-right: 10px;
 `;
-
 const Unit = styled.span`
   color: black;
 `;
-
 const Home = () => {
   const navigate = useNavigate();
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -285,9 +255,9 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalPrice, setTotalPrice] = useState(0);
   const [flippedDays, setFlippedDays] = useState({});
-
+  
   const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-
+  
   useEffect(() => {
     const fetchTopEmotion = async () => {
       try {
@@ -302,7 +272,6 @@ const Home = () => {
         console.error('Error fetching top emotion:', error);
       }
     };
-
     const fetchMonthlyEmotions = async () => {
       try {
         const response = await api.get(`/api/report/emotion?year=${year}&month=${month}`);
@@ -311,10 +280,10 @@ const Home = () => {
         console.error('There was an error fetching monthly emotions', error);
       }
     };
-
     fetchTopEmotion();
     fetchMonthlyEmotions();
   }, [month, year]);
+
 
   useEffect(() => {
     const fetchDateExpenses = async (dateStr) => {
@@ -329,10 +298,10 @@ const Home = () => {
         console.error('There was an error fetching expenses for the selected date', error);
       }
     };
-
     fetchDateExpenses(formattedDate);
-  }, [formattedDate]); // updated dependency
-
+  }, [formattedDate]);
+  
+  
   useEffect(() => {
     const today = new Date();
     if (year !== today.getFullYear() || month !== today.getMonth() + 1) {
@@ -341,7 +310,6 @@ const Home = () => {
       setSelectedDate(today);
     }
   }, [year, month]);
-
   const handlePrevMonth = () => {
     setMonth(prevMonth => {
       const newMonth = prevMonth === 1 ? 12 : prevMonth - 1;
@@ -349,7 +317,6 @@ const Home = () => {
       return newMonth;
     });
   };
-
   const handleNextMonth = () => {
     setMonth(prevMonth => {
       const newMonth = prevMonth === 12 ? 1 : prevMonth + 1;
@@ -357,20 +324,16 @@ const Home = () => {
       return newMonth;
     });
   };
-
   const handleDayClick = (day) => {
     const clickedDate = new Date(year, month - 1, day, 12);
     setSelectedDate(clickedDate);
   };
-
   const handleMouseEnter = (day) => {
     setFlippedDays(prevState => ({ ...prevState, [day]: true }));
   };
-
   const handleMouseLeave = (day) => {
     setFlippedDays(prevState => ({ ...prevState, [day]: false }));
   };
-
   const getEmotion = useMemo(() => {
     const emotionMap = {};
     emotions.forEach(({ date, emotion }) => {
@@ -384,26 +347,23 @@ const Home = () => {
     };
   }, [emotions, month, year]);
 
+  
   const renderCalendar = () => {
     const daysInMonth = new Date(year, month, 0).getDate();
     const firstDayIndex = new Date(year, month - 1, 1).getDay();
-
     const calendarDays = [];
-
     for (let i = 0; i < firstDayIndex; i++) {
       calendarDays.push(<Day key={`empty-${i}`} />);
     }
-
     for (let i = 1; i <= daysInMonth; i++) {
       const isSunday = (firstDayIndex + i - 1) % 7 === 0;
       const isSaturday = (firstDayIndex + i - 1) % 7 === 6;
       const emotion = getEmotion(i);
-
       calendarDays.push(
         <Day
           key={i}
-          $isSunday={isSunday}
-          $isSaturday={isSaturday}
+          isSunday={isSunday}
+          isSaturday={isSaturday}
           onClick={() => handleDayClick(i)}
           onMouseEnter={() => handleMouseEnter(i)}
           onMouseLeave={() => handleMouseLeave(i)}
@@ -421,10 +381,10 @@ const Home = () => {
         </Day>
       );
     }
-
     return calendarDays;
   };
 
+  
   const renderExpenses = () => {
     return selectedDateExpenses.length > 0 ? (
       selectedDateExpenses.map((expense, index) => (
@@ -443,7 +403,6 @@ const Home = () => {
       <div><br></br>해당 날짜의 소비내역이 없습니다.</div>
     );
   };
-
   return (
     <Container>
       <GlobalStyle />
@@ -461,7 +420,7 @@ const Home = () => {
           <CalendarWrapper>
             <CalendarGrid>
               {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
-                <Day key={index} $isSunday={index === 0} $isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
+                <Day key={index} isSunday={index === 0} isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
               ))}
               {renderCalendar()}
             </CalendarGrid>
@@ -482,7 +441,7 @@ const Home = () => {
             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
             내용입력
           </MenuItem>
-          <MenuItem $active>
+          <MenuItem active>
             <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
             홈
           </MenuItem>
@@ -495,5 +454,4 @@ const Home = () => {
     </Container>
   );
 };
-
 export default Home;
