@@ -108,7 +108,7 @@ const CalendarGrid = styled.div`
 const Day = styled.div`
   position: relative;
   padding: 10px;
-  color: ${props => (props.isSunday ? '#FF3B30' : props.isSaturday ? '#007AFF' : 'black')};
+  color: ${props => (props.$isSunday ? '#FF3B30' : props.$isSaturday ? '#007AFF' : 'black')};
   cursor: pointer;
 `;
 
@@ -125,7 +125,7 @@ const EmojiFlipCard = styled.div`
   position: absolute;
   transform-style: preserve-3d;
   transition: transform 1s;
-  transform: ${props => (props.isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
+  transform: ${props => (props.$isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
 `;
 const EmojiFront = styled.div`
   backface-visibility: hidden;
@@ -231,7 +231,7 @@ const Menu = styled.div`
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
-  color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
+  color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -362,15 +362,15 @@ const Home = () => {
       calendarDays.push(
         <Day
           key={i}
-          isSunday={isSunday}
-          isSaturday={isSaturday}
+          $isSunday={isSunday}
+          $isSaturday={isSaturday}
           onClick={() => handleDayClick(i)}
           onMouseEnter={() => handleMouseEnter(i)}
           onMouseLeave={() => handleMouseLeave(i)}
         >
           <EmojiDateWrapper>
             {emotion ? (
-              <EmojiFlipCard isFlipped={flippedDays[i]}>
+              <EmojiFlipCard $isFlipped={flippedDays[i]}>
                 <EmojiFront src={emotionIcons[emotion]} />
                 <EmojiBack>{i}</EmojiBack>
               </EmojiFlipCard>
@@ -384,7 +384,7 @@ const Home = () => {
     return calendarDays;
   };
 
-  
+
   const renderExpenses = () => {
     return selectedDateExpenses.length > 0 ? (
       selectedDateExpenses.map((expense, index) => (
@@ -420,7 +420,7 @@ const Home = () => {
           <CalendarWrapper>
             <CalendarGrid>
               {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
-                <Day key={index} isSunday={index === 0} isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
+                <Day key={index} $isSunday={index === 0} $isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
               ))}
               {renderCalendar()}
             </CalendarGrid>
@@ -441,7 +441,7 @@ const Home = () => {
             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
             내용입력
           </MenuItem>
-          <MenuItem active>
+          <MenuItem $active>
             <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
             홈
           </MenuItem>
