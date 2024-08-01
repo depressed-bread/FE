@@ -25,19 +25,6 @@ const Container = styled.div`
     background-color: #FEFEFE;
 `;
 
-const AppWrapper = styled.div`
-    width: 375px;
-    height: 100vh;
-    background-color: #FEF69B;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-`;
-
 const Overlay = styled.div`
     width: 375px;
     height: 100vh;
@@ -53,14 +40,28 @@ const Overlay = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-    margin-top: -30%;
-    width: 20%;
+    margin-top: -20%;
+    width: 80%; /* 너비를 80%로 변경 */
+    max-width: 375px; /* 최대 너비를 설정 */
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
     overflow: hidden;
     z-index: 3;
+`;
+
+const AppWrapper = styled.div`
+    width: 375px;
+    height: 100vh;
+    background-color: #FEF69B;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 `;
 
 const Header = styled.div`

@@ -113,7 +113,13 @@ const CalanderGroup = styled.div`
 
 const Calander = styled.div`
     display: inline;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
+
+const Input = styled.input`
+    font-family: 'Ownglyph_meetme-Rg';
+`;
+
 
 const CalanderButton = styled.button`
     padding: 7px;
@@ -127,6 +133,7 @@ const CalanderButton = styled.button`
     }
     margin-left : 20px;
     margin-top : 2px;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const Title = styled.h2`
@@ -587,11 +594,11 @@ const ViewPage = () => {
                     <CalanderGroup>
                         {isDatePickerOpen && (
                             <Calander>
-                                <input
+                                <Input
                                     type="date"
                                     value={selectedStartDate}
                                     onChange={handleStartDateChange} /> &nbsp;~ &nbsp;
-                                                                    <input
+                                                                    <Input
                                     type="date"
                                     value={selectedEndDate}
                                     onChange={handleEndDateChange} />
