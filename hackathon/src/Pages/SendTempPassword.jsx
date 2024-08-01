@@ -49,6 +49,14 @@ const Input = styled.input`
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
+const ErrorText = styled.p`
+    color: red;
+    font-size: 14px;
+    margin-top: 1%;
+    text-align: center;
+    width: 80%;
+`;
+
 const SendTempPasswordButton = styled.button`
     background-color: #FFD8E1;
     color: black;
@@ -114,8 +122,16 @@ const SendTempPassword = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [tempPasswordSent, setTempPasswordSent] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSendTempPasswordClick = async () => {
+        if (!email) {
+            setErrorMessage('이메일을 입력해주세요.');
+            return;
+        } else {
+            setErrorMessage('');
+        }
+
         try {
             const response = await api.post('/api/user/send-temp-password', { email });
             if (response.status === 200) {
@@ -155,6 +171,7 @@ const SendTempPassword = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <SendTempPasswordButton onClick={handleSendTempPasswordClick}>임시 비밀번호 전송</SendTempPasswordButton>
+                    {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
                     {modalOpen && (
                         <ModalBackdrop>
