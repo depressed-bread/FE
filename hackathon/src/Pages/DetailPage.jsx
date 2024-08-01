@@ -7,13 +7,13 @@ import api from './Api';
 import { useLocation } from 'react-router-dom';
 import logoImage from './logo.png';
 import BackImage from './back.png';
-
+import font from './온글잎밑미.ttf';
 
 const GlobalStyle = createGlobalStyle`
-//   @font-face {
-//     font-family: 'Ownglyph_meetme-Rg';
-//     src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
-//   }
+   @font-face {
+    font-family: 'Ownglyph_meetme-Rg';
+    src: url(${font}) format('truetype');
+   }
   body {
     font-family: 'Ownglyph_meetme-Rg';
   }
