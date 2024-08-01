@@ -77,6 +77,7 @@ const ModalBackdrop = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const ModalContent = styled.div`
