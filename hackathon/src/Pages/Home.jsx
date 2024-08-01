@@ -5,13 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import api from './Api';
 import logoImage from './logo.png';
-import font from './온글잎밑미.ttf';
 
 const GlobalStyle = createGlobalStyle`
-   @font-face {
-    font-family: 'Ownglyph_meetme-Rg';
-    src: url(${font}) format('truetype');
-   }
+  // @font-face {
+  //   font-family: 'Ownglyph_meetme-Rg';
+  //   src: url('fonts/온글잎 밑미.ttf') format('woff2');
+  // }
   body {
     font-family: 'Ownglyph_meetme-Rg';
   }
@@ -118,9 +117,11 @@ const CalendarGrid = styled.div`
 const Day = styled.div`
   position: relative;
   padding: 8px;
-  color: ${props => (props.isSunday ? '#FF3B30' : props.isSaturday ? '#007AFF' : 'black')};
+  color: ${props => (props.$isSunday === 'true' ? '#FF3B30' : props.$isSaturday === 'true' ? '#007AFF' : 'black')};
   cursor: pointer;
 `;
+
+
 
 const EmojiDateWrapper = styled.div`
   position: relative;
@@ -136,7 +137,7 @@ const EmojiFlipCard = styled.div`
   position: absolute;
   transform-style: preserve-3d;
   transition: transform 1s;
-  transform: ${props => (props.isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
+  transform: ${props => (props.$isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
 `;
 
 const EmojiFront = styled.div`
@@ -256,7 +257,7 @@ const Menu = styled.div`
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
-  color: ${props => (props.active ? '#00D065' : '#B0B0B0')};
+  color: ${props => (props.$active ? '#00D065' : '#B0B0B0')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -400,8 +401,8 @@ const Home = () => {
       calendarDays.push(
         <Day
           key={i}
-          isSunday={isSunday}
-          isSaturday={isSaturday}
+          $isSunday={isSunday}
+          $isSaturday={isSaturday}
           onClick={() => handleDayClick(i)}
           onMouseEnter={() => handleMouseEnter(i)}
           onMouseLeave={() => handleMouseLeave(i)}
@@ -459,7 +460,7 @@ const Home = () => {
           <CalendarWrapper>
             <CalendarGrid>
               {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
-                <Day key={index} isSunday={index === 0} isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
+                <Day key={index} $isSunday={index === 0} $isSaturday={index === 6} style={{ fontWeight: 'bold' }}>{day}</Day>
               ))}
               {renderCalendar()}
             </CalendarGrid>
@@ -480,7 +481,7 @@ const Home = () => {
             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
             내용입력
           </MenuItem>
-          <MenuItem active>
+          <MenuItem $active>
             <FontAwesomeIcon icon={faHouse} style={{ fontSize: '40px' }} />
             홈
           </MenuItem>
