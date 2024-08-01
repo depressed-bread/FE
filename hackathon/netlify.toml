@@ -3,6 +3,6 @@
   publish = "build"
 
 [[headers]]
-  for = "/src/fonts/*"
+  for = "/fonts/*"
   [headers.values]
   Access-Control-Allow-Origin = "*"
