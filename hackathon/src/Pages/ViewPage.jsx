@@ -69,6 +69,7 @@ const Logo = styled.img`
 const Emoji = styled.img`
     width: 24px;
     height: 24px;
+    cursor: pointer;
 `;
 
 const Dropdown = styled.select`
@@ -106,7 +107,7 @@ const Button = styled.button`
 `;
 
 const CalanderGroup = styled.div`
-    margin-left : 20px;
+    margin-left : 5px;
 `;
 
 const Calander = styled.div`
@@ -591,7 +592,7 @@ const ViewPage = () => {
                                 <input
                                     type="date"
                                     value={selectedStartDate}
-                                    onChange={handleStartDateChange} /> &nbsp;
+                                    onChange={handleStartDateChange} /> &nbsp;~ &nbsp;
                                                                     <input
                                     type="date"
                                     value={selectedEndDate}

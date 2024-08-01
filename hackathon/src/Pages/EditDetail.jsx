@@ -210,6 +210,7 @@ const BackButton = styled.button`
 const Emoji = styled.img`
     width: 24px;
     height: 24px;
+    cursor: pointer;
 `;
 
 const Logo = styled.img`
@@ -299,29 +300,22 @@ const EditDetail = () => {
 
     // 글자를 적지 않으면 수정불가
     const handleCompletionClick = async () => {
-        console.log(details)
-
         if(details.keyword.length < 1){
             keywordInput.current.focus();
             return;
         }
-
         if(details.price.length < 1){
             priceInput.current.focus();
             return;
         }
-
         if(details.date.length < 1){
             dateInput.current.focus();
             return;
         }
-
-
         if(details.content.length < 1){
             contentInput.current.focus();
             return;
         }
-
         // 수정 API
         try{
             const response = await api.put(`/api/expenses/${expenseId}` , details);
@@ -331,16 +325,13 @@ const EditDetail = () => {
             console.log('Error updating data', error)
         }
     }
-
     const closeModal = () => {
         setModalOpen(false);
     };
-
     const handleViewClick = () => {
-        navigate('/viewpage');
+        navigate(-1);
         closeModal();
     };
-
     return (
         <>
             <GlobalStyle />
@@ -406,7 +397,7 @@ const EditDetail = () => {
                     <ModalBackdrop>
                         <ModalContent>
                             <ModalText>수정이 완료되었습니다!</ModalText>
-                            <ModalButton onClick={handleViewClick}>조회 화면으로 이동하기</ModalButton>
+                            <ModalButton onClick={handleViewClick}>이전 페이지로 이동하기</ModalButton>
                         </ModalContent>
                     </ModalBackdrop>
                 )}

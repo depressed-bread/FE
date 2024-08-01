@@ -129,6 +129,8 @@ const ContentDetail = styled.div`
 font-size: 15px;
 margin: 10px 0 10px  5px;
 font-family: 'Ownglyph_meetme-Rg';
+overflow-wrap: break-word;
+max-width: 100%;
 `;
 
 const Button = styled.button`
@@ -263,6 +265,7 @@ const Logo = styled.img`
 const Emoji = styled.img`
     width: 24px;
     height: 24px;
+    cursor: pointer;
 `;
 
 
