@@ -30,14 +30,15 @@ const Container = styled.div`
 
 const AppWrapper = styled.div`
     width: 375px;
-    min-height: 100vh; // 최소 길이
+    max-width: 375px;
+    min-height: 100vh;
     background-color: #FEF69B; 
     padding: 20px;
-    display: flex; 
+    display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    box-sizing: border-box;
+    // box-sizing: border-box;
 `;
 
 const Title = styled.div`
@@ -52,7 +53,7 @@ const Title = styled.div`
 `;
 
 const ImageContainer = styled.div`
-    flex: 1; // 남은 공간을 차지하게 설정
+    flex: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
