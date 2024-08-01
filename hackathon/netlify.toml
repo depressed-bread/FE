@@ -1,3 +1,8 @@
 [build]
   command = "CI= npm run build"
   publish = "build"
+
+[[headers]]
+  for = "/src/fonts/*"
+  [headers.values]
+  Access-Control-Allow-Origin = "*"
