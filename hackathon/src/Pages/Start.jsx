@@ -117,7 +117,7 @@ const Start = ({ Slides }) => {
     const navigate = useNavigate();
 
     const handleStartClick = () => {
-        navigate('/login');
+        navigate('/home');
     };
 
     const Titles = ["우울해서 빵 샀어", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"];
