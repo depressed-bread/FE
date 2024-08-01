@@ -7,10 +7,10 @@ import api from './Api';
 import logoImage from './logo.png';
 
 const GlobalStyle = createGlobalStyle`
-    @font-face {
-        font-family: 'Ownglyph_meetme-Rg';
-        src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
-    }
+    // @font-face {
+    //     font-family: 'Ownglyph_meetme-Rg';
+    //     src: url('fonts/온글잎\\ 밑미.ttf') format('woff2');
+    // }
     body {
         font-family: 'Ownglyph_meetme-Rg';
     }
