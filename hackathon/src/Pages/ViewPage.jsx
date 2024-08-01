@@ -582,8 +582,8 @@ const ViewPage = () => {
                     <ButtonGroup>
                         <Button style={{ color: period === 'custom' ? '#FF86FF' : 'black' }} onClick={toggleDatePicker} >날짜 지정 선택</Button>
                         <Button style={{ color: period === 'day' ? '#FF86FF' : 'black' }} onClick={handleTodayClick}>오늘</Button>
-                        <Button style={{ color: period === 'week' ? '#FF86FF' : 'black' }} onClick={handleWeekClick}>7일</Button>
-                        <Button style={{ color: period === 'month' ? '#FF86FF' : 'black' }} onClick={handleMonthClick}>30일</Button>
+                        <Button style={{ color: period === 'week' ? '#FF86FF' : 'black' }} onClick={handleWeekClick}>이번주</Button>
+                        <Button style={{ color: period === 'month' ? '#FF86FF' : 'black' }} onClick={handleMonthClick}>이번달</Button>
                     </ButtonGroup>
                     <CalanderGroup>
                         {isDatePickerOpen && (
