@@ -221,7 +221,7 @@ const Logo = styled.img`
 
 const EditDetail = () => {
     const navigate = useNavigate();
-    const [emotionType, setEmotionType] = useState('');
+    const [emotion, setEmotion] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [topEmotion, setTopEmotion] = useState('');
     const [details, setDetails] = useState({
@@ -264,7 +264,7 @@ const EditDetail = () => {
             try{
                 const response = await api.get(`/api/expenses/${expenseId}`)
                 // console.log(response)
-                setEmotionType(response.data.emotion)
+                setEmotion(response.data.emotion)
                 setDetails({
                     keyword: response.data.keyword,
                     price: response.data.price,
@@ -289,6 +289,7 @@ const EditDetail = () => {
             [name]: value
         }));
     };
+     
 
     // console.log(details)
 
@@ -321,6 +322,7 @@ const EditDetail = () => {
             const response = await api.put(`/api/expenses/${expenseId}` , details);
                 console.log(response.data.message)
                 setModalOpen(true);
+                console.log(details);
         } catch (error){
             console.log('Error updating data', error)
         }
@@ -364,7 +366,7 @@ const EditDetail = () => {
                         </InputSection>
                         <InputSection>
                             <Label>감정 선택</Label>
-                            <Select width="30%"   name="emotionType" value={emotionType} onChange={(e) => setEmotionType(e.target.value)} onClick={handleChange}>
+                            <Select width="30%"   name="emotionType" value={emotion} onChange={(e) => setEmotion(e.target.value)} onClick={handleChange}>
                                 <option value="ANGRY">화남</option>
                                 <option value="JOY">기쁨</option>
                                 <option value="PROUD">뿌듯</option>
@@ -374,7 +376,7 @@ const EditDetail = () => {
                                 <option value="PANIC">당황</option>
                                 <option value="THRILL">설렘</option>
                             </Select>
-                            <SelectedEmoji src={emotionImages[emotionType]} alt={emotionType} />
+                            <SelectedEmoji src={emotionImages[emotion]} alt={emotion} />
                         </InputSection>
                         <Button onClick={handleCompletionClick}>수정완료</Button>
                     </ContentWrapper>
