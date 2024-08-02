@@ -37,7 +37,8 @@ const Container = styled.div`
 `;
 
 const AppWrapper = styled.div`
-  width: 375px;
+  width: 100%;
+  max-width: 375px;
   height: 100vh;
   background-color: #FEF69B;
   padding: 20px;
@@ -109,17 +110,22 @@ const CalendarWrapper = styled.div`
 
 const CalendarGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1px; /* 날짜 간격을 좁게 설정 */
+  grid-template-columns: repeat(7, minmax(30px, 1fr));
+  gap: 1px;
   width: 100%;
   text-align: center;
 `;
 
 const Day = styled.div`
   position: relative;
-  padding: 10px;
+  padding: 8px;
   color: ${props => (props.$isSunday ? '#FF3B30' : props.$isSaturday ? '#007AFF' : 'black')};
   cursor: pointer;
+
+  @media (max-width: 375px) {
+    padding: 6px;
+    font-size: 12px;
+  }
 `;
 
 const EmojiDateWrapper = styled.div`
