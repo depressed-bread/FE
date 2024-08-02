@@ -23,6 +23,7 @@ const Container = styled.div`
     align-items: center;
     height: 100vh;
     background-color: #FEFEFE;
+    position: relative;
 `;
 
 const Overlay = styled.div`
@@ -39,6 +40,19 @@ const Overlay = styled.div`
     opacity: 0.5;
 `;
 
+const AppWrapper = styled.div`
+    width: 375px;
+    height: 100vh;
+    background-color: #FEF69B;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+`;
+
 const ContentWrapper = styled.div`
     margin-top: -20%;
     width: 80%; /* 너비를 80%로 변경 */
@@ -51,18 +65,7 @@ const ContentWrapper = styled.div`
     z-index: 3;
 `;
 
-const AppWrapper = styled.div`
-    width: 375px;
-    height: 100vh;
-    background-color: #FEF69B;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-`;
+
 
 const Header = styled.div`
     width: 100%;
@@ -79,14 +82,14 @@ const Logo = styled.img`
   width: 30px;
   height: auto;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: 25px;
 `;
 
 const Emoji = styled.img`
     width: 24px;
     height: 24px;
     margin-top: 10px;
-    margin-right: 10px;
+    margin-right: 25px;
     cursor: pointer;
 `;
 
