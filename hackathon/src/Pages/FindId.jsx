@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from './Api';
@@ -86,7 +86,7 @@ const ModalContent = styled.div`
     border-radius: 5px;
     text-align: center;
     width: 80%;
-    max-width: 300px; /* 모달의 최대 너비 설정 */
+    max-width: 300px;
     font-family: 'Ownglyph_meetme-Rg';
 `;
 
@@ -136,6 +136,14 @@ const FindId = () => {
     const [foundId, setFoundId] = useState('');
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        // 페이지 로드 시 세션을 확인하여 이미 로그인된 상태라면 홈으로 리다이렉트
+        const user = sessionStorage.getItem('user');
+        if (user) {
+            navigate('/home');
+        }
+    }, [navigate]);
+
     const handleFindIdClick = async () => {
         setError('');
         try {
@@ -176,7 +184,9 @@ const FindId = () => {
                 <AppWrapper>
                     <Logo src={logoImage} alt="Logo" />
 
-                    <BackButton onClick={() => navigate(-1)}><img src={BackImage} alt="Back" style={{width:'30px',height:'40px'}}/></BackButton>
+                    <BackButton onClick={() => navigate(-1)}>
+                        <img src={BackImage} alt="Back" style={{width:'30px', height:'40px'}}/>
+                    </BackButton>
 
                     <Input
                         type="text"

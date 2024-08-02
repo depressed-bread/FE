@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from './Api';
@@ -166,6 +166,14 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [passwordChk, setPasswordChk] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // 페이지 로드 시 세션을 확인하여 이미 로그인된 상태라면 홈으로 리다이렉트
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      navigate('/home');
+    }
+  }, [navigate]);
 
   const handleSignupClick = async () => {
     setError('');

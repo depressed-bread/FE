@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
@@ -47,7 +47,7 @@ const Input = styled.input`
     border: 1px solid #00D065;
     border-radius: 5px;
     font-size: 20px;
-    font-family: 'Ownglyph_meetme-Rg'
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const LoginButton = styled.button`
@@ -78,7 +78,7 @@ const Link = styled.a`
     cursor: pointer;
     text-decoration: none;
     color: black;
-    font-family: 'Ownglyph_meetme-Rg'
+    font-family: 'Ownglyph_meetme-Rg';
 
     &:hover {
         text-decoration: underline;
@@ -92,12 +92,12 @@ const Footer = styled.div`
     display: flex;
     align-items: center;
     font-size: 14px;
-    font-family: 'Ownglyph_meetme-Rg'
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const FooterText = styled.span`
     margin-left: 5px;
-    font-family: 'Ownglyph_meetme-Rg'
+    font-family: 'Ownglyph_meetme-Rg';
 `;
 
 const QuestionMark = styled.div`
@@ -135,6 +135,14 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        // 페이지 로드 시 세션을 확인하여 이미 로그인된 상태라면 홈으로 리다이렉트
+        const user = sessionStorage.getItem('user');
+        if (user) {
+            navigate('/home');
+        }
+    }, [navigate]);
 
     const handleLoginClick = async () => {
         try {

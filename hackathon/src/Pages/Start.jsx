@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import logoImage from './logo.png';
 import Home from './home.png';
@@ -38,7 +37,6 @@ const AppWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
-    // box-sizing: border-box;
 `;
 
 const Title = styled.div`
@@ -92,23 +90,32 @@ const slides = [logoImage, Home, View];
 
 const Start = () => {
     const navigate = useNavigate();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        // 페이지 로드 시 세션을 확인하여 이미 로그인된 상태라면 홈으로 리다이렉트
+        const user = sessionStorage.getItem('user');
+        if (user) {
+            navigate('/home');
+        }
+    }, [navigate]);
 
     const handleStartClick = () => {
         navigate('/login');
     };
 
     const Titles = ["우울해서 빵 샀어", "한 눈에 볼 수 있는 소비 달력", "감정별로 볼 수 있는 소비 내역"];
-    const [currentIndex, setCurrentIndex] = useState(0);
     const goToPrevious = () => {
         const isFirstSlide = currentIndex === 0;
         const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
-    }
+    };
+
     const goToNext = () => {
         const isLastSlide = currentIndex === slides.length - 1;
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
-    }
+    };
 
     return (
         <>
