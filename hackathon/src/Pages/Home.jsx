@@ -17,7 +17,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
 const emotionIcons = {
   'ANGRY': '/angry.png',
   'JOY': '/joy.png',
@@ -28,6 +27,7 @@ const emotionIcons = {
   'PROUD': '/proud.png',
   'THRILL': '/thrill.png'
 };
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -35,6 +35,7 @@ const Container = styled.div`
   height: 100vh;
   background-color: #FEFEFE;
 `;
+
 const AppWrapper = styled.div`
   width: 375px;
   height: 100vh;
@@ -46,6 +47,7 @@ const AppWrapper = styled.div`
   position: relative;
   overflow: hidden;
 `;
+
 const Header = styled.div`
   width: 100%;
   display: flex;
@@ -57,12 +59,14 @@ const Header = styled.div`
   z-index: 1;
   background-color: #FEF69B;
 `;
+
 const Logo = styled.img`
   width: 30px;
   height: auto;
   margin-top: 10px;
   margin-left: 10px;
 `;
+
 const Emoji = styled.img`
   width: 24px;
   height: 24px;
@@ -70,6 +74,7 @@ const Emoji = styled.img`
   margin-right: 10px;
   cursor: pointer;
 `;
+
 const MonthNavigation = styled.div`
   display: flex;
   justify-content: center;
@@ -77,12 +82,14 @@ const MonthNavigation = styled.div`
   margin: 80px 0 20px;
   font-size: 35px;
 `;
+
 const Arrow = styled.div`
   cursor: pointer;
   font-size: 24px;
   margin: 0 20px;
   color: #00D065;
 `;
+
 const ContentWrapper = styled.div`
   flex: 1;
   width: 100%;
@@ -90,6 +97,7 @@ const ContentWrapper = styled.div`
   padding-top: 1vh;
   padding-bottom: 10vh;
 `;
+
 const CalendarWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,13 +106,15 @@ const CalendarWrapper = styled.div`
   padding: 10px;
   border-radius: 10px;
 `;
+
 const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px; /* 날짜 간격을 좁게 설정 */
+  gap: 1px; /* 날짜 간격을 좁게 설정 */
   width: 100%;
   text-align: center;
 `;
+
 const Day = styled.div`
   position: relative;
   padding: 10px;
@@ -127,14 +137,18 @@ const EmojiFlipCard = styled.div`
   transition: transform 1s;
   transform: ${props => (props.$isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)')};
 `;
+
 const EmojiFront = styled.div`
   backface-visibility: hidden;
   position: absolute;
   width: 100%;
   height: 100%;
   background-image: url(${props => props.src});
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
+
 const EmojiBack = styled.div`
   backface-visibility: hidden;
   position: absolute;
@@ -154,6 +168,7 @@ const DateText = styled.div`
   text-align: center;
   margin-top: 5px;
 `;
+
 const DateTitleWrapper = styled.div`
   width: 90%;
   margin: 10px 0;
@@ -161,20 +176,24 @@ const DateTitleWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `;
+
 const DateTitle = styled.div`
   margin-top: 3%;
   font-size: 25px;
   color: #00D065;
 `;
+
 const ExpenseSummary = styled.div`
   font-size: 20px;
   display: flex;
   align-items: center;
 `;
+
 const Price = styled.span`
   color: #00D065;
   margin-right: 5px;
 `;
+
 const ExpenseItem = styled.div`
   background-color: white;
   border-radius: 10px;
@@ -185,6 +204,7 @@ const ExpenseItem = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const ItemDetails = styled.div`
   display: flex;
   flex-direction: column;
@@ -192,10 +212,12 @@ const ItemDetails = styled.div`
   flex-grow: 1;
   font-size: 20px;
 `;
+
 const EmojiIcon = styled.img`
   width: 60px;
   height: 60px;
 `;
+
 const MoreButton = styled.button`
   background-color: transparent;
   border: none;
@@ -206,6 +228,7 @@ const MoreButton = styled.button`
   text-align: left;
   font-family: 'Ownglyph_meetme-Rg';
 `;
+
 const MoreLink = styled.button`
   background-color: transparent;
   border: none;
@@ -217,6 +240,7 @@ const MoreLink = styled.button`
   width: 100%;
   font-family: 'Ownglyph_meetme-Rg';
 `;
+
 const Menu = styled.div`
   width: 100%;
   display: flex;
@@ -228,6 +252,7 @@ const Menu = styled.div`
   z-index: 1;
   margin-bottom: 3%;
 `;
+
 const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
@@ -236,15 +261,18 @@ const MenuItem = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 const Totalprice = styled.div`
   color: #00D065;
   font-size: 27px;
   z-index: 1;
   margin-right: 10px;
 `;
+
 const Unit = styled.span`
   color: black;
 `;
+
 const Home = () => {
   const navigate = useNavigate();
   const [month, setMonth] = useState(new Date().getMonth() + 1);
