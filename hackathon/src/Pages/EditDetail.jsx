@@ -280,15 +280,6 @@ const EditDetail = () => {
 
         fetchTopEmotion(); fetchDetail();
     }, [expenseId]);
-
-    //바뀔때마다 상태변화
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setDetails((prevDetails) => ({
-            ...prevDetails,
-            [name]: value
-        }));
-    };
      
 
     // console.log(details)
@@ -334,6 +325,23 @@ const EditDetail = () => {
         navigate(-1);
         closeModal();
     };
+
+    const handle = (e) => {
+        setEmotion(e.target.value)
+        console.log(e.target.value)
+        handleChange(e);
+    }
+    //바뀔때마다 상태변화
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log(e.target.value)
+        setDetails((prevDetails) => ({
+            ...prevDetails,
+            [name]: value
+        }));
+    };
+
+
     return (
         <>
             <GlobalStyle />
@@ -366,7 +374,8 @@ const EditDetail = () => {
                         </InputSection>
                         <InputSection>
                             <Label>감정 선택</Label>
-                            <Select width="30%"   name="emotionType" value={emotion} onChange={(e) => setEmotion(e.target.value)} onClick={handleChange}>
+                            <Select width="30%"   name="emotionType" value={emotion} onChange={handle}>
+                                {console.log(emotion)}
                                 <option value="ANGRY">화남</option>
                                 <option value="JOY">기쁨</option>
                                 <option value="PROUD">뿌듯</option>
