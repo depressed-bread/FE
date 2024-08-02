@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faPen, faHouse, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { createGlobalStyle } from 'styled-components';
 import api from './Api';
-import logoImage from './logo.png';
 import font from './온글잎밑미.ttf';
 
 const GlobalStyle = createGlobalStyle`
@@ -14,6 +12,9 @@ const GlobalStyle = createGlobalStyle`
    }
   body {
     font-family: 'Ownglyph_meetme-Rg';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 `;
 
@@ -26,70 +27,41 @@ const Container = styled.div`
     position: relative;
 `;
 
-const Overlay = styled.div`
-    width: 375px;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    overflow: hidden;
-    z-index: 2;
-    opacity: 0.5;
-`;
 
 const AppWrapper = styled.div`
-    width: 375px;
+    width: 100%;
+    max-width: 375px;
     height: 100vh;
     background-color: #FEF69B;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
+    position: relative;
     overflow: hidden;
     z-index: 1;
 `;
 
 const ContentWrapper = styled.div`
-    margin-top: -20%;
-    width: 80%; /* 너비를 80%로 변경 */
-    max-width: 375px; /* 최대 너비를 설정 */
+    margin-top: 30%;
+    width: 80%;
+    max-width: 375px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
     overflow: hidden;
-    z-index: 3;
+    z-index: 2;
 `;
 
-
-
-const Header = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+const ClickableArea = styled.div`
     position: absolute;
-    top: 20px;
-    padding: 0 20px;
-    z-index: 3;
-`;
-
-const Logo = styled.img`
-  width: 30px;
-  height: auto;
-  margin-top: 10px;
-  margin-left: 25px;
-`;
-
-const Emoji = styled.img`
-    width: 24px;
-    height: 24px;
-    margin-top: 10px;
-    margin-right: 25px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent;
     cursor: pointer;
 `;
 
@@ -144,7 +116,7 @@ const Menu = styled.div`
     position: absolute;
     bottom: 0;
     background-color: #FEF69B;
-    z-index: 1;
+    z-index: 3;
     margin-bottom: 3%;
 `;
 
@@ -160,21 +132,6 @@ const MenuItem = styled.div`
 
 const Setting = () => {
     const navigate = useNavigate();
-    const [topEmotion, setTopEmotion] = useState('');
-
-    useEffect(() => {
-        const fetchTopEmotion = async () => {
-            try {
-                const response = await api.get('/api/user/emotion');
-                const emotion = response.data.emotion;
-                setTopEmotion(emotion);
-            } catch (error) {
-                console.error('Error fetching top emotion:', error);
-            }
-        };
-
-        fetchTopEmotion();
-    }, []);
 
     const handleLogout = async () => {
         try {
@@ -190,35 +147,18 @@ const Setting = () => {
         }
     };
 
-    const emotionImages = {
-        'ANGRY': '/angry.png',
-        'JOY': '/joy.png',
-        'DEPRESSION': '/depression.png',
-        'SAD': '/sad.png',
-        'PANIC': '/panic.png',
-        'ANXIETY': '/anxiety.png',
-        'PROUD': '/proud.png',
-        'THRILL': '/thrill.png'
-    };
-
     return (
         <>
             <GlobalStyle />
             <Container>
-                <ContentWrapper>
-                    <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
-                    <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
-                    <Logout onClick={handleLogout}>로그아웃</Logout>
-                </ContentWrapper>
-
-                <Overlay>
-                    <Header>
-                        <Logo src={logoImage} alt="Logo" />
-                        {topEmotion && emotionImages[topEmotion] && <Emoji src={emotionImages[topEmotion]} alt="Emotion" onClick={() => navigate(-1)} />}
-                    </Header>
-                </Overlay>
-
                 <AppWrapper>
+                    <ClickableArea onClick={() => navigate(-1)} />
+
+                    <ContentWrapper>
+                        <EditInfo onClick={() => navigate('/edit-info')}>회원 정보 수정</EditInfo>
+                        <ResetPassword onClick={() => navigate('/reset-password')}>비밀번호 재설정</ResetPassword>
+                        <Logout onClick={handleLogout}>로그아웃</Logout>
+                    </ContentWrapper>
                     <Menu>
                         <MenuItem onClick={() => navigate('/inputpage')}>
                             <FontAwesomeIcon icon={faPen} style={{ fontSize: '40px' }} />
