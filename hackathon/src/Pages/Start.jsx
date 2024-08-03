@@ -84,6 +84,10 @@ const StartButton = styled.button`
     margin-top: auto;
     font-family: 'Ownglyph_meetme-Rg';
     margin-bottom: 10%;
+
+    &:hover {
+        color: #FF86FF;
+    }
 `;
 
 const slides = [logoImage, Home, View];
