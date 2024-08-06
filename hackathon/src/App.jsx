@@ -14,6 +14,7 @@ import EditInfo from './Pages/EditInfo';
 import ResetPassword from './Pages/ResetPassword';
 import DetailPage from './Pages/DetailPage';
 import EditDetail from './Pages/EditDetail';
+import PrivateRoute from './Pages/PrivateRoute';
 
 const App = () => {
   return (
@@ -24,15 +25,16 @@ const App = () => {
         <Route path="/find-id" element={<FindId />} />
         <Route path="/send-temp-password" element={<SendTempPassword />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/inputpage" element={<InputPage />} />
-        <Route path="/loadingpage" element={<LoadingPage />} />
-        <Route path="/viewpage" element={<ViewPage />} />
-        <Route path="/setting" element={<Setting />} />
-        <Route path="/edit-info" element={<EditInfo />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/detail" element={<DetailPage />} />
-        <Route path="/editdetail" element={<EditDetail />} />
+        {/* Private Routes */}
+        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+        <Route path="/inputpage" element={<PrivateRoute element={<InputPage />} />} />
+        <Route path="/loadingpage" element={<PrivateRoute element={<LoadingPage />} />} />
+        <Route path="/viewpage" element={<PrivateRoute element={<ViewPage />} />} />
+        <Route path="/setting" element={<PrivateRoute element={<Setting />} />} />
+        <Route path="/edit-info" element={<PrivateRoute element={<EditInfo />} />} />
+        <Route path="/reset-password" element={<PrivateRoute element={<ResetPassword />} />} />
+        <Route path="/detail" element={<PrivateRoute element={<DetailPage />} />} />
+        <Route path="/editdetail" element={<PrivateRoute element={<EditDetail />} />} />
       </Routes>
     </Router>
   );

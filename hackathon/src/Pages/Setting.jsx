@@ -137,15 +137,13 @@ const Setting = () => {
         try {
             const user = JSON.parse(sessionStorage.getItem('user'));
             await api.post('/logout');
-            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('user'); // 세션에서 사용자 정보 제거
             console.log(`${user.email} has logged out.`);
-            setTimeout(() => {
-                navigate('/login');
-            }, 3000);
+            navigate('/login'); // 즉시 로그인 페이지로 이동
         } catch (error) {
             console.error('로그아웃 에러:', error);
         }
-    };
+    };    
 
     return (
         <>
