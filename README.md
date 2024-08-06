@@ -3,7 +3,8 @@
 </div>
 
 ## 📚 프로젝트 링크 
-<https://develop--depressedbread.netlify.app/>
++ 프로덕트 : <https://develop--depressedbread.netlify.app/>
++ Figma : https://www.figma.com/design/Pkb9NAL7ijg5Zrqt8FcOBF/%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0-1&t=g41AES7O3Fg9oAo9-0
 
 ## 📚 기획 배경
 Wellness는 신체적, 정서적, 사회적, 지적인 영역에서 최상의 상태를 유지하거나 이를 적극적으로 만들어 나가는 삶의 방식을 의미한다. 
